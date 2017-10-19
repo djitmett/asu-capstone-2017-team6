@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     
     
 
-    @IBOutlet var mapDisplay: MKMapView!
+   // @IBOutlet var mapDisplay: MKMapView!
     
     @IBOutlet weak var SendTrackingLabel: UILabel!
     
