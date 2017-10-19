@@ -10,6 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    //MARK: Properties
+    
+    
+
+    @IBOutlet var mapDisplay: MKMapView!
+    
+    @IBOutlet weak var SendTrackingLabel: UILabel!
+    
+    
+    @IBOutlet weak var phoneNumberField: UITextField!
+    
+    @IBOutlet weak var sendButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -18,8 +31,18 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        
+        
+        
+        
+    //MARK: Actions
     }
 
+    
+    
+    
+    
+    
 
 }
 
