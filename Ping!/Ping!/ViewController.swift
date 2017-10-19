@@ -1,8 +1,8 @@
 //
 //  ViewController.swift
-//  proj11_team6
+//  Ping!
 //
-//  Created by Darya T Jitmetta on 10/18/17.
+//  Created by Darya T Jitmetta on 10/19/17.
 //  Copyright © 2017 Darya T Jitmetta. All rights reserved.
 //
 
@@ -11,14 +11,12 @@ import MapKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet var appTitle: UILabel!
     
+    
+    @IBOutlet var topLabel: UILabel!
     @IBOutlet var mapDisplay: MKMapView!
-    
     @IBOutlet var requestLabel: UILabel!
-    
     @IBOutlet var phoneNumField: UITextField!
-    
     @IBOutlet var requestBtn: UIButton!
     
     override func viewDidLoad() {
@@ -26,21 +24,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-        
-        
-        
-        
-    //MARK: Actions
-    }
 
-    
-    
-    
-    
-    
 
 }
 
