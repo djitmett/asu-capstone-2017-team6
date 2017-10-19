@@ -1,14 +1,14 @@
 //
-//  proj11_team6UITests.swift
-//  proj11_team6UITests
+//  Ping_UITests.swift
+//  Ping!UITests
 //
-//  Created by Darya T Jitmetta on 10/18/17.
+//  Created by Darya T Jitmetta on 10/19/17.
 //  Copyright © 2017 Darya T Jitmetta. All rights reserved.
 //
 
 import XCTest
 
-class proj11_team6UITests: XCTestCase {
+class Ping_UITests: XCTestCase {
         
     override func setUp() {
         super.setUp()

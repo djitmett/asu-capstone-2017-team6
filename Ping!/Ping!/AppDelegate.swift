@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  proj11_team6
+//  Ping!
 //
-//  Created by Darya T Jitmetta on 10/18/17.
+//  Created by Darya T Jitmetta on 10/19/17.
 //  Copyright © 2017 Darya T Jitmetta. All rights reserved.
 //
 
