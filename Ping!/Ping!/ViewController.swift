@@ -47,6 +47,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         request.httpMethod = "POST"
         
         //Other DB values
+        let userfbid = "NULL"
         let usertype = "user"
         let email = "email@test.com"
         let password = "password"
@@ -54,7 +55,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let usertime = "2017-11-01 21:34:12"
         
         //creating the post parameter by concatenating the keys and values from text field
-        let postParameters = "user="+usertype+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
+        let postParameters = "user_fb_id="+userfbid+"&user="+usertype+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
         
         //adding the parameters to request body
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
