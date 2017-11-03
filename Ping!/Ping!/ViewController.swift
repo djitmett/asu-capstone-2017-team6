@@ -114,7 +114,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
         
         let span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
-        mapDisplay.centerCoordinate = location.coordinate
+        //mapDisplay.centerCoordinate = location.coordinate
         mapDisplay.showAnnotations(mapDisplay.annotations, animated: true)
         let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
         
