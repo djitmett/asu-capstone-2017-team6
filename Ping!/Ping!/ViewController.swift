@@ -52,10 +52,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let email = "email@test.com"
         let password = "password"
         let useravatar = "avatar.jpeg"
-        let usertime = "2017-11-01 21:34:12"
+        let usertime = "test"
         
         //creating the post parameter by concatenating the keys and values from text field
-        let postParameters = "user_fb_id="+userfbid+"&user="+usertype+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
+        let postParameters = "user_fb_id="+userfbid+"&user_type="+usertype+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
         
         //adding the parameters to request body
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
@@ -68,9 +68,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 print("error is \(String(describing: error))")
                 return;
             }
-            
+      
             //parsing the response
             do {
+             
                 //converting resonse to NSDictionary
                 let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
                 //parsing the json
@@ -84,6 +85,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     
                     //printing the response
                     print(msg)
+
                     
                 }
             } catch {
