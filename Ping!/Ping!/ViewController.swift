@@ -22,8 +22,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var user_last_name = "Last Name"
     
     //DATABASE PHP SCRIPT
-    let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/adduser.php"
+    let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/adduser.php?"
     
+    //SIGN UP BTN ACTION
     @IBAction func signupBtn(_ sender: Any) {
          user_first_name = first_name.text!
          user_last_name = last_name.text!
@@ -55,7 +56,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let usertime = "test"
         
         //creating the post parameter by concatenating the keys and values from text field
-        let postParameters = "user_fb_id="+userfbid+"&user_type="+usertype+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
+        let postParameters = "user_fb_id= "+userfbid+"&user_type="+usertype+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
         
         //adding the parameters to request body
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
@@ -96,6 +97,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         //executing the task
         task.resume()
+        //Prints HTTP POST data in console
         print(postParameters)
     }
 
@@ -113,9 +115,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
+        //Get most recent location
         let location = locations[0]
 
-        
         let span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
         //mapDisplay.centerCoordinate = location.coordinate
         mapDisplay.showAnnotations(mapDisplay.annotations, animated: true)
@@ -124,20 +126,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let region:MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
         mapDisplay.setRegion(region, animated:true)
         
+        //Prints user's speed to console
         print(location.speed)
         
+        //Displays user's location
         self.mapDisplay.showsUserLocation=true
         
+        //Lat Label
         self.latLabel.text = String(location.coordinate.latitude)
-        
+        //Long Label
         self.longLabel.text = String(location.coordinate.longitude)
+        //Display traffic colors on map
         mapDisplay.showsTraffic=true
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestAlwaysAuthorization()
@@ -145,18 +150,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         manager.startUpdatingLocation()
         
     }
-    /**
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            mapDisplay.showsUserLocation = true
-        } else {
-            manager.requestWhenInUseAuthorization()
-        }
-    }
-**/
-
 
 }
 
