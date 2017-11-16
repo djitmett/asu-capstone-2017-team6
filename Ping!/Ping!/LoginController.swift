@@ -29,6 +29,9 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
     var useravatar = "avatar.jpeg"
     var usertime = "test"
     
+    //Date/Time variables
+
+    
     @IBOutlet weak var signupButton: UIButton!
     
     //DATABASE PHP SCRIPT
@@ -103,7 +106,12 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
         email = emailField.text!
         password = passwordField.text!
         
-
+        //date time
+        let date = Date()
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        let todaysDate = dateFormatterGet.string(from: date)
+        usertime = todaysDate
         
         //CALL THE SIGN UP FUNCTION (SEND DATA TO DB)
         sign_up(first_name: user_first_name, last_name: user_last_name)
