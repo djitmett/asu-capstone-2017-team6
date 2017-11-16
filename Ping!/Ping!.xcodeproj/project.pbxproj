@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		087BDF67081A8D75F4714EB7 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4283C5AEBECDAE902C9BE57 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		4B3283AC1F995D0A00302E3E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AB1F995D0A00302E3E /* AppDelegate.swift */; };
 		4B3283AE1F995D0A00302E3E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AD1F995D0A00302E3E /* ViewController.swift */; };
 		4B3283B11F995D0A00302E3E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B3283AF1F995D0A00302E3E /* Main.storyboard */; };
@@ -15,6 +16,11 @@
 		4B3283C11F995D0A00302E3E /* Ping_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283C01F995D0A00302E3E /* Ping_Tests.swift */; };
 		4B3283CC1F995D0A00302E3E /* Ping_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283CB1F995D0A00302E3E /* Ping_UITests.swift */; };
 		4BACA2CE1F996AAA00CD0C2E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BACA2CD1F996AAA00CD0C2E /* MapKit.framework */; };
+		600A43EAC697AFB1C532EDAC /* Pods_Ping_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FB190DE3BDC4F2207D7548D /* Pods_Ping_Tests.framework */; };
+		739FDF82C96A27599AEAE22F /* Pods_Ping_UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8A5E7166BABD62E7C817A9 /* Pods_Ping_UITests.framework */; };
+		9798751D43F899639D7DE8CF /* Pods_Ping_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCDF405989B0AB456670615 /* Pods_Ping_.framework */; };
+		D72B3BA41FAE7A36000F3080 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72B3BA31FAE7A36000F3080 /* NotificationService.swift */; };
+		D72B3BA81FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D72B3BA11FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,9 +38,34 @@
 			remoteGlobalIDString = 4B3283A71F995D0A00302E3E;
 			remoteInfo = "Ping!";
 		};
+		D72B3BA61FAE7A36000F3080 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4B3283A01F995D0A00302E3E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D72B3BA01FAE7A35000F3080;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D72B3BAC1FAE7A37000F3080 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D72B3BA81FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0FB190DE3BDC4F2207D7548D /* Pods_Ping_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ping_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1747DF184AE822047CC43BCE /* Pods-Ping!UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!UITests/Pods-Ping!UITests.debug.xcconfig"; sourceTree = "<group>"; };
+		1E8A5E7166BABD62E7C817A9 /* Pods_Ping_UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ping_UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		428A905D1767A819F40DB5F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		4B3283A81F995D0A00302E3E /* Ping!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ping!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3283AB1F995D0A00302E3E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B3283AD1F995D0A00302E3E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -50,6 +81,18 @@
 		4B3283CD1F995D0A00302E3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BACA2CD1F996AAA00CD0C2E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		4BD4B86D1F99634C0094CCA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		7CCDF405989B0AB456670615 /* Pods_Ping_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ping_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		83D479030ACE8FFED384BDBD /* Pods-Ping!.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!/Pods-Ping!.debug.xcconfig"; sourceTree = "<group>"; };
+		A82F199438B6F1A583CA8A53 /* Pods-Ping!Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!Tests/Pods-Ping!Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		ACFD2CB78073CFB7B01AD42B /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		B86F9F615BC32FBCA0E4A952 /* Pods-Ping!.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!/Pods-Ping!.release.xcconfig"; sourceTree = "<group>"; };
+		D72B3BA11FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D72B3BA31FAE7A36000F3080 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		D72B3BA51FAE7A36000F3080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D72B3BAD1FAE968E000F3080 /* Ping!.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Ping!.entitlements"; sourceTree = "<group>"; };
+		D905C24373790EF58C69B990 /* Pods-Ping!Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!Tests/Pods-Ping!Tests.release.xcconfig"; sourceTree = "<group>"; };
+		E4283C5AEBECDAE902C9BE57 /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E73D0526654A3B9B2D1F4276 /* Pods-Ping!UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!UITests/Pods-Ping!UITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +101,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BACA2CE1F996AAA00CD0C2E /* MapKit.framework in Frameworks */,
+				9798751D43F899639D7DE8CF /* Pods_Ping_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				600A43EAC697AFB1C532EDAC /* Pods_Ping_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +117,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				739FDF82C96A27599AEAE22F /* Pods_Ping_UITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D72B3B9E1FAE7A35000F3080 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				087BDF67081A8D75F4714EB7 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,8 +138,10 @@
 				4B3283AA1F995D0A00302E3E /* Ping! */,
 				4B3283BF1F995D0A00302E3E /* Ping!Tests */,
 				4B3283CA1F995D0A00302E3E /* Ping!UITests */,
+				D72B3BA21FAE7A36000F3080 /* OneSignalNotificationServiceExtension */,
 				4B3283A91F995D0A00302E3E /* Products */,
 				4BD4B86C1F99634C0094CCA6 /* Frameworks */,
+				4CC183201E697E821EA6A67E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,6 +151,7 @@
 				4B3283A81F995D0A00302E3E /* Ping!.app */,
 				4B3283BC1F995D0A00302E3E /* Ping!Tests.xctest */,
 				4B3283C71F995D0A00302E3E /* Ping!UITests.xctest */,
+				D72B3BA11FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,6 +159,7 @@
 		4B3283AA1F995D0A00302E3E /* Ping! */ = {
 			isa = PBXGroup;
 			children = (
+				D72B3BAD1FAE968E000F3080 /* Ping!.entitlements */,
 				4B3283AB1F995D0A00302E3E /* AppDelegate.swift */,
 				4B3283AD1F995D0A00302E3E /* ViewController.swift */,
 				4B3283AF1F995D0A00302E3E /* Main.storyboard */,
@@ -135,8 +193,36 @@
 			children = (
 				4BACA2CD1F996AAA00CD0C2E /* MapKit.framework */,
 				4BD4B86D1F99634C0094CCA6 /* CoreLocation.framework */,
+				E4283C5AEBECDAE902C9BE57 /* Pods_OneSignalNotificationServiceExtension.framework */,
+				7CCDF405989B0AB456670615 /* Pods_Ping_.framework */,
+				0FB190DE3BDC4F2207D7548D /* Pods_Ping_Tests.framework */,
+				1E8A5E7166BABD62E7C817A9 /* Pods_Ping_UITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4CC183201E697E821EA6A67E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				428A905D1767A819F40DB5F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				ACFD2CB78073CFB7B01AD42B /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
+				83D479030ACE8FFED384BDBD /* Pods-Ping!.debug.xcconfig */,
+				B86F9F615BC32FBCA0E4A952 /* Pods-Ping!.release.xcconfig */,
+				A82F199438B6F1A583CA8A53 /* Pods-Ping!Tests.debug.xcconfig */,
+				D905C24373790EF58C69B990 /* Pods-Ping!Tests.release.xcconfig */,
+				1747DF184AE822047CC43BCE /* Pods-Ping!UITests.debug.xcconfig */,
+				E73D0526654A3B9B2D1F4276 /* Pods-Ping!UITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D72B3BA21FAE7A36000F3080 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				D72B3BA31FAE7A36000F3080 /* NotificationService.swift */,
+				D72B3BA51FAE7A36000F3080 /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,13 +232,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4B3283D01F995D0A00302E3E /* Build configuration list for PBXNativeTarget "Ping!" */;
 			buildPhases = (
+				00D1F91F4B4C5D7BED327D20 /* [CP] Check Pods Manifest.lock */,
 				4B3283A41F995D0A00302E3E /* Sources */,
 				4B3283A51F995D0A00302E3E /* Frameworks */,
 				4B3283A61F995D0A00302E3E /* Resources */,
+				D72B3BAC1FAE7A37000F3080 /* Embed App Extensions */,
+				40DFCA170E200D5459E72822 /* [CP] Embed Pods Frameworks */,
+				BA125B3D311254B33E98780C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D72B3BA71FAE7A36000F3080 /* PBXTargetDependency */,
 			);
 			name = "Ping!";
 			productName = "Ping!";
@@ -163,9 +254,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4B3283D31F995D0A00302E3E /* Build configuration list for PBXNativeTarget "Ping!Tests" */;
 			buildPhases = (
+				FBB2A9C05C8C264C0825D8D4 /* [CP] Check Pods Manifest.lock */,
 				4B3283B81F995D0A00302E3E /* Sources */,
 				4B3283B91F995D0A00302E3E /* Frameworks */,
 				4B3283BA1F995D0A00302E3E /* Resources */,
+				4C3F66D64DE016260BEB2190 /* [CP] Embed Pods Frameworks */,
+				030414770EDF3E7E725B6581 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -181,9 +275,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4B3283D61F995D0A00302E3E /* Build configuration list for PBXNativeTarget "Ping!UITests" */;
 			buildPhases = (
+				2B1B479C9383D1EBB6F91AC0 /* [CP] Check Pods Manifest.lock */,
 				4B3283C31F995D0A00302E3E /* Sources */,
 				4B3283C41F995D0A00302E3E /* Frameworks */,
 				4B3283C51F995D0A00302E3E /* Resources */,
+				3C61B56BF4E7A8F74E7FD853 /* [CP] Embed Pods Frameworks */,
+				EA112946DD502941B7889A26 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -194,6 +291,25 @@
 			productName = "Ping!UITests";
 			productReference = 4B3283C71F995D0A00302E3E /* Ping!UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		D72B3BA01FAE7A35000F3080 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D72B3BAB1FAE7A37000F3080 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				E9467F53ECA7446975AB37CE /* [CP] Check Pods Manifest.lock */,
+				D72B3B9D1FAE7A35000F3080 /* Sources */,
+				D72B3B9E1FAE7A35000F3080 /* Frameworks */,
+				D72B3B9F1FAE7A35000F3080 /* Resources */,
+				7549FA5D35EDA9FFE84BE757 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneSignalNotificationServiceExtension;
+			productName = OneSignalNotificationServiceExtension;
+			productReference = D72B3BA11FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -209,7 +325,13 @@
 						CreatedOnToolsVersion = 9.0.1;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -223,6 +345,10 @@
 						CreatedOnToolsVersion = 9.0.1;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 4B3283A71F995D0A00302E3E;
+					};
+					D72B3BA01FAE7A35000F3080 = {
+						CreatedOnToolsVersion = 9.0.1;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -242,6 +368,7 @@
 				4B3283A71F995D0A00302E3E /* Ping! */,
 				4B3283BB1F995D0A00302E3E /* Ping!Tests */,
 				4B3283C61F995D0A00302E3E /* Ping!UITests */,
+				D72B3BA01FAE7A35000F3080 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -271,7 +398,194 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D72B3B9F1FAE7A35000F3080 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		00D1F91F4B4C5D7BED327D20 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ping!-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		030414770EDF3E7E725B6581 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Ping!Tests/Pods-Ping!Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2B1B479C9383D1EBB6F91AC0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ping!UITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3C61B56BF4E7A8F74E7FD853 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Ping!UITests/Pods-Ping!UITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		40DFCA170E200D5459E72822 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Ping!/Pods-Ping!-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4C3F66D64DE016260BEB2190 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Ping!Tests/Pods-Ping!Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7549FA5D35EDA9FFE84BE757 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA125B3D311254B33E98780C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Ping!/Pods-Ping!-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E9467F53ECA7446975AB37CE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA112946DD502941B7889A26 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Ping!UITests/Pods-Ping!UITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FBB2A9C05C8C264C0825D8D4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ping!Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4B3283A41F995D0A00302E3E /* Sources */ = {
@@ -299,6 +613,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D72B3B9D1FAE7A35000F3080 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D72B3BA41FAE7A36000F3080 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -311,6 +633,11 @@
 			isa = PBXTargetDependency;
 			target = 4B3283A71F995D0A00302E3E /* Ping! */;
 			targetProxy = 4B3283C81F995D0A00302E3E /* PBXContainerItemProxy */;
+		};
+		D72B3BA71FAE7A36000F3080 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D72B3BA01FAE7A35000F3080 /* OneSignalNotificationServiceExtension */;
+			targetProxy = D72B3BA61FAE7A36000F3080 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -443,13 +770,20 @@
 		};
 		4B3283D11F995D0A00302E3E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83D479030ACE8FFED384BDBD /* Pods-Ping!.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Ping!/Ping!.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 34NU864273;
 				INFOPLIST_FILE = "Ping!/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "pinglocation.Ping-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotsalsainteractive.ping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -457,13 +791,20 @@
 		};
 		4B3283D21F995D0A00302E3E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B86F9F615BC32FBCA0E4A952 /* Pods-Ping!.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Ping!/Ping!.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 34NU864273;
 				INFOPLIST_FILE = "Ping!/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "pinglocation.Ping-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotsalsainteractive.ping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -471,13 +812,14 @@
 		};
 		4B3283D41F995D0A00302E3E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A82F199438B6F1A583CA8A53 /* Pods-Ping!Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Ping!Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "pinglocation.Ping-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotsalsainteractive.ping.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -487,13 +829,14 @@
 		};
 		4B3283D51F995D0A00302E3E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D905C24373790EF58C69B990 /* Pods-Ping!Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Ping!Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "pinglocation.Ping-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotsalsainteractive.ping.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -503,12 +846,13 @@
 		};
 		4B3283D71F995D0A00302E3E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1747DF184AE822047CC43BCE /* Pods-Ping!UITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Ping!UITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "pinglocation.Ping-UITests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotsalsainteractive.ping.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -518,16 +862,49 @@
 		};
 		4B3283D81F995D0A00302E3E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E73D0526654A3B9B2D1F4276 /* Pods-Ping!UITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Ping!UITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "pinglocation.Ping-UITests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotsalsainteractive.ping.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Ping!";
+			};
+			name = Release;
+		};
+		D72B3BA91FAE7A36000F3080 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 428A905D1767A819F40DB5F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 34NU864273;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotsalsainteractive.ping.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D72B3BAA1FAE7A36000F3080 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ACFD2CB78073CFB7B01AD42B /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 34NU864273;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotsalsainteractive.ping.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -566,6 +943,15 @@
 			buildConfigurations = (
 				4B3283D71F995D0A00302E3E /* Debug */,
 				4B3283D81F995D0A00302E3E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D72B3BAB1FAE7A37000F3080 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D72B3BA91FAE7A36000F3080 /* Debug */,
+				D72B3BAA1FAE7A36000F3080 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
