@@ -29,23 +29,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let location = locations[0]
 
         let span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
-        //mapDisplay.centerCoordinate = location.coordinate
+        
+        
         mapDisplay.showAnnotations(mapDisplay.annotations, animated: true)
+        
         let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
         
         let region:MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
         mapDisplay.setRegion(region, animated:true)
         
+        mapDisplay.centerCoordinate = location.coordinate
+        
         //Prints user's speed to console
         print(location.speed)
-        
-        //Displays user's location
-        self.mapDisplay.showsUserLocation=true
         
         //Lat Label
         self.latLabel.text = String(location.coordinate.latitude)
         //Long Label
         self.longLabel.text = String(location.coordinate.longitude)
+       
         //Display traffic colors on map
         mapDisplay.showsTraffic=true
         
@@ -54,12 +56,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Map
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestAlwaysAuthorization()
-        //manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
         
+        //Displays user's location
+        self.mapDisplay.showsUserLocation=true
+     
         //Avatar image
         if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
              retrievedImg.image = UIImage(data: imgData as Data)

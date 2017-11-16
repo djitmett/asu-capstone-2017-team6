@@ -60,9 +60,9 @@
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Please allow location services in order for the application to function properly</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Please allow</string>
+	<string>Please allow location services in order for the application to function properly</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string> Please allow</string>
+	<string>Please allow location services in order for the application to function properly</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
