@@ -1,0 +1,33 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [
+    {
+      'type': 'directory',
+      'name': "/Users/Darya/git/asu-capstone-2017-team6/Ping!/build/Debug-iphonesimulator/Pods_OneSignalNotificationServiceExtension.framework/Headers",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "Pods-OneSignalNotificationServiceExtension-umbrella.h",
+          'external-contents': "/Users/Darya/git/asu-capstone-2017-team6/Ping!/Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension-umbrella.h"
+        },
+        {
+          'type': 'file',
+          'name': "Pods_OneSignalNotificationServiceExtension-Swift.h",
+          'external-contents': "/Users/Darya/git/asu-capstone-2017-team6/Ping!/build/Debug-iphonesimulator/Pods_OneSignalNotificationServiceExtension.framework/Headers/Pods_OneSignalNotificationServiceExtension-Swift.h"
+        }
+      ]
+    },
+    {
+      'type': 'directory',
+      'name': "/Users/Darya/git/asu-capstone-2017-team6/Ping!/build/Debug-iphonesimulator/Pods_OneSignalNotificationServiceExtension.framework/Modules",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "module.modulemap",
+          'external-contents': "/Users/Darya/git/asu-capstone-2017-team6/Ping!/build/Pods.build/Debug-iphonesimulator/Pods-OneSignalNotificationServiceExtension.build/module.modulemap"
+        }
+      ]
+    }
+  ]
+}
