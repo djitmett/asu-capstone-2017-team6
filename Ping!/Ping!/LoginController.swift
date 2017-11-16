@@ -93,6 +93,13 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
         // Make sure ViewController is notified when the user picks an image.
         imagePickerController.delegate = self
         present(imagePickerController, animated: true, completion: nil)
+   
+        //Save image
+        let img = avatarImageView.image
+        let data = UIImagePNGRepresentation(img!)
+        UserDefaults.standard.set(data, forKey: "myImageKey")
+        UserDefaults.standard.synchronize()
+    
     }
     
     

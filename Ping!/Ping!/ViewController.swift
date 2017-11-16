@@ -12,7 +12,7 @@ import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
 
- 
+    
     //MAP DISPLAY
     @IBOutlet var longLabel: UILabel!
     @IBOutlet var latLabel: UILabel!
@@ -50,6 +50,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         mapDisplay.showsTraffic=true
         
     }
+    @IBOutlet weak var retrievedImg: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +59,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         manager.requestAlwaysAuthorization()
         //manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
+        
+        //Avatar image
+        if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
+             retrievedImg.image = UIImage(data: imgData as Data)
+        }
         
     }
 
