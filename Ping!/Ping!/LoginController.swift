@@ -45,7 +45,7 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
         textField.resignFirstResponder()
         return true
     }
-    
+    /**
     func textFieldDidEndEditing(_ textField: UITextField) {
         firstNameField.text = textField.text
         lastNameField.text = textField.text
@@ -53,6 +53,7 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
         emailField.text = textField.text
         passwordField.text = textField.text
     }
+    **/
     
     //MARK: UIImagePickerControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -187,7 +188,13 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        firstNameField.delegate = self
+        lastNameField.delegate = self
+        phonenumberField.delegate = self
+        emailField.delegate = self
+        passwordField.delegate = self
+        
         // Do any additional setup after loading the view.
     }
 
