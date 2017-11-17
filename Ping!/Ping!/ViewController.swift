@@ -9,9 +9,13 @@
 import UIKit
 import MapKit
 import CoreLocation
+import OneSignal
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
-
+    
+    let appDelegate = UIApplication.shared.delegate! as! AppDelegate
+   
+    
     
     //MAP DISPLAY
     @IBOutlet var longLabel: UILabel!
@@ -51,6 +55,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //Display traffic colors on map
         mapDisplay.showsTraffic=true
         
+
     }
     @IBOutlet weak var retrievedImg: UIImageView!
     
@@ -65,13 +70,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         //Displays user's location
         self.mapDisplay.showsUserLocation=true
-     
+        
+        //print player id
+        OneSignal.idsAvailable { (pushID, pushToken) in
+            print("OneSignal player_id = " + pushID!)
+            //print(pushToken)
+        }
+        
+        OneSignal.getPermissionSubscriptionState()
+        
         //Avatar image
         if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
              retrievedImg.image = UIImage(data: imgData as Data)
         }
         
     }
+    
 
 }
 
