@@ -23,6 +23,7 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
     var user_first_name = "First Name"
     var user_last_name = "Last Name"
     var userfbid = "NULL"
+    var user_device_id = "device id"
     var usertype = "user"
     var email = "email@test.com"
     var phone = "180012345678"
@@ -36,7 +37,7 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
     @IBOutlet weak var signupButton: UIButton!
     
     //DATABASE PHP SCRIPT
-    let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/adduser.php?"
+    let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/adduserdata.php?"
     
     
     //MARK: UITextFieldDelegate
@@ -109,6 +110,10 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
     //Sign up button
     @IBAction func signupBtn(_ sender: Any) {
         
+        //OneSignal player_id as user_device_id for now
+        let defaults = UserDefaults.standard
+        user_device_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
+        
         //DB Variables
         user_first_name = firstNameField.text!
         user_last_name = lastNameField.text!
@@ -143,7 +148,7 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
 
         
         //creating the post parameter by concatenating the keys and values from text field
-        let postParameters = "user_fb_id= "+userfbid+"&user_type="+usertype+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_phone="+phone+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
+        let postParameters = "user_fb_id= "+userfbid+"&user_type="+usertype+"&user_device_id="+user_device_id+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_phone="+phone+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
         
         //adding the parameters to request body
         request.httpBody = postParameters.data(using: String.Encoding.utf8)

@@ -55,6 +55,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //Display traffic colors on map
         mapDisplay.showsTraffic=true
         
+        print(location.coordinate.latitude)
+        print(location.coordinate.longitude)
 
     }
     @IBOutlet weak var retrievedImg: UIImageView!
