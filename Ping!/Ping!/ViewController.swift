@@ -15,7 +15,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
    
-    
+    var player_id = ""
     
     //MAP DISPLAY
     @IBOutlet var longLabel: UILabel!
@@ -71,13 +71,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //Displays user's location
         self.mapDisplay.showsUserLocation=true
         
-        //print player id
-        OneSignal.idsAvailable { (pushID, pushToken) in
-            print("OneSignal player_id = " + pushID!)
-            //print(pushToken)
-        }
+        //USER DEFAULTS FOR ONESIGNAL ID
+        let defaults = UserDefaults.standard
+        player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
         
-        OneSignal.getPermissionSubscriptionState()
+        //print player id
+        print("player_id: " + player_id)
         
         //Avatar image
         if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
