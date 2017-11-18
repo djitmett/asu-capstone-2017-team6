@@ -25,6 +25,7 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
     var userfbid = "NULL"
     var usertype = "user"
     var email = "email@test.com"
+    var phone = "180012345678"
     var password = "password"
     var useravatar = "avatar.jpeg"
     var usertime = "test"
@@ -111,6 +112,7 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
         //DB Variables
         user_first_name = firstNameField.text!
         user_last_name = lastNameField.text!
+        phone = phonenumberField.text!
         email = emailField.text!
         password = passwordField.text!
         
@@ -141,7 +143,7 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
 
         
         //creating the post parameter by concatenating the keys and values from text field
-        let postParameters = "user_fb_id= "+userfbid+"&user_type="+usertype+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
+        let postParameters = "user_fb_id= "+userfbid+"&user_type="+usertype+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_phone="+phone+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
         
         //adding the parameters to request body
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
