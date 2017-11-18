@@ -7,12 +7,21 @@
 //
 
 import UIKit
+import OneSignal
 
 class TrkRequestViewController: UIViewController {
-
+    var player_id = ""
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        //USER DEFAULTS FOR ONESIGNAL ID
+        let defaults = UserDefaults.standard
+        player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
+        
+        //test notification
+        OneSignal.postNotification(["contents": ["en": "Test Message"], "include_player_ids": [player_id]])
         // Do any additional setup after loading the view.
     }
 
