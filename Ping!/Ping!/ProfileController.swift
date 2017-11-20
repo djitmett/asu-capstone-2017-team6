@@ -10,8 +10,15 @@ import UIKit
 
 class ProfileController: UIViewController {
 
+    @IBOutlet weak var userPhoneNumber: UILabel!
+    @IBOutlet weak var userName: UILabel!
+    
+    let defaults = UserDefaults.standard
+   
+    
+
     @IBAction func logout(_ sender: Any) {
-        let defaults = UserDefaults.standard
+
         //Logging user out
         defaults.set(false, forKey: "isLogged")
         //Deleting user phone number from data store
@@ -22,7 +29,13 @@ class ProfileController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+    
+    let firstName = (defaults.object(forKey: "userFirstName") as? String)!
+    let lastName = (defaults.object(forKey: "userLastName") as? String)!
+    let phoneNumber = (defaults.object(forKey: "userPhone") as? String)!
+   
+    self.userName.text = firstName + " " + lastName
+    self.userPhoneNumber.text = phoneNumber
         // Do any additional setup after loading the view.
     }
 
