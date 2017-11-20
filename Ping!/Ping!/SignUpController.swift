@@ -123,6 +123,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         
         defaults.set(phone, forKey: "userPhone")
         defaults.set(true, forKey: "isLogged")
+        defaults.synchronize()
         
         //date time
         let date = Date()

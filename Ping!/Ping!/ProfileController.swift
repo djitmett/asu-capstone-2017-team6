@@ -11,7 +11,10 @@ import UIKit
 class ProfileController: UIViewController {
 
     @IBAction func logout(_ sender: Any) {
-         performSegue(withIdentifier: "unwindSegueToLogin", sender: self)
+        let defaults = UserDefaults.standard
+        defaults.set(false, forKey: "isLogged")
+        defaults.synchronize()
+        performSegue(withIdentifier: "unwindSegueToLogin", sender: self)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
