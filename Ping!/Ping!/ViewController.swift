@@ -26,6 +26,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var requestBtn: UIButton!
     
     let manager = CLLocationManager()
+    var lastUpdateTime = DispatchTime.now()
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
@@ -46,6 +47,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         //Prints user's speed to console
         print(location.speed)
+        // Update user's location in DB every 30 seconds
+        let start = lastUpdateTime
+        let end = DispatchTime.now()
+        let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+        let elapsedTime = Double(nanoTime)/1_000_000_000
+        if (elapsedTime > 30){
+            print("Update location in DB")
+            updateUserLocation(userPhone:"1234567890",latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
+            lastUpdateTime = DispatchTime.now()
+        }
         
         //Lat Label
         self.latLabel.text = String(location.coordinate.latitude)
@@ -87,6 +98,56 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
-
+    func updateUserLocation(userPhone:String, latitude:Double, longitude:Double) {
+        //DATABASE PHP SCRIPT
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/adduserlocation.php?"
+        
+        //52.42.38.63/ioswebservice/api/adduserlocation.php?user_phone=1234567890&location_latitude=35.7020691&location_longitude=139.7753269&location_datetime=2017-11-18 01:31:06
+        
+        let requestURL = NSURL(string: URL_SIGNUP)
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        request.httpMethod = "POST"
+        
+        //Othe
+        var postParameters = "user_phone=" + userPhone
+        postParameters += "&location_latitude=\(latitude)"
+        postParameters += "&location_longitude=\(longitude)"
+        postParameters += "&location_datetime=\(NSDate())"
+        print("PostParms=" + postParameters)
+        //adding the parameters to request body
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        
+        //creating a task to send the post request
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            
+            //parsing the response
+            do {
+                
+                //converting resonse to NSDictionary
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                //parsing the json
+                if let parseJSON = myJSON {
+                    //creating a string
+                    var msg : String!
+                    //getting the json response
+                    msg = parseJSON["message"] as! String?
+                    //printing the response
+                    print("MESSAGE=" + msg)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        //executing the task
+        task.resume()
+        //Prints HTTP POST data in console
+        print(postParameters)
+    }
 }
 
