@@ -25,6 +25,8 @@ class ProfileController: UIViewController {
         defaults.removeObject(forKey: "userPhone")
         //Updating data store
         defaults.synchronize()
+        
+        //Navigate user to login page
         performSegue(withIdentifier: "unwindSegueToLogin", sender: self)
     }
     override func viewDidLoad() {
