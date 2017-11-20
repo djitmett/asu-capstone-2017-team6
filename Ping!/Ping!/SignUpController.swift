@@ -121,6 +121,8 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         email = emailField.text!
         password = passwordField.text!
         
+        defaults.set(user_first_name, forKey: "userFirstName")
+        defaults.set(user_last_name, forKey: "userLastName")
         defaults.set(phone, forKey: "userPhone")
         defaults.set(true, forKey: "isLogged")
         defaults.synchronize()

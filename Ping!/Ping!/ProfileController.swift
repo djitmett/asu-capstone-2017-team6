@@ -12,7 +12,11 @@ class ProfileController: UIViewController {
 
     @IBAction func logout(_ sender: Any) {
         let defaults = UserDefaults.standard
+        //Logging user out
         defaults.set(false, forKey: "isLogged")
+        //Deleting user phone number from data store
+        defaults.removeObject(forKey: "userPhone")
+        //Updating data store
         defaults.synchronize()
         performSegue(withIdentifier: "unwindSegueToLogin", sender: self)
     }
