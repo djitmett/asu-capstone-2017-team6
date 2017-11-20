@@ -121,6 +121,9 @@ class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerContr
         email = emailField.text!
         password = passwordField.text!
         
+        defaults.set(phone, forKey: "userPhone")
+        defaults.set(true, forKey: "isLogged")
+        
         //date time
         let date = Date()
         let dateFormatterGet = DateFormatter()

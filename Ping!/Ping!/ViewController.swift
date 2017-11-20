@@ -47,6 +47,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         //Prints user's speed to console
         print(location.speed)
+        
+        //Get user's phone number entered from signup
+        let defaults = UserDefaults.standard
+        let userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
+        
         // Update user's location in DB every 30 seconds
         let start = lastUpdateTime
         let end = DispatchTime.now()
@@ -54,7 +59,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let elapsedTime = Double(nanoTime)/1_000_000_000
         if (elapsedTime > 30){
             print("Update location in DB")
-            updateUserLocation(userPhone:"1234567890",latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
+            updateUserLocation(userPhone:userPhoneNumber,latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
             lastUpdateTime = DispatchTime.now()
         }
         
