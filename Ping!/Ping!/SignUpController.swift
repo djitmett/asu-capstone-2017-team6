@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     //MARK: Properties
     @IBOutlet weak var firstNameField: UITextField!

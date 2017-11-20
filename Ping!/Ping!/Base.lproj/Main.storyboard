@@ -107,10 +107,10 @@
             </objects>
             <point key="canvasLocation" x="1022" y="148"/>
         </scene>
-        <!--Login Controller-->
+        <!--Sign Up Controller-->
         <scene sceneID="6kA-7V-gMM">
             <objects>
-                <viewController id="C8r-kc-brJ" customClass="LoginController" customModule="Ping_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="C8r-kc-brJ" customClass="SignUpController" customModule="Ping_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Z0N-6M-Bg1">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
