@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginController: UIViewController {
+class LoginController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!
     @IBOutlet weak var password: UITextField!
@@ -21,6 +21,9 @@ class LoginController: UIViewController {
         
         let userPhoneNumber = phoneNumber.text
         let userPassword = password.text
+        
+        phoneNumber.resignFirstResponder()
+        password.resignFirstResponder()
         
         login_db(phone_number: userPhoneNumber!, password: userPassword!)
         
@@ -132,11 +135,26 @@ class LoginController: UIViewController {
         }
         
     }
+    
+    @IBAction func mapChange(_ sender: Any) {
+        performSegue(withIdentifier: "unwindSegueToMap", sender: self)
+    }
+    
+    
     func success() {
         performSegue(withIdentifier: "unwindSegueToMap", sender: self)
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Hide the keyboard.
+        textField.resignFirstResponder()
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        phoneNumber.delegate = self
+        password.delegate = self
         
         // Do any additional setup after loading the view.
     }
