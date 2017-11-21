@@ -27,6 +27,17 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         login_db(phone_number: userPhoneNumber!, password: userPassword!)
         
+        //send to login page
+        if let isUserLoggedIn = UserDefaults.standard.object(forKey: "isLogged"),
+            isUserLoggedIn is Bool {
+            let logged = (defaults.object(forKey: "isLogged") as? Bool)!
+            
+            if(logged){
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
+                self.present(nextViewController, animated:true, completion:nil)
+            }
+        }
     }
     
     //Validate login with database
@@ -89,7 +100,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                         
                         //If password matches with phonenumber
                         print ("user entered" + password)
-                        print (db_password)
+                        print (db_password!)
                         if(db_password! == password){
                             DispatchQueue.main.async(execute: {
                                 self.error.text = "SUCCESS"
@@ -106,7 +117,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                             defaults.synchronize()
                             
                             //success
-                            self.pass = true
+                            
                             
                         }
                         else {
@@ -127,24 +138,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
             
             
         }
+        
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
         print(postParameters)
-        print(pass)
-        if(pass==true){
-            success()
-        }
         
-    }
-    
-    @IBAction func mapChange(_ sender: Any) {
-        performSegue(withIdentifier: "unwindSegueToMap", sender: self)
-    }
-    
-    
-    func success() {
-        performSegue(withIdentifier: "unwindSegueToMap", sender: self)
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
