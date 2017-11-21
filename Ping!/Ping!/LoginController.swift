@@ -79,17 +79,17 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     
                     
                     //printing the response
-                    print(msg)
+                    //print(msg)
                     
                     //If phonenumber exists in DB
                     if(msg == "Operation successfully!"){
                         data = parseJSON["data"] as! NSArray?
-                        print(data)
+                        //print(data)
                         let db_password = data[5] as? String
                         
                         //If password matches with phonenumber
-                        print ("user entered" + password)
-                        print (db_password!)
+                        //print ("user entered" + password)
+                        //print (db_password!)
                         if(db_password! == password){
                             DispatchQueue.main.async(execute: {
                                 self.error.text = "SUCCESS"
@@ -145,7 +145,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
-        print(postParameters)
+        //print(postParameters)
         
     }
     

@@ -46,33 +46,38 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         mapDisplay.centerCoordinate = location.coordinate
         
         //Prints user's speed to console
-        print(location.speed)
+        //print(location.speed)
         
         //Get user's phone number entered from signup
         let defaults = UserDefaults.standard
-        let userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
-        
-        // Update user's location in DB every 30 seconds
-        let start = lastUpdateTime
-        let end = DispatchTime.now()
-        let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-        let elapsedTime = Double(nanoTime)/1_000_000_000
-        if (elapsedTime > 30){
-            print("Update location in DB")
-            updateUserLocation(userPhone:userPhoneNumber,latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
-            lastUpdateTime = DispatchTime.now()
+        //print("Getting userPhone@", Date())
+        if (defaults.object(forKey: "userPhone") != nil){
+            let userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
+            
+            // Update user's location in DB every 30 seconds
+            let start = lastUpdateTime
+            let end = DispatchTime.now()
+            let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+            let elapsedTime = Double(nanoTime)/1_000_000_000
+            if (elapsedTime > 30){
+                print("Update location in DB")
+                updateUserLocation(userPhone:userPhoneNumber,latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
+                lastUpdateTime = DispatchTime.now()
+            }
+            
+            //Lat Label
+            self.latLabel.text = String(location.coordinate.latitude)
+            //Long Label
+            self.longLabel.text = String(location.coordinate.longitude)
+           
+            //Display traffic colors on map
+            mapDisplay.showsTraffic=true
+            
+            //print(location.coordinate.latitude)
+            //print(location.coordinate.longitude)
+        } else {
+            print("Could not get userPhone")
         }
-        
-        //Lat Label
-        self.latLabel.text = String(location.coordinate.latitude)
-        //Long Label
-        self.longLabel.text = String(location.coordinate.longitude)
-       
-        //Display traffic colors on map
-        mapDisplay.showsTraffic=true
-        
-        print(location.coordinate.latitude)
-        print(location.coordinate.longitude)
 
     }
     @IBOutlet weak var retrievedImg: UIImageView!
@@ -97,7 +102,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
         
         //print player id
-        print("player_id: " + player_id)
+        //print("player_id: " + player_id)
         
         //Avatar image
         if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
@@ -121,7 +126,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         postParameters += "&location_latitude=\(latitude)"
         postParameters += "&location_longitude=\(longitude)"
         postParameters += "&location_datetime=\(NSDate())"
-        print("PostParms=" + postParameters)
+        //print("PostParms=" + postParameters)
         //adding the parameters to request body
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
         
@@ -146,7 +151,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     //getting the json response
                     msg = parseJSON["message"] as! String?
                     //printing the response
-                    print("MESSAGE=" + msg)
+                    //print("MESSAGE=" + msg)
                 }
             } catch {
                 print(error)
@@ -155,7 +160,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
-        print(postParameters)
+        //print(postParameters)
     }
 }
 

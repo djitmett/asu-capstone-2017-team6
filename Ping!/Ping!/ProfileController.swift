@@ -18,16 +18,19 @@ class ProfileController: UIViewController {
     
 
     @IBAction func logout(_ sender: Any) {
+        
+        //Navigate user to login page
+        performSegue(withIdentifier: "unwindSegueToLogin", sender: self)
 
         //Logging user out
         defaults.set(false, forKey: "isLogged")
         //Deleting user phone number from data store
         defaults.removeObject(forKey: "userPhone")
         //Updating data store
+        print("Resetting username-start")
         defaults.synchronize()
-        
-        //Navigate user to login page
-        performSegue(withIdentifier: "unwindSegueToLogin", sender: self)
+        print("Resetting username-end")
+
     }
     override func viewDidLoad() {
         super.viewDidLoad()
