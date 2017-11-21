@@ -9,28 +9,29 @@
 import UIKit
 
 class LoginController: UIViewController {
-
+    
     @IBOutlet weak var phoneNumber: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var error: UILabel!
+    var pass = false
     
     let defaults = UserDefaults.standard
     
     @IBAction func login(_ sender: Any) {
-    
+        
         let userPhoneNumber = phoneNumber.text
         let userPassword = password.text
         
-    login_db(phone_number: userPhoneNumber!, password: userPassword!)
+        login_db(phone_number: userPhoneNumber!, password: userPassword!)
         
     }
     
     //Validate login with database
     func login_db(phone_number:String, password:String) {
-   
+        
         //DATABASE PHP SCRIPT
         let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
-    
+        
         //URL is defined above
         let requestURL = NSURL(string: URL_SIGNUP)
         
@@ -72,24 +73,48 @@ class LoginController: UIViewController {
                     
                     //getting the json response
                     msg = parseJSON["message"] as! String?
-                    data = parseJSON["data"] as! NSArray?
+                    
                     
                     //printing the response
-                    let db_password = data[5] as? String
                     print(msg)
                     
-                    if(db_password == password){
-                        DispatchQueue.main.async(execute: {
-                            self.error.text = "SUCCESS"
-                        })
-
+                    //If phonenumber exists in DB
+                    if(msg == "Operation successfully!"){
+                        data = parseJSON["data"] as! NSArray?
+                        print(data)
+                        let db_password = data[5] as? String
+                        
+                        //If password matches with phonenumber
+                        if(db_password == password){
+                            DispatchQueue.main.async(execute: {
+                                self.error.text = "SUCCESS"
+                            })
+                            let user_first_name = data[2] as? String
+                            let user_last_name = data[2] as? String
+                            
+                            //Set data store
+                            let defaults = UserDefaults.standard
+                            defaults.set(user_first_name, forKey: "userFirstName")
+                            defaults.set(user_last_name, forKey: "userLastName")
+                            defaults.set(phone_number, forKey: "userPhone")
+                            defaults.set(true, forKey: "isLogged")
+                            defaults.synchronize()
+                            
+                            //success
+                            self.pass = true
+                            
+                        }
+                        else {
+                            DispatchQueue.main.async(execute: {
+                                self.error.text = "INCORRECT PASSWORD"
+                            })
+                        }
                     }
-                    else {
+                    if(msg == "User does not exist!"){
                         DispatchQueue.main.async(execute: {
-                            self.error.text = "INCORRECT PASSWORD"
+                            self.error.text = "USER DOES NOT EXIST!"
                         })
                     }
-                    
                 }
             } catch {
                 print(error)
@@ -101,30 +126,37 @@ class LoginController: UIViewController {
         task.resume()
         //Prints HTTP POST data in console
         print(postParameters)
-    
+        print(pass)
+        if(pass==true){
+            success()
+        }
+        
     }
-    
+    func success() {
+        performSegue(withIdentifier: "unwindSegueToMap", sender: self)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-@IBAction func unwindToLogin(segue:UIStoryboardSegue) { }
+    @IBAction func unwindToLogin(segue:UIStoryboardSegue) { }
+    
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

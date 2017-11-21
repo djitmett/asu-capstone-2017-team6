@@ -77,6 +77,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     @IBOutlet weak var retrievedImg: UIImageView!
     
+    //redirect from login
+    @IBAction func unwindSegueToMap(segue:UIStoryboardSegue) { }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
