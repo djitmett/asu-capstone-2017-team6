@@ -88,7 +88,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
                         let db_password = data[5] as? String
                         
                         //If password matches with phonenumber
-                        if(db_password == password){
+                        print ("user entered" + password)
+                        print (db_password)
+                        if(db_password! == password){
                             DispatchQueue.main.async(execute: {
                                 self.error.text = "SUCCESS"
                             })
