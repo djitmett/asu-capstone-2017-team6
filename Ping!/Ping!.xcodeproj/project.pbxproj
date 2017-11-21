@@ -17,7 +17,9 @@
 		4B3283B61F995D0A00302E3E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B3283B41F995D0A00302E3E /* LaunchScreen.storyboard */; };
 		4B3283C11F995D0A00302E3E /* Ping_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283C01F995D0A00302E3E /* Ping_Tests.swift */; };
 		4B3283CC1F995D0A00302E3E /* Ping_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283CB1F995D0A00302E3E /* Ping_UITests.swift */; };
-		4B615DC51FBE2E6F006067F9 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B615DC41FBE2E6F006067F9 /* LoginController.swift */; };
+		4B615DC51FBE2E6F006067F9 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B615DC41FBE2E6F006067F9 /* SignUpController.swift */; };
+		4B7C1EE41FC37EA500DB1EFB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C1EE31FC37EA500DB1EFB /* LoginController.swift */; };
+		4B7C1EE61FC37F8000DB1EFB /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */; };
 		4BACA2CE1F996AAA00CD0C2E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BACA2CD1F996AAA00CD0C2E /* MapKit.framework */; };
 		600A43EAC697AFB1C532EDAC /* Pods_Ping_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FB190DE3BDC4F2207D7548D /* Pods_Ping_Tests.framework */; };
 		739FDF82C96A27599AEAE22F /* Pods_Ping_UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8A5E7166BABD62E7C817A9 /* Pods_Ping_UITests.framework */; };
@@ -84,7 +86,9 @@
 		4B3283C71F995D0A00302E3E /* Ping!UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ping!UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3283CB1F995D0A00302E3E /* Ping_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ping_UITests.swift; sourceTree = "<group>"; };
 		4B3283CD1F995D0A00302E3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4B615DC41FBE2E6F006067F9 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		4B615DC41FBE2E6F006067F9 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
+		4B7C1EE31FC37EA500DB1EFB /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		4BACA2CD1F996AAA00CD0C2E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		4BD4B86D1F99634C0094CCA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		7CCDF405989B0AB456670615 /* Pods_Ping_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ping_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -169,9 +173,11 @@
 				4B3283AB1F995D0A00302E3E /* AppDelegate.swift */,
 				4B3283AD1F995D0A00302E3E /* ViewController.swift */,
 				4B3283AF1F995D0A00302E3E /* Main.storyboard */,
+				4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */,
+				4B7C1EE31FC37EA500DB1EFB /* LoginController.swift */,
 				4B13FA4D1FBE4F6700282BAA /* User.swift */,
 				411933001FBFE8D600EBF885 /* TrkRequestViewController.swift */,
-				4B615DC41FBE2E6F006067F9 /* LoginController.swift */,
+				4B615DC41FBE2E6F006067F9 /* SignUpController.swift */,
 				4B3283B21F995D0A00302E3E /* Assets.xcassets */,
 				4B3283B41F995D0A00302E3E /* LaunchScreen.storyboard */,
 				4B3283B71F995D0A00302E3E /* Info.plist */,
@@ -601,10 +607,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B7C1EE61FC37F8000DB1EFB /* ProfileController.swift in Sources */,
 				411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */,
+				4B7C1EE41FC37EA500DB1EFB /* LoginController.swift in Sources */,
 				4B13FA4E1FBE4F6700282BAA /* User.swift in Sources */,
 				4B3283AE1F995D0A00302E3E /* ViewController.swift in Sources */,
-				4B615DC51FBE2E6F006067F9 /* LoginController.swift in Sources */,
+				4B615DC51FBE2E6F006067F9 /* SignUpController.swift in Sources */,
 				4B3283AC1F995D0A00302E3E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

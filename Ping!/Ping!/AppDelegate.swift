@@ -38,6 +38,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
         //   Will be used to reach the user at the most optimal time of day.
         // OneSignal.syncHashedEmail(userEmail)
         
+        
+        // Override point for customization after application launch.
+        print(UserDefaults.standard.dictionaryRepresentation())
+        let defaults = UserDefaults.standard
+        if let isUserLoggedIn = UserDefaults.standard.object(forKey: "isLogged"),
+            isUserLoggedIn is Bool {
+        let logged = (defaults.object(forKey: "isLogged") as? Bool)!
+        print (isUserLoggedIn)
+
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        window?.rootViewController = storyboard.instantiateViewController(withIdentifier: (logged ? "TabController" : "Login"))
+        window?.makeKeyAndVisible()
+        }
+
         return true
     }
     
