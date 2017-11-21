@@ -39,7 +39,7 @@ class ProfileController: UIViewController {
     let lastName = (defaults.object(forKey: "userLastName") as? String)!
     let phoneNumber = (defaults.object(forKey: "userPhone") as? String)!
    
-    self.userName.text = firstName + " " + lastName
+    self.userName.text = firstName + " "  + lastName
     self.userPhoneNumber.text = phoneNumber
         // Do any additional setup after loading the view.
     }

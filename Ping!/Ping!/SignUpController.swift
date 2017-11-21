@@ -13,7 +13,6 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     //MARK: Properties
     @IBOutlet weak var firstNameField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
-    //DO WE NEED A PHONE NUMBER FIELD IN THE DB?
     @IBOutlet weak var phonenumberField: UITextField!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -31,9 +30,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     var useravatar = "avatar.jpeg"
     var usertime = "test"
     
-    //Date/Time variables
 
-    
     @IBOutlet weak var signupButton: UIButton!
     
     //DATABASE PHP SCRIPT
@@ -106,7 +103,6 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     }
     
     
-    
     //Sign up button
     @IBAction func signupBtn(_ sender: Any) {
         
@@ -121,6 +117,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         email = emailField.text!
         password = passwordField.text!
         
+        //Store values in UserDefaults
         defaults.set(user_first_name, forKey: "userFirstName")
         defaults.set(user_last_name, forKey: "userLastName")
         defaults.set(phone, forKey: "userPhone")
@@ -149,9 +146,6 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         
         //setting the method to post
         request.httpMethod = "POST"
-        
-        //Other DB values
-
         
         //creating the post parameter by concatenating the keys and values from text field
         let postParameters = "user_fb_id= "+userfbid+"&user_type="+usertype+"&user_device_id="+user_device_id+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_phone="+phone+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;

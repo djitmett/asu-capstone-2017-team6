@@ -13,8 +13,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var phoneNumber: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var error: UILabel!
-    var pass = false
-    
+
+    //Define UserDefaults
     let defaults = UserDefaults.standard
     
     @IBAction func login(_ sender: Any) {
@@ -25,6 +25,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         phoneNumber.resignFirstResponder()
         password.resignFirstResponder()
         
+        //Call login function
         login_db(phone_number: userPhoneNumber!, password: userPassword!)
         
     }
@@ -43,8 +44,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         //setting the method to post
         request.httpMethod = "POST"
-        
-        //Other DB values
         
         
         //creating the post parameter by concatenating the keys and values from text field
@@ -77,7 +76,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     //getting the json response
                     msg = parseJSON["message"] as! String?
                     
-                    
                     //printing the response
                     //print(msg)
                     
@@ -87,15 +85,18 @@ class LoginController: UIViewController, UITextFieldDelegate {
                         //print(data)
                         let db_password = data[5] as? String
                         
-                        //If password matches with phonenumber
+                        //PASSWORD DEBUG
                         //print ("user entered" + password)
                         //print (db_password!)
+                        
+                        //If password matches DB password
                         if(db_password! == password){
                             DispatchQueue.main.async(execute: {
-                                self.error.text = "SUCCESS"
+                                self.error.text = ""
                             })
+                            //Parse data
                             let user_first_name = data[2] as? String
-                            let user_last_name = data[2] as? String
+                            let user_last_name = data[3] as? String
                             
                             //Set data store
                             let defaults = UserDefaults.standard
@@ -105,8 +106,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                             defaults.set(true, forKey: "isLogged")
                             defaults.synchronize()
                             
-                            //success
-                            
+                            //Once logged in transfer user to map view
                             DispatchQueue.main.async(execute: {
                                 //send to login page
                                 if let isUserLoggedIn = UserDefaults.standard.object(forKey: "isLogged"),
@@ -123,12 +123,14 @@ class LoginController: UIViewController, UITextFieldDelegate {
                             
                             
                         }
+                        //Password does not match phonenumber
                         else {
                             DispatchQueue.main.async(execute: {
                                 self.error.text = "INCORRECT PASSWORD"
                             })
                         }
                     }
+                    //Phonenumber does not exist in DB
                     if(msg == "User does not exist!"){
                         DispatchQueue.main.async(execute: {
                             self.error.text = "USER DOES NOT EXIST!"
@@ -146,6 +148,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
         task.resume()
         //Prints HTTP POST data in console
         //print(postParameters)
+        
+        //Clear fields after entry
+        self.phoneNumber.text = ""
+        self.password.text = ""
         
     }
     
