@@ -27,17 +27,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         login_db(phone_number: userPhoneNumber!, password: userPassword!)
         
-        //send to login page
-        if let isUserLoggedIn = UserDefaults.standard.object(forKey: "isLogged"),
-            isUserLoggedIn is Bool {
-            let logged = (defaults.object(forKey: "isLogged") as? Bool)!
-            
-            if(logged){
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
-                self.present(nextViewController, animated:true, completion:nil)
-            }
-        }
     }
     
     //Validate login with database
@@ -118,6 +107,20 @@ class LoginController: UIViewController, UITextFieldDelegate {
                             
                             //success
                             
+                            DispatchQueue.main.async(execute: {
+                                //send to login page
+                                if let isUserLoggedIn = UserDefaults.standard.object(forKey: "isLogged"),
+                                    isUserLoggedIn is Bool {
+                                    let logged = (defaults.object(forKey: "isLogged") as? Bool)!
+                                    
+                                    if(logged){
+                                        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
+                                        self.present(nextViewController, animated:true, completion:nil)
+                                    }
+                                }
+                            })
+                            
                             
                         }
                         else {
@@ -143,7 +146,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         task.resume()
         //Prints HTTP POST data in console
         print(postParameters)
-        
         
     }
     
