@@ -45,7 +45,7 @@ class TrkRequestViewController: UIViewController {
             //Shows notification bage on application
             "ios_badgeType": "Increase",
             "ios_badgeCount": 1,
-            "buttons": [["id": "refuse-button", "text":"Refuse"],["id": "accept-button", "text":"Accept" ]]
+            "buttons": [["id": "reject-button", "text":"Reject"],["id": "accept-button", "text":"Accept" ]]
             ] as [String : Any]
         
         //Send request and receive confirmation

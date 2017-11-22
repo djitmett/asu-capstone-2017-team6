@@ -23,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
             print("Received Notification: \(notification!.payload.notificationID)")
             //print("launchURL = \(notification?.payload.launchURL)")
             print("content_available = \(String(describing: notification?.payload.contentAvailable))")
+            
+            
         }
         
         //Opening notification
@@ -39,6 +41,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
                 //Phone from the sent JSON string
                 let phone_number = additionalData["Phone"]!
                 print("Phone number from push notification: ", phone_number)
+                
+                //debug action in notification: prints when accept or reject is pressed
+                if let actionSelected = payload?.actionButtons {
+                    print("actionSelected = \(actionSelected)")
+                }
+                
+                //determines which notification button is pressed
+                if let actionID = result?.action.actionID {
+                    print("here now")
+                    print("actionID = \(actionID)")
+                    //if accept-button is pressed
+                    if actionID == "accept-button"{
+                        print("accept-id pressed!!!!")
+                    }
+                    //if reject-button is pressed
+                    if actionID == "reject-button" {
+                        print("reject-id pressed!!!!")
+                    }
+                }
+            
             }
         }
         
