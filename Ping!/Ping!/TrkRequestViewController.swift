@@ -9,7 +9,9 @@
 import UIKit
 import OneSignal
 
-class TrkRequestViewController: UIViewController {
+
+
+class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
     /**
      - Text field needs to be implemented & include the 'hide away keyboard'
@@ -19,8 +21,9 @@ class TrkRequestViewController: UIViewController {
      - if it does, proceed by grabbing their assigned player_id and store their phonenumber
      
      **/
-    
+    @IBOutlet weak var phoneNumber: UITextField!
     @IBAction func sendTracking(_ sender: Any) {
+        
         
         //USER DEFAULTS FOR ONESIGNAL ID
         let defaults = UserDefaults.standard
@@ -28,6 +31,13 @@ class TrkRequestViewController: UIViewController {
         let player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
         let userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
         let phone_number = (defaults.object(forKey: "userPhone") as? String)!
+        
+        // Validate phone number exists in DB
+        if (validPhoneNumber(phoneNumber: phoneNumber.text!)){
+            print("Valid Number")
+        } else {
+            print("Invalid number")
+        }
         
         //All OneSignal content is in JSON format
         let data = [
@@ -58,7 +68,7 @@ class TrkRequestViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        phoneNumber.delegate = self
         
         // Do any additional setup after loading the view.
     }
@@ -68,6 +78,14 @@ class TrkRequestViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Hide the keyboard.
+        textField.resignFirstResponder()
+        return true
+    }
     
+    func validPhoneNumber(phoneNumber: String) -> Bool {
+        return false
+    }
     
 }
