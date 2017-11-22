@@ -21,7 +21,7 @@ class TrkRequestViewController: UIViewController {
         player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
         
         //test notification
-        OneSignal.postNotification(["contents": ["en": "Test Message"], "include_player_ids": [player_id]])
+        OneSignal.postNotification(["contents": ["en": "Is this the message"], "include_player_ids": [player_id]])
         // Do any additional setup after loading the view.
     }
 

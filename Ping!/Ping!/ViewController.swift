@@ -13,19 +13,20 @@ import OneSignal
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
-    let appDelegate = UIApplication.shared.delegate! as! AppDelegate
-   
-    var player_id = ""
-    
     //MAP DISPLAY
     @IBOutlet var longLabel: UILabel!
     @IBOutlet var latLabel: UILabel!
-    @IBOutlet var mapDisplay: MKMapView!
+    @IBOutlet weak var mapDisplay: MKMapView!
     @IBOutlet var requestLabel: UILabel!
     @IBOutlet var phoneNumField: UITextField!
     @IBOutlet var requestBtn: UIButton!
     
     let manager = CLLocationManager()
+    
+    let appDelegate = UIApplication.shared.delegate! as! AppDelegate
+   
+    var player_id = ""
+
     var lastUpdateTime = DispatchTime.now()
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -34,16 +35,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let location = locations[0]
 
         let span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
-        
-        
-        mapDisplay.showAnnotations(mapDisplay.annotations, animated: true)
-        
         let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
-        
         let region:MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
-        mapDisplay.setRegion(region, animated:true)
+        
+        //mapDisplay.setRegion(region, animated:true)
         
         mapDisplay.centerCoordinate = location.coordinate
+        
+        mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)
+        
+
+        
+
+        
+        
+
         
         //Prints user's speed to console
         //print(location.speed)
