@@ -28,12 +28,13 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         //USER DEFAULTS FOR ONESIGNAL ID
         let defaults = UserDefaults.standard
         //CURRENTLY GRABS YOUR INFORMATION TO SEND THE PUSH NOTIFICATION TO YOU
-        let player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
+        //let player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
         let userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
         let phone_number = (defaults.object(forKey: "userPhone") as? String)!
         
         // Validate phone number exists in DB
-        if (validPhoneNumber(phoneNumber: phoneNumber.text!)){
+        let player_id = getPlayerIdFromPhoneNumber(phoneNumber: phoneNumber.text!)
+        if (player_id != "INVALID"){
             print("Valid Number")
         } else {
             print("Invalid number")
@@ -44,6 +45,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
             "Phone" : phone_number,
             ]
         let message = userFirstName + " would like to share their location with you."
+        print("Player_Id=", player_id)
         let notificationContent = [
             "include_player_ids": [player_id],
             "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
@@ -85,8 +87,51 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    func validPhoneNumber(phoneNumber: String) -> Bool {
-        return false
+    func getPlayerIdFromPhoneNumber(phoneNumber: String) -> String {
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
+        let requestURL = NSURL(string: URL_SIGNUP)
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        request.httpMethod = "POST"
+        let postParameters = "user_phone="+phoneNumber;
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        var player_Id:String = ""
+        //creating a task to send the post request
+        let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: {(data, response, error) -> Void in
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            //parsing the response
+            do {
+                print("Got HERE!")
+                //converting resonse to NSDictionary
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                //parsing the json
+                if let parseJSON = myJSON {
+                    //creating a string
+                    var msg : String!
+                    var data : NSArray!
+                    //getting the json response
+                    msg = parseJSON["message"] as! String?
+                    if(msg == "Operation successfully!"){
+                        data = parseJSON["data"] as! NSArray?
+                        DispatchQueue.main.async(execute: {
+                            player_Id = (data[1] as? String)!
+                        })
+                    } else if(msg == "User does not exist!"){
+                        DispatchQueue.main.async(execute: {
+                            player_Id = "INVALID"
+                        })
+                    }
+                }
+            } catch {
+                print(error)
+            }
+            
+        })
+        //executing the task
+        task.resume()
+        print("Returning=", player_Id)
+        return player_Id
     }
-    
 }
