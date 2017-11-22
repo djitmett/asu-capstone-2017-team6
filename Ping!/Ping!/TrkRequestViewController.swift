@@ -44,7 +44,8 @@ class TrkRequestViewController: UIViewController {
             //"ios_attachments": ["id" : "https://cdn.pixabay.com/photo/2017/01/16/15/17/hot-air-balloons-1984308_1280.jpg"],
             //Shows notification bage on application
             "ios_badgeType": "Increase",
-            "ios_badgeCount": 1
+            "ios_badgeCount": 1,
+            "buttons": [["id": "refuse-button", "text":"Refuse"],["id": "accept-button", "text":"Accept" ]]
             ] as [String : Any]
         
         //Send request and receive confirmation
