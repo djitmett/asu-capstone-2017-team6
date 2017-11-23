@@ -22,22 +22,32 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
      
      **/
     @IBOutlet weak var phoneNumber: UITextField!
+    
     @IBAction func sendTracking(_ sender: Any) {
         
         
         //USER DEFAULTS FOR ONESIGNAL ID
-        let defaults = UserDefaults.standard
+        
         //CURRENTLY GRABS YOUR INFORMATION TO SEND THE PUSH NOTIFICATION TO YOU
         //let player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
+        var player_ID = ""
+        // Validate phone number exists in DB
+        //let player_id = getPlayerIdFromPhoneNumber_test(phoneNumber: phoneNumber.text!)
+        
+        getPlayerIdFromPhoneNumber_test(phoneNumber: phoneNumber.text!){(value) in
+            player_ID = value
+            self.sendTracking2(player_id: player_ID)
+        }
+    }
+    
+    func sendTracking2(player_id:String){
+        let defaults = UserDefaults.standard
         let userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
         let phone_number = (defaults.object(forKey: "userPhone") as? String)!
-        
-        // Validate phone number exists in DB
-        let player_id = getPlayerIdFromPhoneNumber(phoneNumber: phoneNumber.text!)
         if (player_id != "INVALID"){
-            print("Valid Number")
+            //print("Valid Number")
         } else {
-            print("Invalid number")
+            //print("Invalid number")
         }
         
         //All OneSignal content is in JSON format
@@ -45,7 +55,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
             "Phone" : phone_number,
             ]
         let message = userFirstName + " would like to share their location with you."
-        print("Player_Id=", player_id)
+        //print("Player_Id=", player_id)
         let notificationContent = [
             "include_player_ids": [player_id],
             "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
@@ -62,11 +72,10 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         
         //Send request and receive confirmation
         OneSignal.postNotification(notificationContent, onSuccess: { result in
-            print("result = \(result!)")
+            //print("result = \(result!)")
         }, onFailure: {error in
             print("error = \(error!)")
         })
-        
     }
     
     override func viewDidLoad() {
@@ -87,51 +96,48 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    func getPlayerIdFromPhoneNumber(phoneNumber: String) -> String {
-        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
-        let requestURL = NSURL(string: URL_SIGNUP)
-        let request = NSMutableURLRequest(url: requestURL! as URL)
-        request.httpMethod = "POST"
+    func getPlayerIdFromPhoneNumber_test(phoneNumber: String, completion: @escaping (_ retPlayerID: String) -> ()) {
+        let requestURL = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
         let postParameters = "user_phone="+phoneNumber;
+        var player_ID: String = ""
+        var request = URLRequest(url: URL(string: requestURL+postParameters)!)
+        request.httpMethod = "POST"
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
-        var player_Id:String = ""
-        //creating a task to send the post request
-        let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: {(data, response, error) -> Void in
-            if error != nil{
-                print("error is \(String(describing: error))")
-                return;
-            }
-            //parsing the response
-            do {
-                print("Got HERE!")
-                //converting resonse to NSDictionary
-                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
-                //parsing the json
-                if let parseJSON = myJSON {
-                    //creating a string
-                    var msg : String!
-                    var data : NSArray!
-                    //getting the json response
-                    msg = parseJSON["message"] as! String?
-                    if(msg == "Operation successfully!"){
-                        data = parseJSON["data"] as! NSArray?
-                        DispatchQueue.main.async(execute: {
-                            player_Id = (data[1] as? String)!
-                        })
-                    } else if(msg == "User does not exist!"){
-                        DispatchQueue.main.async(execute: {
-                            player_Id = "INVALID"
-                        })
+        let urlSession = URLSession.shared
+        let task = urlSession.dataTask(with: request, completionHandler:{
+            (data, response, error) -> Void in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print (error)
+                    return
+                }
+                if let data = data {
+                    do {
+                        //converting resonse to NSDictionary
+                        let myJSON =  try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSDictionary
+                        //parsing the json
+                        if let parseJSON = myJSON {
+                            //creating a string
+                            var msg : String!
+                            var data : NSArray!
+                            //getting the json response
+                            msg = parseJSON["message"] as! String?
+                            print("MESSAGE=",msg)
+                            if(msg == "Operation successfully!"){
+                                data = parseJSON["data"] as! NSArray?
+                                player_ID = (data[1] as? String)!
+                            } else if(msg == "User does not exist!"){
+                                player_ID = "INVALID"
+                            }
+                        }
+                        completion(player_ID)
+                    } catch {
+                        print(error)
                     }
                 }
-            } catch {
-                print(error)
             }
-            
         })
-        //executing the task
         task.resume()
-        print("Returning=", player_Id)
-        return player_Id
     }
+    
 }
