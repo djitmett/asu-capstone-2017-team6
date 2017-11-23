@@ -19,8 +19,6 @@ class ProfileController: UIViewController {
 
     @IBAction func logout(_ sender: Any) {
         
-        //Navigate user to login page
-        performSegue(withIdentifier: "unwindSegueToLogin", sender: self)
 
         //Logging user out
         defaults.set(false, forKey: "isLogged")
@@ -30,6 +28,10 @@ class ProfileController: UIViewController {
         print("Resetting username-start")
         defaults.synchronize()
         print("Resetting username-end")
+        
+        //Navigate user to login page
+        performSegue(withIdentifier: "unwindSegueToLogin", sender: self)
+
 
     }
     override func viewDidLoad() {

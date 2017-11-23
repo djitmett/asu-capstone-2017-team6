@@ -82,14 +82,52 @@
                     <view key="view" contentMode="scaleToFill" id="8c0-wF-fsu">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send a request for someone to track you." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cN8-zn-4zY">
+                                <rect key="frame" x="42" y="159" width="332" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="phonenumber" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5N3-xG-3BA">
+                                <rect key="frame" x="99" y="210" width="217" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="sendTracking:" destination="FK0-ne-th7" eventType="editingDidEnd" id="Nlt-Ik-aus"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vKm-hS-Nq4">
+                                <rect key="frame" x="99" y="285" width="217" height="30"/>
+                                <state key="normal" title="Send Request"/>
+                                <connections>
+                                    <action selector="sendTracking:" destination="FK0-ne-th7" eventType="touchUpInside" id="9id-cP-Y7c"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="5N3-xG-3BA" firstAttribute="leading" secondItem="vKm-hS-Nq4" secondAttribute="leading" id="8CC-g8-bHI"/>
+                            <constraint firstItem="cN8-zn-4zY" firstAttribute="top" secondItem="xZj-ei-cG5" secondAttribute="top" constant="139" id="FXG-FV-OP1"/>
+                            <constraint firstItem="5N3-xG-3BA" firstAttribute="top" secondItem="cN8-zn-4zY" secondAttribute="bottom" constant="30" id="PIZ-Jh-u64"/>
+                            <constraint firstItem="5N3-xG-3BA" firstAttribute="centerX" secondItem="8c0-wF-fsu" secondAttribute="centerX" id="Q5p-Tq-Epi"/>
+                            <constraint firstItem="5N3-xG-3BA" firstAttribute="leading" secondItem="xZj-ei-cG5" secondAttribute="leading" constant="99" id="R2P-EC-Cfq"/>
+                            <constraint firstItem="vKm-hS-Nq4" firstAttribute="top" secondItem="5N3-xG-3BA" secondAttribute="bottom" constant="45" id="guq-9Y-j8k"/>
+                            <constraint firstItem="5N3-xG-3BA" firstAttribute="trailing" secondItem="vKm-hS-Nq4" secondAttribute="trailing" id="oUy-FE-kaE"/>
+                            <constraint firstItem="cN8-zn-4zY" firstAttribute="centerX" secondItem="5N3-xG-3BA" secondAttribute="centerX" id="vDx-04-Hgp"/>
+                            <constraint firstItem="cN8-zn-4zY" firstAttribute="leading" secondItem="xZj-ei-cG5" secondAttribute="leading" constant="42" id="zhk-0T-gMf"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="xZj-ei-cG5"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Tracking Request" id="70E-y8-gDQ"/>
+                    <connections>
+                        <outlet property="phoneNumber" destination="5N3-xG-3BA" id="tXF-1c-4mk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="upX-vo-26S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1380" y="902"/>
+            <point key="canvasLocation" x="1378.2608695652175" y="901.63043478260875"/>
         </scene>
         <!--Profile-->
         <scene sceneID="BIA-zF-XVP">
