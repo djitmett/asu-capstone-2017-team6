@@ -82,6 +82,8 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         phoneNumber.delegate = self
         
+        //test notification
+        //OneSignal.postNotification(["contents": ["en": "Is this the message"], "include_player_ids": [player_id]])
         // Do any additional setup after loading the view.
     }
     
