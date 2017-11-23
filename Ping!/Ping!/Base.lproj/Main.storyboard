@@ -94,6 +94,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="sendTracking:" destination="FK0-ne-th7" eventType="editingDidEnd" id="Nlt-Ik-aus"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vKm-hS-Nq4">
                                 <rect key="frame" x="99" y="285" width="217" height="30"/>
@@ -118,6 +121,9 @@
                         <viewLayoutGuide key="safeArea" id="xZj-ei-cG5"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Tracking Request" id="70E-y8-gDQ"/>
+                    <connections>
+                        <outlet property="phoneNumber" destination="5N3-xG-3BA" id="tXF-1c-4mk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="upX-vo-26S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

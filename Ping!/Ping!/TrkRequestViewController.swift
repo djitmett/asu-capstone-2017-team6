@@ -9,7 +9,9 @@
 import UIKit
 import OneSignal
 
-class TrkRequestViewController: UIViewController {
+
+
+class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
     /**
      - Text field needs to be implemented & include the 'hide away keyboard'
@@ -19,21 +21,41 @@ class TrkRequestViewController: UIViewController {
      - if it does, proceed by grabbing their assigned player_id and store their phonenumber
      
      **/
+    @IBOutlet weak var phoneNumber: UITextField!
     
     @IBAction func sendTracking(_ sender: Any) {
         
+        
         //USER DEFAULTS FOR ONESIGNAL ID
-        let defaults = UserDefaults.standard
+        
         //CURRENTLY GRABS YOUR INFORMATION TO SEND THE PUSH NOTIFICATION TO YOU
-        let player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
+        //let player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
+        var player_ID = ""
+        // Validate phone number exists in DB
+        //let player_id = getPlayerIdFromPhoneNumber_test(phoneNumber: phoneNumber.text!)
+        
+        getPlayerIdFromPhoneNumber_test(phoneNumber: phoneNumber.text!){(value) in
+            player_ID = value
+            self.sendTracking2(player_id: player_ID)
+        }
+    }
+    
+    func sendTracking2(player_id:String){
+        let defaults = UserDefaults.standard
         let userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
         let phone_number = (defaults.object(forKey: "userPhone") as? String)!
+        if (player_id != "INVALID"){
+            //print("Valid Number")
+        } else {
+            //print("Invalid number")
+        }
         
         //All OneSignal content is in JSON format
         let data = [
             "Phone" : phone_number,
             ]
         let message = userFirstName + " would like to share their location with you."
+        //print("Player_Id=", player_id)
         let notificationContent = [
             "include_player_ids": [player_id],
             "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
@@ -50,16 +72,15 @@ class TrkRequestViewController: UIViewController {
         
         //Send request and receive confirmation
         OneSignal.postNotification(notificationContent, onSuccess: { result in
-            print("result = \(result!)")
+            //print("result = \(result!)")
         }, onFailure: {error in
             print("error = \(error!)")
         })
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        phoneNumber.delegate = self
         
         // Do any additional setup after loading the view.
     }
@@ -69,6 +90,54 @@ class TrkRequestViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Hide the keyboard.
+        textField.resignFirstResponder()
+        return true
+    }
     
+    func getPlayerIdFromPhoneNumber_test(phoneNumber: String, completion: @escaping (_ retPlayerID: String) -> ()) {
+        let requestURL = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
+        let postParameters = "user_phone="+phoneNumber;
+        var player_ID: String = ""
+        var request = URLRequest(url: URL(string: requestURL+postParameters)!)
+        request.httpMethod = "POST"
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        let urlSession = URLSession.shared
+        let task = urlSession.dataTask(with: request, completionHandler:{
+            (data, response, error) -> Void in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print (error)
+                    return
+                }
+                if let data = data {
+                    do {
+                        //converting resonse to NSDictionary
+                        let myJSON =  try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSDictionary
+                        //parsing the json
+                        if let parseJSON = myJSON {
+                            //creating a string
+                            var msg : String!
+                            var data : NSArray!
+                            //getting the json response
+                            msg = parseJSON["message"] as! String?
+                            print("MESSAGE=",msg)
+                            if(msg == "Operation successfully!"){
+                                data = parseJSON["data"] as! NSArray?
+                                player_ID = (data[1] as? String)!
+                            } else if(msg == "User does not exist!"){
+                                player_ID = "INVALID"
+                            }
+                        }
+                        completion(player_ID)
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        })
+        task.resume()
+    }
     
 }
