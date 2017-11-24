@@ -178,12 +178,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // If currently tracking a user, show their location, otherwise show user's current location on map.
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
+            self.mapDisplay.showsUserLocation=false
             let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
             getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
                 self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: lastUpdate)
             }
         } else {
+            // Show current user's current location
+            let currLoc = manager.location
             
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .medium
+            let timeStamp = Date()
+            
+            self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
         }
     }
     

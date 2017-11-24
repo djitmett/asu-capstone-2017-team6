@@ -40,6 +40,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
         let userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
@@ -76,6 +77,15 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         }, onFailure: {error in
             print("error = \(error!)")
         })
+    }
+    
+    @IBAction func clearTracking(_ sender: Any) {
+        print("@ClearTracking")
+        let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "currentTrackedUser") != nil){
+            defaults.removeObject(forKey: "currentTrackedUser")
+            print("Cleared tracked user")
+        }
     }
     
     override func viewDidLoad() {

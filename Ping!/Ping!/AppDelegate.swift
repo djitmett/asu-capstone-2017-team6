@@ -56,21 +56,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
                         //print("accept-id pressed!!!!")
                         // TODO: don't need to make this DB call. Remove!!
                         // This gets userID from phone but we only need phone to get location
-                        self.getUserIdFromPhoneNumber(phoneNumber: phone_number){(value) in
-                            if (value >= 0){
-                                print("Start Tracking User_ID=", value)
-                                let defaults = UserDefaults.standard
-                                defaults.set(phone_number, forKey: "currentTrackedUser") // was user_id, now phone_number
-                                // Need to switch to map view here
-                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
-                                self.window = UIWindow(frame: UIScreen.main.bounds)
-                                self.window?.rootViewController = nextViewController
-                                self.window?.makeKeyAndVisible()
-                            } else {
-                                print ("Could not get userID for phone_number=", phone_number)
-                            }
-                        }
+                        let defaults = UserDefaults.standard
+                        defaults.set(phone_number, forKey: "currentTrackedUser") // was user_id, now phone_number
+                        // Need to switch to map view here
+                        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
+                        self.window = UIWindow(frame: UIScreen.main.bounds)
+                        self.window?.rootViewController = nextViewController
+                        self.window?.makeKeyAndVisible()
+                        
+//                        self.getUserIdFromPhoneNumber(phoneNumber: phone_number){(value) in
+//                            if (value >= 0){
+//                                print("Start Tracking User_ID=", value)
+//
+//
+//                            } else {
+//                                print ("Could not get userID for phone_number=", phone_number)
+//                            }
+//                        }
                     }
                     //if reject-button is pressed
                     if actionID == "reject-button" {
