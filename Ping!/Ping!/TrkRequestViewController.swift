@@ -34,11 +34,12 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         // Validate phone number exists in DB
         //let player_id = getPlayerIdFromPhoneNumber_test(phoneNumber: phoneNumber.text!)
         
-        getPlayerIdFromPhoneNumber_test(phoneNumber: phoneNumber.text!){(value) in
+        getPlayerIdFromPhoneNumber(phoneNumber: phoneNumber.text!){(value) in
             player_ID = value
             self.sendTracking2(player_id: player_ID)
         }
     }
+    
     
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
@@ -55,7 +56,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
             "Phone" : phone_number,
             ]
         let message = userFirstName + " would like to share their location with you."
-        //print("Player_Id=", player_id)
+        print("Player_Id=", player_id)
         let notificationContent = [
             "include_player_ids": [player_id],
             "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
@@ -72,10 +73,19 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         
         //Send request and receive confirmation
         OneSignal.postNotification(notificationContent, onSuccess: { result in
-            //print("result = \(result!)")
+            print("result = \(result!)")
         }, onFailure: {error in
             print("error = \(error!)")
         })
+    }
+    
+    @IBAction func clearTracking(_ sender: Any) {
+        print("@ClearTracking")
+        let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "currentTrackedUser") != nil){
+            defaults.removeObject(forKey: "currentTrackedUser")
+            print("Cleared tracked user")
+        }
     }
     
     override func viewDidLoad() {
@@ -98,7 +108,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    func getPlayerIdFromPhoneNumber_test(phoneNumber: String, completion: @escaping (_ retPlayerID: String) -> ()) {
+    func getPlayerIdFromPhoneNumber(phoneNumber: String, completion: @escaping (_ retPlayerID: String) -> ()) {
         let requestURL = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
         let postParameters = "user_phone="+phoneNumber;
         var player_ID: String = ""
@@ -124,7 +134,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
                             var data : NSArray!
                             //getting the json response
                             msg = parseJSON["message"] as! String?
-                            print("MESSAGE=",msg)
+                            //print("MESSAGE=",msg)
                             if(msg == "Operation successfully!"){
                                 data = parseJSON["data"] as! NSArray?
                                 player_ID = (data[1] as? String)!
