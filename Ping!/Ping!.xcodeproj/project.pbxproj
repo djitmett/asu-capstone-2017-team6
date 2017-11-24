@@ -14,7 +14,6 @@
 		4B3283AE1F995D0A00302E3E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AD1F995D0A00302E3E /* ViewController.swift */; };
 		4B3283B11F995D0A00302E3E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B3283AF1F995D0A00302E3E /* Main.storyboard */; };
 		4B3283B31F995D0A00302E3E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3283B21F995D0A00302E3E /* Assets.xcassets */; };
-		4B3283B61F995D0A00302E3E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B3283B41F995D0A00302E3E /* LaunchScreen.storyboard */; };
 		4B3283C11F995D0A00302E3E /* Ping_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283C01F995D0A00302E3E /* Ping_Tests.swift */; };
 		4B3283CC1F995D0A00302E3E /* Ping_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283CB1F995D0A00302E3E /* Ping_UITests.swift */; };
 		4B615DC51FBE2E6F006067F9 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B615DC41FBE2E6F006067F9 /* SignUpController.swift */; };
@@ -78,7 +77,6 @@
 		4B3283AD1F995D0A00302E3E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4B3283B01F995D0A00302E3E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4B3283B21F995D0A00302E3E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4B3283B51F995D0A00302E3E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4B3283B71F995D0A00302E3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4B3283BC1F995D0A00302E3E /* Ping!Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ping!Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3283C01F995D0A00302E3E /* Ping_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ping_Tests.swift; sourceTree = "<group>"; };
@@ -179,7 +177,6 @@
 				411933001FBFE8D600EBF885 /* TrkRequestViewController.swift */,
 				4B615DC41FBE2E6F006067F9 /* SignUpController.swift */,
 				4B3283B21F995D0A00302E3E /* Assets.xcassets */,
-				4B3283B41F995D0A00302E3E /* LaunchScreen.storyboard */,
 				4B3283B71F995D0A00302E3E /* Info.plist */,
 			);
 			path = "Ping!";
@@ -393,7 +390,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B3283B61F995D0A00302E3E /* LaunchScreen.storyboard in Resources */,
 				4B3283B31F995D0A00302E3E /* Assets.xcassets in Resources */,
 				4B3283B11F995D0A00302E3E /* Main.storyboard in Resources */,
 			);
@@ -668,14 +664,6 @@
 				4B3283B01F995D0A00302E3E /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		4B3283B41F995D0A00302E3E /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4B3283B51F995D0A00302E3E /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
