@@ -22,6 +22,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var phoneNumField: UITextField!
     @IBOutlet var requestBtn: UIButton!
     
+    var mapUpdateTimer: Timer!
+    
     let manager = CLLocationManager()
     
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
@@ -65,15 +67,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 updateUserLocation(userPhone:userPhoneNumber,latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
                 lastUpdateTime = DispatchTime.now()
             }
-            start = lastUpdateTime2
-            end = DispatchTime.now()
-            nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-            elapsedTime = Double(nanoTime)/1_000_000_000
-            // ToDo: create a timer to update map and remove from this function
-            if (elapsedTime > 5){
-                self.updateMap()
-                lastUpdateTime2 = DispatchTime.now()
-            }
+//            start = lastUpdateTime2
+//            end = DispatchTime.now()
+//            nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+//            elapsedTime = Double(nanoTime)/1_000_000_000
+//            // ToDo: create a timer to update map and remove from this function
+//            if (elapsedTime > 5){
+//                self.updateMap()
+//                lastUpdateTime2 = DispatchTime.now()
+//            }
             
             //Lat Label
             //self.latLabel.text = String(location.coordinate.latitude)
@@ -120,6 +122,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
              retrievedImg.image = UIImage(data: imgData as Data)
         }
+        
+        mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
         
     }
     
@@ -175,8 +179,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //print(postParameters)
     }
     
-    func updateMap(){
+    @objc func updateMap(){
         // If currently tracking a user, show their location, otherwise show user's current location on map.
+        print("update map start")
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
             self.mapDisplay.showsUserLocation=false
