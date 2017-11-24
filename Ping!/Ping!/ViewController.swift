@@ -86,6 +86,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             //print(location.coordinate.latitude)
             //print(location.coordinate.longitude)
             
+            
         } else {
             print("Could not get userPhone")
         }
