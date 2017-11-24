@@ -11,7 +11,35 @@ import MapKit
 import CoreLocation
 import OneSignal
 
+//Loading extension
+extension UIViewController {
+    class func displaySpinner(onView : UIView) -> UIView {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        return spinnerView
+    }
+    
+    class func removeSpinner(spinner :UIView) {
+        DispatchQueue.main.async {
+            spinner.removeFromSuperview()
+        }
+    }
+}
+
+
 class ViewController: UIViewController, CLLocationManagerDelegate {
+    
+    //Spinner view variable
+    var sv : UIView!
     
     //MAP DISPLAY
     @IBOutlet var line1Label: UILabel!
@@ -23,13 +51,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var requestBtn: UIButton!
     
     var mapUpdateTimer: Timer!
+    var mapLoadTimer: Timer!
     
     let manager = CLLocationManager()
     
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
-   
+    
     var player_id = ""
-
+    
     var lastUpdateTime = DispatchTime.now()
     var lastUpdateTime2 = DispatchTime.now()
     
@@ -37,7 +66,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         //Get most recent location
         let location = locations[0]
-
+        
         //let span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
         //let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
         //let region:MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
@@ -67,21 +96,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 updateUserLocation(userPhone:userPhoneNumber,latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
                 lastUpdateTime = DispatchTime.now()
             }
-//            start = lastUpdateTime2
-//            end = DispatchTime.now()
-//            nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-//            elapsedTime = Double(nanoTime)/1_000_000_000
-//            // ToDo: create a timer to update map and remove from this function
-//            if (elapsedTime > 5){
-//                self.updateMap()
-//                lastUpdateTime2 = DispatchTime.now()
-//            }
+            //            start = lastUpdateTime2
+            //            end = DispatchTime.now()
+            //            nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+            //            elapsedTime = Double(nanoTime)/1_000_000_000
+            //            // ToDo: create a timer to update map and remove from this function
+            //            if (elapsedTime > 5){
+            //                self.updateMap()
+            //                lastUpdateTime2 = DispatchTime.now()
+            //            }
             
             //Lat Label
             //self.latLabel.text = String(location.coordinate.latitude)
             //Long Label
             //self.longLabel.text = String(location.coordinate.longitude)
-           
+            
             //Display traffic colors on map
             //mapDisplay.showsTraffic=true
             
@@ -92,7 +121,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         } else {
             print("Could not get userPhone")
         }
-
+        
     }
     @IBOutlet weak var retrievedImg: UIImageView!
     
@@ -101,6 +130,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Create spinner view
+        sv = UIViewController.displaySpinner(onView: self.view)
         
         //Map
         manager.delegate = self
@@ -120,8 +152,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         //Avatar image
         if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
-             retrievedImg.image = UIImage(data: imgData as Data)
+            retrievedImg.image = UIImage(data: imgData as Data)
         }
+        
         
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
         
@@ -202,6 +235,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    
+    
     func updateMap2(phone_number: String, latitude: Double, longitude: Double, locUpdate:String){
         
         print("LAT=",latitude," LONG=", longitude, " @", locUpdate)
@@ -228,6 +263,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let timeStamp = Date()
         self.line2Label.text = String(format: "Map updated @ %@", dateFormatter.string(from: timeStamp))
         self.line3Label.text = "User loc updated @ " + locUpdate
+        
+        //Remove spinner view after labels have been updated
+        UIViewController.removeSpinner(spinner: sv)
+        
+        
     }
     
     func getLocationFromPhone(phone_number: String, completion: @escaping (_ trackLat: Double, _ trackLong: Double, _ lastUpdate: String) -> ()) {
