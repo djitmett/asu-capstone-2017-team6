@@ -29,10 +29,27 @@ class ProfileController: UIViewController {
         defaults.synchronize()
         print("Resetting username-end")
         
+        //Alert on attempted logout
+        let logoutAlert = UIAlertController(title: "Are you sure you want to logout?", message: "All data will be lost.", preferredStyle: UIAlertControllerStyle.alert)
+        
+        logoutAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+            //Navigate user to login page
+            self.unwind()
+        }))
+        
+        logoutAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+            //No cancel logic needed
+        }))
+        
+        present(logoutAlert, animated: true, completion: nil)
+        
+
+    }
+    
+    //Function call to unwind page views
+    func unwind() {
         //Navigate user to login page
         performSegue(withIdentifier: "unwindSegueToLogin", sender: self)
-
-
     }
     override func viewDidLoad() {
         super.viewDidLoad()
