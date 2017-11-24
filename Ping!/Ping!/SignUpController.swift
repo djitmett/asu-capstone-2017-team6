@@ -177,7 +177,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
                     msg = parseJSON["message"] as! String?
                     
                     //printing the response
-                    print(msg)
+                    //print(msg)
                     
                     
                 }
@@ -190,7 +190,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
-        print(postParameters)
+        //print(postParameters)
     }
     
     override func viewDidLoad() {

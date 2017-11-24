@@ -34,7 +34,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         // Validate phone number exists in DB
         //let player_id = getPlayerIdFromPhoneNumber_test(phoneNumber: phoneNumber.text!)
         
-        getPlayerIdFromPhoneNumber_test(phoneNumber: phoneNumber.text!){(value) in
+        getPlayerIdFromPhoneNumber(phoneNumber: phoneNumber.text!){(value) in
             player_ID = value
             self.sendTracking2(player_id: player_ID)
         }
@@ -98,7 +98,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    func getPlayerIdFromPhoneNumber_test(phoneNumber: String, completion: @escaping (_ retPlayerID: String) -> ()) {
+    func getPlayerIdFromPhoneNumber(phoneNumber: String, completion: @escaping (_ retPlayerID: String) -> ()) {
         let requestURL = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
         let postParameters = "user_phone="+phoneNumber;
         var player_ID: String = ""
@@ -124,7 +124,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
                             var data : NSArray!
                             //getting the json response
                             msg = parseJSON["message"] as! String?
-                            print("MESSAGE=",msg)
+                            //print("MESSAGE=",msg)
                             if(msg == "Operation successfully!"){
                                 data = parseJSON["data"] as! NSArray?
                                 player_ID = (data[1] as? String)!

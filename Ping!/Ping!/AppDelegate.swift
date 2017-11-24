@@ -20,9 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
         //Receiving notification
         let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
             
-            print("Received Notification: \(notification!.payload.notificationID)")
+            //print("Received Notification: \(notification!.payload.notificationID)")
             //print("launchURL = \(notification?.payload.launchURL)")
-            print("content_available = \(String(describing: notification?.payload.contentAvailable))")
+            //print("content_available = \(String(describing: notification?.payload.contentAvailable))")
             
             
         }
@@ -32,28 +32,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
             // This block gets called when the user reacts to a notification received
             let payload: OSNotificationPayload? = result?.notification.payload
             
-            print("Message = \(payload!.body)")
-            print("badge number = \(String(describing: payload?.badge))")
+            //print("Message = \(payload!.body)")
+            //print("badge number = \(String(describing: payload?.badge))")
             //IF THE PUSH NOTIFICATION HAS DATA
             if let additionalData = result!.notification.payload!.additionalData {
-                print("additionalData = \(additionalData)")
+                //print("additionalData = \(additionalData)")
                 //Should be nested in if statement for better handling but here it takes the value
                 //Phone from the sent JSON string
-                let phone_number = additionalData["Phone"]!
-                print("Phone number from push notification: ", phone_number)
+                let phone_number = additionalData["Phone"]! as! String
+                //print("Phone number from push notification: ", phone_number)
                 
                 //debug action in notification: prints when accept or reject is pressed
                 if let actionSelected = payload?.actionButtons {
-                    print("actionSelected = \(actionSelected)")
+                    //print("actionSelected = \(actionSelected)")
                 }
                 
                 //determines which notification button is pressed
                 if let actionID = result?.action.actionID {
-                    print("here now")
-                    print("actionID = \(actionID)")
+                    //print("here now")
+                    //print("actionID = \(actionID)")
                     //if accept-button is pressed
                     if actionID == "accept-button"{
-                        print("accept-id pressed!!!!")
+                        //print("accept-id pressed!!!!")
+                        // TODO: don't need to make this DB call. Remove!!
+                        // This gets userID from phone but we only need phone to get location
+                        self.getUserIdFromPhoneNumber(phoneNumber: phone_number){(value) in
+                            if (value >= 0){
+                                print("Start Tracking User_ID=", value)
+                                let defaults = UserDefaults.standard
+                                defaults.set(phone_number, forKey: "currentTrackedUser") // was user_id, now phone_number
+                                // Need to switch to map view here
+                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
+                                self.window = UIWindow(frame: UIScreen.main.bounds)
+                                self.window?.rootViewController = nextViewController
+                                self.window?.makeKeyAndVisible()
+                            } else {
+                                print ("Could not get userID for phone_number=", phone_number)
+                            }
+                        }
                     }
                     //if reject-button is pressed
                     if actionID == "reject-button" {
@@ -74,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
         // Recommend moving the below line to prompt for push after informing the user about
         //   how your app will use them.
         OneSignal.promptForPushNotifications(userResponse: { accepted in
-            print("User accepted notifications: \(accepted)")
+            //print("User accepted notifications: \(accepted)")
         })
         
         // Add your AppDelegate as an obsserver
@@ -91,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
         if let isUserLoggedIn = UserDefaults.standard.object(forKey: "isLogged"),
             isUserLoggedIn is Bool {
             let logged = (defaults.object(forKey: "isLogged") as? Bool)!
-            print (isUserLoggedIn)
+            //print (isUserLoggedIn)
             
             window = UIWindow(frame: UIScreen.main.bounds)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -109,18 +126,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
     //One Signal subscription changes
     func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
         if !stateChanges.from.subscribed && stateChanges.to.subscribed {
-            print("Subscribed for OneSignal push notifications!")
+            //print("Subscribed for OneSignal push notifications!")
             
             // get player ID
             if var player_id = stateChanges.to.userId {
                 player_id = stateChanges.to.userId!
-                print("Current playerId \(player_id)")
+                //print("Current playerId \(player_id)")
                 
             }
             
         }
-        print("SubscriptionStateChange: \n\(stateChanges)\n")
-        print("UNWRAPPED OPTIONAL USER ID: \n\(stateChanges.to.userId)\n")
+        //print("SubscriptionStateChange: \n\(stateChanges)\n")
+        //print("UNWRAPPED OPTIONAL USER ID: \n\(stateChanges.to.userId)\n")
         
         
     }
@@ -147,7 +164,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    
+    func getUserIdFromPhoneNumber(phoneNumber: String, completion: @escaping (_ retUserID: Int) -> ()) {
+        let requestURL = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
+        let postParameters = "user_phone="+phoneNumber;
+        var user_ID: Int = -1
+        var request = URLRequest(url: URL(string: requestURL+postParameters)!)
+        request.httpMethod = "POST"
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        let urlSession = URLSession.shared
+        let task = urlSession.dataTask(with: request, completionHandler:{
+            (data, response, error) -> Void in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print (error)
+                    return
+                }
+                if let data = data {
+                    do {
+                        //converting resonse to NSDictionary
+                        let myJSON =  try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSDictionary
+                        //parsing the json
+                        if let parseJSON = myJSON {
+                            //creating a string
+                            var msg : String!
+                            var data : NSArray!
+                            //getting the json response
+                            msg = parseJSON["message"] as! String?
+                            //print("MESSAGE=",msg)
+                            if(msg == "Operation successfully!"){
+                                data = parseJSON["data"] as! NSArray?
+                                user_ID = (data[9] as? Int)!
+                            } else if(msg == "User does not exist!"){
+                                user_ID = -1
+                            }
+                        }
+                        completion(user_ID)
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        })
+        task.resume()
+    }
     
 }
 
