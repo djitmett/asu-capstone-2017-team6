@@ -203,6 +203,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
         let region:MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
         
+        let allAnnotations = mapDisplay.annotations
+        self.mapDisplay.removeAnnotations(allAnnotations)
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = myLocation
+        annotation.title = phone_number
+        mapDisplay.addAnnotation(annotation)
+        
         mapDisplay.setRegion(region, animated:true)
         mapDisplay.centerCoordinate = myLocation
         mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)

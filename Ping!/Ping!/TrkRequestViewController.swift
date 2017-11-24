@@ -56,7 +56,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
             "Phone" : phone_number,
             ]
         let message = userFirstName + " would like to share their location with you."
-        //print("Player_Id=", player_id)
+        print("Player_Id=", player_id)
         let notificationContent = [
             "include_player_ids": [player_id],
             "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
@@ -73,7 +73,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         
         //Send request and receive confirmation
         OneSignal.postNotification(notificationContent, onSuccess: { result in
-            //print("result = \(result!)")
+            print("result = \(result!)")
         }, onFailure: {error in
             print("error = \(error!)")
         })
