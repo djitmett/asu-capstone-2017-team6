@@ -171,7 +171,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.mapDisplay.showsUserLocation=false
             let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
             getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
-                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: lastUpdate)
+                let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
+                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
             }
         } else {
             // Show current user's current location
@@ -214,8 +215,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         dateFormatter.timeStyle = .medium
         let timeStamp = Date()
         self.line2Label.text = String(format: "Map updated @ %@", dateFormatter.string(from: timeStamp))
-        let myLocUpdate = convertGmtToLocal(date:locUpdate)
-        self.line3Label.text = "User loc updated @ " + myLocUpdate
+        //let myLocUpdate = convertGmtToLocal(date:locUpdate)
+        self.line3Label.text = "User loc updated @ " + locUpdate
         
         //Remove spinner view after labels have been updated
         UIViewController.removeSpinner(spinner: sv)
