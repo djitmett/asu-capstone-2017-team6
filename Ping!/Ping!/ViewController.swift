@@ -57,7 +57,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     let manager = CLLocationManager()
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var player_id = ""
-    var lastUpdateTime = DispatchTime.now()
+    
+    var lastUpdateTime = DispatchTime.now() - 60 // Force DB update as soon as app loads by changing lastUpdateTime to an arbitrary time
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
@@ -76,7 +77,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
             let elapsedTime = Double(nanoTime)/1_000_000_000
             if (elapsedTime > 30){
-                //print("Update location in DB")
+                print("Update location in DB")
                 updateUserLocation(userPhone:userPhoneNumber,latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
                 lastUpdateTime = DispatchTime.now()
             }
@@ -112,6 +113,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
+        //mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
     }
     
     func updateUserLocation(userPhone:String, latitude:Double, longitude:Double) {
