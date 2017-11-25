@@ -35,7 +35,6 @@ extension UIViewController {
     }
 }
 
-
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     //Spinner view variable
@@ -45,7 +44,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var line1Label: UILabel!
     @IBOutlet var line2Label: UILabel!
     @IBOutlet var line3Label: UILabel!
-    @IBOutlet weak var mapDisplay: MKMapView!
+    @IBOutlet var mapDisplay: MKMapView!
     @IBOutlet var requestLabel: UILabel!
     @IBOutlet var phoneNumField: UITextField!
     @IBOutlet var requestBtn: UIButton!
@@ -53,32 +52,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var mapUpdateTimer: Timer!
     var mapLoadTimer: Timer!
     
+    var lastPhone: String! = ""
+    
     let manager = CLLocationManager()
-    
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
-    
     var player_id = ""
     
-    var lastUpdateTime = DispatchTime.now()
-    var lastUpdateTime2 = DispatchTime.now()
+    var lastUpdateTime = DispatchTime.now() - 60 // Force DB update as soon as app loads by changing lastUpdateTime to an arbitrary time
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
+
         //Get most recent location
         let location = locations[0]
-        
-        //let span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
-        //let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
-        //let region:MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
-        
-        //mapDisplay.setRegion(region, animated:true)
-        
-        //mapDisplay.centerCoordinate = location.coordinate
-        
-        //mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)
-        
-        //Prints user's speed to console
-        //print(location.speed)
         
         //Get user's phone number entered from signup
         let defaults = UserDefaults.standard
@@ -87,41 +72,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
             
             // Update user's location in DB every 30 seconds
-            var start = lastUpdateTime
-            var end = DispatchTime.now()
-            var nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-            var elapsedTime = Double(nanoTime)/1_000_000_000
+            let start = lastUpdateTime
+            let end = DispatchTime.now()
+            let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+            let elapsedTime = Double(nanoTime)/1_000_000_000
             if (elapsedTime > 30){
-                //print("Update location in DB")
+                print("Update location in DB")
                 updateUserLocation(userPhone:userPhoneNumber,latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
                 lastUpdateTime = DispatchTime.now()
             }
-            //            start = lastUpdateTime2
-            //            end = DispatchTime.now()
-            //            nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-            //            elapsedTime = Double(nanoTime)/1_000_000_000
-            //            // ToDo: create a timer to update map and remove from this function
-            //            if (elapsedTime > 5){
-            //                self.updateMap()
-            //                lastUpdateTime2 = DispatchTime.now()
-            //            }
-            
-            //Lat Label
-            //self.latLabel.text = String(location.coordinate.latitude)
-            //Long Label
-            //self.longLabel.text = String(location.coordinate.longitude)
-            
-            //Display traffic colors on map
-            //mapDisplay.showsTraffic=true
-            
-            //print(location.coordinate.latitude)
-            //print(location.coordinate.longitude)
-            
             
         } else {
             print("Could not get userPhone")
         }
-        
     }
     @IBOutlet weak var retrievedImg: UIImageView!
     
@@ -140,37 +103,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
         
-        //Displays user's location
-        //self.mapDisplay.showsUserLocation=true
-        
         //USER DEFAULTS FOR ONESIGNAL ID
         let defaults = UserDefaults.standard
         player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
-        
-        //print player id
-        //print("player_id: " + player_id)
         
         //Avatar image
         if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
             retrievedImg.image = UIImage(data: imgData as Data)
         }
         
-        
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
-        
+        //mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
     }
     
     func updateUserLocation(userPhone:String, latitude:Double, longitude:Double) {
         //DATABASE PHP SCRIPT
         let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/adduserlocation.php?"
-        
-        //52.42.38.63/ioswebservice/api/adduserlocation.php?user_phone=1234567890&location_latitude=35.7020691&location_longitude=139.7753269&location_datetime=2017-11-18 01:31:06
-        
         let requestURL = NSURL(string: URL_SIGNUP)
         let request = NSMutableURLRequest(url: requestURL! as URL)
         request.httpMethod = "POST"
         
-        //Othe
         var postParameters = "user_phone=" + userPhone
         postParameters += "&location_latitude=\(latitude)"
         postParameters += "&location_longitude=\(longitude)"
@@ -190,7 +142,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             
             //parsing the response
             do {
-                
                 //converting resonse to NSDictionary
                 let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
                 //parsing the json
@@ -214,13 +165,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @objc func updateMap(){
         // If currently tracking a user, show their location, otherwise show user's current location on map.
-        print("update map start")
+        //print("update map start")
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
             self.mapDisplay.showsUserLocation=false
             let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
             getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
-                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: lastUpdate)
+                let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
+                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
             }
         } else {
             // Show current user's current location
@@ -235,15 +187,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    
-    
     func updateMap2(phone_number: String, latitude: Double, longitude: Double, locUpdate:String){
-        
-        print("LAT=",latitude," LONG=", longitude, " @", locUpdate)
-        let span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
+        //print("LAT=",latitude," LONG=", longitude, " @", locUpdate)
         let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-        let region:MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
-        
+        var region = mapDisplay.region
+        if (phone_number != lastPhone){
+            region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
+            lastPhone = phone_number
+        } else {
+            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
+        }
         let allAnnotations = mapDisplay.annotations
         self.mapDisplay.removeAnnotations(allAnnotations)
         
@@ -252,9 +205,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         annotation.title = phone_number
         mapDisplay.addAnnotation(annotation)
         
-        mapDisplay.setRegion(region, animated:true)
+        mapDisplay.setRegion(region, animated:false)
         mapDisplay.centerCoordinate = myLocation
-        mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)
+        //mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)
         
         self.line1Label.text = String(format: "Tracking user %@ Lat=%.2f Long=%.2f",phone_number, latitude, longitude)
         let dateFormatter = DateFormatter()
@@ -262,12 +215,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         dateFormatter.timeStyle = .medium
         let timeStamp = Date()
         self.line2Label.text = String(format: "Map updated @ %@", dateFormatter.string(from: timeStamp))
+        //let myLocUpdate = convertGmtToLocal(date:locUpdate)
         self.line3Label.text = "User loc updated @ " + locUpdate
         
         //Remove spinner view after labels have been updated
         UIViewController.removeSpinner(spinner: sv)
-        
-        
     }
     
     func getLocationFromPhone(phone_number: String, completion: @escaping (_ trackLat: Double, _ trackLong: Double, _ lastUpdate: String) -> ()) {
@@ -320,6 +272,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         })
         task.resume()
+    }
+    
+    func convertGmtToLocal(date:String) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss SSSS"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        let dt = dateFormatter.date(from: date)
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
+        return dateFormatter.string(from: dt!)
     }
 }
 

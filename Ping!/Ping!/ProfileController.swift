@@ -29,6 +29,10 @@ class ProfileController: UIViewController {
             defaults.set(false, forKey: "isLogged")
             //Deleting user phone number from data store
             defaults.removeObject(forKey: "userPhone")
+            if (defaults.object(forKey: "currentTrackedUser") != nil){
+                defaults.removeObject(forKey: "currentTrackedUser")
+                print("Cleared tracked user")
+            }
             //Updating data store
             print("Resetting username-start")
             defaults.synchronize()
