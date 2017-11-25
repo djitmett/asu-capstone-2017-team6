@@ -214,7 +214,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         dateFormatter.timeStyle = .medium
         let timeStamp = Date()
         self.line2Label.text = String(format: "Map updated @ %@", dateFormatter.string(from: timeStamp))
-        self.line3Label.text = "User loc updated @ " + locUpdate
+        let myLocUpdate = convertGmtToLocal(date:locUpdate)
+        self.line3Label.text = "User loc updated @ " + myLocUpdate
         
         //Remove spinner view after labels have been updated
         UIViewController.removeSpinner(spinner: sv)
@@ -270,6 +271,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         })
         task.resume()
+    }
+    
+    func convertGmtToLocal(date:String) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss SSSS"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        let dt = dateFormatter.date(from: date)
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
+        return dateFormatter.string(from: dt!)
     }
 }
 
