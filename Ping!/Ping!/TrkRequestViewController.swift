@@ -43,8 +43,14 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
-        let userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
-        let phone_number = (defaults.object(forKey: "userPhone") as? String)!
+        var userFirstName = ""
+        var phone_number = ""
+        if (defaults.object(forKey: "userFirstName") != nil) {
+            userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
+        }
+        if (defaults.object(forKey: "userPhone") != nil) {
+            phone_number = (defaults.object(forKey: "userPhone") as? String)!
+        }
         if (player_id != "INVALID"){
             //print("Valid Number")
         } else {

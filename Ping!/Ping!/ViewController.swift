@@ -61,7 +61,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var lastUpdateTime = DispatchTime.now() - 60 // Force DB update as soon as app loads by changing lastUpdateTime to an arbitrary time
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
+        
         //Get most recent location
         let location = locations[0]
         
@@ -105,12 +105,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         //USER DEFAULTS FOR ONESIGNAL ID
         let defaults = UserDefaults.standard
-        player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
-        
-        //Avatar image
-        if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
-            retrievedImg.image = UIImage(data: imgData as Data)
+        if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil) {
+            player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
         }
+        else {
+            print("NO PLAYER ID CAPTURED")
+        }
+        //Avatar imaged -- NEEDS TO BE FIXED ; DOES NOT WORK
+        //if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
+        //   retrievedImg.image = UIImage(data: imgData as Data)
+        //}
         
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
         //mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
@@ -183,7 +187,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             dateFormatter.timeStyle = .medium
             let timeStamp = Date()
             
-            self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
+            //BREAK POINT IF USER DOESN'T ALLOW USER LOCATIONS
+            if(currLoc != nil) {
+                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
+            }
+            else {
+                //NO DATA TO SEND
+                //Remove spinner view after labels have been updated
+                UIViewController.removeSpinner(spinner: sv)
+                
+            }
         }
     }
     

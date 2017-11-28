@@ -9,7 +9,7 @@
 import UIKit
 
 class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     //MARK: Properties
     @IBOutlet weak var firstNameField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
@@ -30,7 +30,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     var useravatar = "avatar.jpeg"
     var usertime = "test"
     
-
+    
     @IBOutlet weak var signupButton: UIButton!
     
     //DATABASE PHP SCRIPT
@@ -45,14 +45,14 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         return true
     }
     /**
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        firstNameField.text = textField.text
-        lastNameField.text = textField.text
-        phonenumberField.text = textField.text
-        emailField.text = textField.text
-        passwordField.text = textField.text
-    }
-    **/
+     func textFieldDidEndEditing(_ textField: UITextField) {
+     firstNameField.text = textField.text
+     lastNameField.text = textField.text
+     phonenumberField.text = textField.text
+     emailField.text = textField.text
+     passwordField.text = textField.text
+     }
+     **/
     
     //MARK: UIImagePickerControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -74,7 +74,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     }
     
     
-   //MARK: Actions
+    //MARK: Actions
     @IBAction func selectImageFromPhotoLibrary(_ sender: UITapGestureRecognizer) {
         
         //Hide the keyboard
@@ -93,13 +93,14 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         // Make sure ViewController is notified when the user picks an image.
         imagePickerController.delegate = self
         present(imagePickerController, animated: true, completion: nil)
-   
+        
+        //DOESN'T WORK
         //Save image
-        let img = avatarImageView.image
-        let data = UIImagePNGRepresentation(img!)
-        UserDefaults.standard.set(data, forKey: "myImageKey")
-        UserDefaults.standard.synchronize()
-    
+        //let img = avatarImageView.image
+        //let data = UIImagePNGRepresentation(img!)
+        //UserDefaults.standard.set(data, forKey: "myImageKey")
+        //UserDefaults.standard.synchronize()
+        
     }
     
     
@@ -108,7 +109,8 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         
         //OneSignal player_id as user_device_id for now
         let defaults = UserDefaults.standard
-        user_device_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
+        if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil){
+            user_device_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!}
         
         //DB Variables
         user_first_name = firstNameField.text!
@@ -133,7 +135,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         
         //CALL THE SIGN UP FUNCTION (SEND DATA TO DB)
         sign_up(first_name: user_first_name, last_name: user_last_name)
-
+        
     }
     
     func sign_up(first_name:String, last_name:String) {
@@ -204,9 +206,9 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         
         // Do any additional setup after loading the view.
     }
-
-
-
-
-
+    
+    
+    
+    
+    
 }
