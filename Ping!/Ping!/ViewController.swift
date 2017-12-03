@@ -5,13 +5,12 @@
 //  Created by Darya T Jitmetta on 10/19/17.
 //  Copyright © 2017 Darya T Jitmetta. All rights reserved.
 //
-
 import UIKit
 import MapKit
 import CoreLocation
 import OneSignal
 
-//Loading extension
+//Loading extension for map loading spinner
 extension UIViewController {
     class func displaySpinner(onView : UIView) -> UIView {
         let spinnerView = UIView.init(frame: onView.bounds)
@@ -132,6 +131,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         postParameters += "&location_longitude=\(longitude)"
         postParameters += "&location_datetime=\(NSDate())"
         //print("PostParms=" + postParameters)
+        
         //adding the parameters to request body
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
         

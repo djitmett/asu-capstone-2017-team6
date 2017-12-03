@@ -13,7 +13,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var phoneNumber: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var error: UILabel!
-
+    
     //Define UserDefaults
     let defaults = UserDefaults.standard
     
@@ -44,7 +44,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         //setting the method to post
         request.httpMethod = "POST"
-        
         
         //creating the post parameter by concatenating the keys and values from text field
         let postParameters = "user_phone="+phone_number;
@@ -119,11 +118,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
                                         self.present(nextViewController, animated:true, completion:nil)
                                     }
                                 }
-                            })
-                            
-                            
+                            })                                                        
                         }
-                        //Password does not match phonenumber
+                            //Password does not match phonenumber
                         else {
                             DispatchQueue.main.async(execute: {
                                 self.error.text = "INCORRECT PASSWORD"
@@ -141,7 +138,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 print(error)
             }
             
-            
         }
         
         //executing the task
@@ -152,7 +148,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         //Clear fields after entry
         self.phoneNumber.text = ""
         self.password.text = ""
-        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -166,25 +161,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
         phoneNumber.delegate = self
         password.delegate = self
         
-        // Do any additional setup after loading the view.
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+    //Segue link
     @IBAction func unwindToLogin(segue:UIStoryboardSegue) { }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

@@ -38,21 +38,11 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     
     
     //MARK: UITextFieldDelegate
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
         textField.resignFirstResponder()
         return true
     }
-    /**
-     func textFieldDidEndEditing(_ textField: UITextField) {
-     firstNameField.text = textField.text
-     lastNameField.text = textField.text
-     phonenumberField.text = textField.text
-     emailField.text = textField.text
-     passwordField.text = textField.text
-     }
-     **/
     
     //MARK: UIImagePickerControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -94,7 +84,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         imagePickerController.delegate = self
         present(imagePickerController, animated: true, completion: nil)
         
-        //DOESN'T WORK
+        //DOESN'T WORK YET
         //Save image
         //let img = avatarImageView.image
         //let data = UIImagePNGRepresentation(img!)
@@ -102,7 +92,6 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         //UserDefaults.standard.synchronize()
         
     }
-    
     
     //Sign up button
     @IBAction func signupBtn(_ sender: Any) {
@@ -181,12 +170,10 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
                     //printing the response
                     //print(msg)
                     
-                    
                 }
             } catch {
                 print(error)
             }
-            
             
         }
         //executing the task
@@ -204,11 +191,6 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         emailField.delegate = self
         passwordField.delegate = self
         
-        // Do any additional setup after loading the view.
     }
-    
-    
-    
-    
     
 }

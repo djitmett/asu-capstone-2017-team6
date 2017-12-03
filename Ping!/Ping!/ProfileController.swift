@@ -13,9 +13,7 @@ class ProfileController: UIViewController {
     @IBOutlet weak var userPhoneNumber: UILabel!
     @IBOutlet weak var userName: UILabel!
     
-    
     let defaults = UserDefaults.standard
-    
     
     @IBAction func logout(_ sender: Any) {
         
@@ -66,24 +64,19 @@ class ProfileController: UIViewController {
         var phoneNumber = ""
         
         super.viewDidLoad()
+        
         if (defaults.object(forKey: "userFirstName") != nil) {
-         firstName = (defaults.object(forKey: "userFirstName") as? String)!
+            firstName = (defaults.object(forKey: "userFirstName") as? String)!
         }
         if (defaults.object(forKey: "userLastName") != nil) {
-         lastName = (defaults.object(forKey: "userLastName") as? String)!
+            lastName = (defaults.object(forKey: "userLastName") as? String)!
         }
         if (defaults.object(forKey: "userPhone") != nil) {
-         phoneNumber = (defaults.object(forKey: "userPhone") as? String)!
+            phoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
         
         self.userName.text = firstName + " "  + lastName
         self.userPhoneNumber.text = phoneNumber
-        // Do any additional setup after loading the view.
+        
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 }
