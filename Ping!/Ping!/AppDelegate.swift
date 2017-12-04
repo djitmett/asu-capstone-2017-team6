@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-       // let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
+        // let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
         
         //Receiving notification
         let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
             //print("Received Notification: \(notification!.payload.notificationID)")
             //print("launchURL = \(notification?.payload.launchURL)")
             //print("content_available = \(String(describing: notification?.payload.contentAvailable))")
-            
             
         }
         
@@ -34,9 +33,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
             
             //print("Message = \(payload!.body)")
             //print("badge number = \(String(describing: payload?.badge))")
+            
             //IF THE PUSH NOTIFICATION HAS DATA
             if let additionalData = result!.notification.payload!.additionalData {
                 //print("additionalData = \(additionalData)")
+                
                 //Should be nested in if statement for better handling but here it takes the value
                 //Phone from the sent JSON string
                 let phone_number = additionalData["Phone"]! as! String
@@ -49,45 +50,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
                 
                 //determines which notification button is pressed
                 if let actionID = result?.action.actionID {
-                    //print("here now")
                     //print("actionID = \(actionID)")
                     //if accept-button is pressed
                     if actionID == "accept-button"{
                         //print("accept-id pressed!!!!")
-                        // TODO: don't need to make this DB call. Remove!!
+                        
                         // This gets userID from phone but we only need phone to get location
                         let defaults = UserDefaults.standard
                         defaults.set(phone_number, forKey: "currentTrackedUser") // was user_id, now phone_number
-                        // Need to switch to map view here
+                        // Navigate to map page
                         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
                         self.window = UIWindow(frame: UIScreen.main.bounds)
                         self.window?.rootViewController = nextViewController
                         self.window?.makeKeyAndVisible()
                         
-//                        self.getUserIdFromPhoneNumber(phoneNumber: phone_number){(value) in
-//                            if (value >= 0){
-//                                print("Start Tracking User_ID=", value)
-//
-//
-//                            } else {
-//                                print ("Could not get userID for phone_number=", phone_number)
-//                            }
-//                        }
+                        //                        self.getUserIdFromPhoneNumber(phoneNumber: phone_number){(value) in
+                        //                            if (value >= 0){
+                        //                                print("Start Tracking User_ID=", value)
+                        //
+                        //
+                        //                            } else {
+                        //                                print ("Could not get userID for phone_number=", phone_number)
+                        //                            }
+                        //                        }
                     }
                     //if reject-button is pressed
                     if actionID == "reject-button" {
                         print("reject-id pressed!!!!")
                     }
                 }
-            
+                
             }
         }
         
         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false, kOSSettingsKeyInAppLaunchURL: true, ]
         
-         OneSignal.initWithLaunchOptions(launchOptions,
-                                         appId: "2a59fef0-d729-453e-b3ba-8d5f89bc102f", handleNotificationReceived: notificationReceivedBlock, handleNotificationAction: notificationOpenedBlock, settings: onesignalInitSettings)
+        OneSignal.initWithLaunchOptions(launchOptions,
+                                        appId: "2a59fef0-d729-453e-b3ba-8d5f89bc102f", handleNotificationReceived: notificationReceivedBlock, handleNotificationAction: notificationOpenedBlock, settings: onesignalInitSettings)
         
         OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification;
         
@@ -99,11 +99,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
         
         // Add your AppDelegate as an obsserver
         OneSignal.add(self as OSSubscriptionObserver)
-        
-        // Sync hashed email if you have a login system or collect it.
-        //   Will be used to reach the user at the most optimal time of day.
-        // OneSignal.syncHashedEmail(userEmail)
-        
         
         // Override point for customization after application launch.
         print(UserDefaults.standard.dictionaryRepresentation())
@@ -119,9 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
             window?.makeKeyAndVisible()
         }
         
-        
         OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
-        
         
         return true
     }
@@ -141,7 +134,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
         }
         //print("SubscriptionStateChange: \n\(stateChanges)\n")
         //print("UNWRAPPED OPTIONAL USER ID: \n\(stateChanges.to.userId)\n")
-        
         
     }
     

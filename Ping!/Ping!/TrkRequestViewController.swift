@@ -9,42 +9,30 @@
 import UIKit
 import OneSignal
 
-
-
 class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
-    /**
-     - Text field needs to be implemented & include the 'hide away keyboard'
-     - Grab text field input and store it into a request number variable
-     - Run requested number against the DB
-     - Return a message if it doesn't exist
-     - if it does, proceed by grabbing their assigned player_id and store their phonenumber
-     
-     **/
     @IBOutlet weak var phoneNumber: UITextField!
     
     @IBAction func sendTracking(_ sender: Any) {
         
-        
-        //USER DEFAULTS FOR ONESIGNAL ID
-        
-        //CURRENTLY GRABS YOUR INFORMATION TO SEND THE PUSH NOTIFICATION TO YOU
-        //let player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
         var player_ID = ""
-        // Validate phone number exists in DB
-        //let player_id = getPlayerIdFromPhoneNumber_test(phoneNumber: phoneNumber.text!)
-        
+
         getPlayerIdFromPhoneNumber(phoneNumber: phoneNumber.text!){(value) in
             player_ID = value
             self.sendTracking2(player_id: player_ID)
         }
     }
     
-    
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
-        let userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
-        let phone_number = (defaults.object(forKey: "userPhone") as? String)!
+        var userFirstName = ""
+        var phone_number = ""
+        if (defaults.object(forKey: "userFirstName") != nil) {
+            userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
+        }
+        if (defaults.object(forKey: "userPhone") != nil) {
+            phone_number = (defaults.object(forKey: "userPhone") as? String)!
+        }
         if (player_id != "INVALID"){
             //print("Valid Number")
         } else {
@@ -63,8 +51,6 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
             "headings": ["en": "PING! TRACKING"],
             "subtitle": ["en": "Someone has sent you a tracking invitation."],
             "data": data,
-            //Displays image in push notif.
-            //"ios_attachments": ["id" : "https://cdn.pixabay.com/photo/2017/01/16/15/17/hot-air-balloons-1984308_1280.jpg"],
             //Shows notification bage on application
             "ios_badgeType": "Increase",
             "ios_badgeCount": 1,
@@ -91,15 +77,6 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         phoneNumber.delegate = self
-        
-        //test notification
-        //OneSignal.postNotification(["contents": ["en": "Is this the message"], "include_player_ids": [player_id]])
-        // Do any additional setup after loading the view.
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
