@@ -141,7 +141,7 @@
             </objects>
             <point key="canvasLocation" x="1376.8" y="900.89955022488766"/>
         </scene>
-        <!--Item-->
+        <!--Requests-->
         <scene sceneID="Q4h-uP-XT4">
             <objects>
                 <viewController id="XNz-sJ-pfh" sceneMemberID="viewController">
@@ -160,7 +160,7 @@
                         <color key="backgroundColor" red="0.92355488989637302" green="0.92355488989637302" blue="0.92355488989637302" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="Ufa-Ud-UR3"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="D5p-dR-TRi"/>
+                    <tabBarItem key="tabBarItem" title="Requests" image="Request-32" id="D5p-dR-TRi"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C2n-sI-2A5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -533,6 +533,7 @@
         <image name="Image-1" width="25" height="25"/>
         <image name="Image-2" width="25" height="25"/>
         <image name="Image-3" width="25" height="25"/>
+        <image name="Request-32" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="fWA-rM-Xdh"/>
