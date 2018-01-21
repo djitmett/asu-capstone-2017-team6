@@ -25,6 +25,7 @@
 		9798751D43F899639D7DE8CF /* Pods_Ping_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCDF405989B0AB456670615 /* Pods_Ping_.framework */; };
 		D72B3BA41FAE7A36000F3080 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72B3BA31FAE7A36000F3080 /* NotificationService.swift */; };
 		D72B3BA81FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D72B3BA11FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D73D7B1520153DC600EA7E8C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73D7B1420153DC600EA7E8C /* EditProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,7 @@
 		D72B3BA31FAE7A36000F3080 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		D72B3BA51FAE7A36000F3080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D72B3BAD1FAE968E000F3080 /* Ping!.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Ping!.entitlements"; sourceTree = "<group>"; };
+		D73D7B1420153DC600EA7E8C /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		D905C24373790EF58C69B990 /* Pods-Ping!Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!Tests/Pods-Ping!Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E4283C5AEBECDAE902C9BE57 /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E73D0526654A3B9B2D1F4276 /* Pods-Ping!UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!UITests/Pods-Ping!UITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				4B615DC41FBE2E6F006067F9 /* SignUpController.swift */,
 				4B3283B21F995D0A00302E3E /* Assets.xcassets */,
 				4B3283B71F995D0A00302E3E /* Info.plist */,
+				D73D7B1420153DC600EA7E8C /* EditProfileViewController.swift */,
 			);
 			path = "Ping!";
 			sourceTree = "<group>";
@@ -603,6 +606,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D73D7B1520153DC600EA7E8C /* EditProfileViewController.swift in Sources */,
 				4B7C1EE61FC37F8000DB1EFB /* ProfileController.swift in Sources */,
 				411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */,
 				4B7C1EE41FC37EA500DB1EFB /* LoginController.swift in Sources */,
