@@ -8,10 +8,22 @@
 
 import UIKit
 import OneSignal
+import MapKit
 
 class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!
+    @IBOutlet weak var destinationInput: UITextField!
+    
+    @IBOutlet weak var trackingDurationSwitch: UISwitch!
+    
+    @IBOutlet weak var trackingDurationPicker: UIDatePicker!
+    
+    
+    @IBOutlet weak var timedTrackingLabel: UILabel!
+    @IBOutlet weak var indefiniteTrackingLabel: UILabel!
+    
+    @IBOutlet weak var mapView: MKMapView!
     
     @IBAction func sendTracking(_ sender: Any) {
         
@@ -23,10 +35,32 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBAction func trackingDurationSwitchAction(_ sender: Any) {
+        if trackingDurationSwitch.isOn {
+            trackingDurationPicker.isEnabled = false
+            indefiniteTrackingLabel.textColor = UIColor.black
+            timedTrackingLabel.textColor = UIColor.gray
+        }
+        else {
+            trackingDurationPicker.isEnabled = true
+            timedTrackingLabel.textColor = UIColor.black
+            indefiniteTrackingLabel.textColor = UIColor.gray
+        }
+    }
+    
+    
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
         var userFirstName = ""
         var phone_number = ""
+        var end_long = 0
+        var end_lat = 0
+        
+        let date = trackingDurationPicker.date
+        let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+        let hour = components.hour!
+        let minute = components.minute!
+        
         if (defaults.object(forKey: "userFirstName") != nil) {
             userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
         }
@@ -40,9 +74,14 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         }
         
         //All OneSignal content is in JSON format
+        
         let data = [
             "Phone" : phone_number,
-            ]
+            "End-Location" : [end_long, end_lat],
+            "Indefinite" : trackingDurationSwitch.isOn,
+            "Duration" : [hour,minute],
+            ] as [String : Any]
+        
         let message = userFirstName + " would like to share their location with you."
         print("Player_Id=", player_id)
         let notificationContent = [
@@ -65,19 +104,14 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         })
     }
     
-    @IBAction func clearTracking(_ sender: Any) {
-        print("@ClearTracking")
-        let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "currentTrackedUser") != nil){
-            defaults.removeObject(forKey: "currentTrackedUser")
-            print("Cleared tracked user")
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         phoneNumber.delegate = self
+        destinationInput.delegate = self
+        trackingDurationPicker.isEnabled = false
     }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
