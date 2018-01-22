@@ -18,6 +18,8 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var trackingDurationSwitch: UISwitch!
     
     @IBOutlet weak var trackingDurationPicker: UIDatePicker!
+    
+    
     @IBOutlet weak var timedTrackingLabel: UILabel!
     @IBOutlet weak var indefiniteTrackingLabel: UILabel!
     
@@ -51,7 +53,13 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         let defaults = UserDefaults.standard
         var userFirstName = ""
         var phone_number = ""
-
+        var end_long = 0
+        var end_lat = 0
+        
+        let date = trackingDurationPicker.date
+        let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+        let hour = components.hour!
+        let minute = components.minute!
         
         if (defaults.object(forKey: "userFirstName") != nil) {
             userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
@@ -66,8 +74,12 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         }
         
         //All OneSignal content is in JSON format
+        
         let data = [
-            "Phone" : phone_number
+            "Phone" : phone_number,
+            "End-Location" : [end_long, end_lat],
+            "Indefinite" : trackingDurationSwitch.isOn,
+            "Duration" : [hour,minute],
             ] as [String : Any]
         
         let message = userFirstName + " would like to share their location with you."
