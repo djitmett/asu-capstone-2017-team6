@@ -41,6 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
                 
                 //Should be nested in if statement for better handling but here it takes the value
                 //Phone from the sent JSON string
+                if additionalData["Indefinite"]! as! Bool == true {
+                    print("Indefinite tracking is ON")
+                }
+                else {
+                   print("Set tracking duration: ", additionalData["Duration"]!)
+                }
+                
                 let phone_number = additionalData["Phone"]! as! String
                 //print("Phone number from push notification: ", phone_number)
                 
