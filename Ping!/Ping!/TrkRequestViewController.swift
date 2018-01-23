@@ -167,8 +167,24 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
                             if(msg == "Operation successfully!"){
                                 data = parseJSON["data"] as! NSArray?
                                 player_ID = (data[1] as? String)!
+                                
+                                //Display success dialog
+                                let successAlert = UIAlertController(title: "Tracking request confirmation", message: "Request sent successfully!", preferredStyle: UIAlertControllerStyle.alert)
+                                 successAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                                    
+                                    //action code
+                                    
+                                 }))
+                                self.present(successAlert, animated: true, completion: nil)
                             } else if(msg == "User does not exist!"){
                                 player_ID = "INVALID"
+                                let failAlert = UIAlertController(title: "Tracking request confirmation", message: "Request failed! User does not exist.", preferredStyle: UIAlertControllerStyle.alert)
+                                failAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                                    
+                                    //action code
+                                    
+                                }))
+                                self.present(failAlert, animated: true, completion: nil)
                             }
                         }
                         completion(player_ID)
@@ -179,6 +195,8 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
             }
         })
         task.resume()
+        
+        
     }
     
 }
