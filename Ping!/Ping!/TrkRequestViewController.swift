@@ -23,7 +23,8 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var trackingDurationPicker: UIDatePicker!
     
-
+    @IBOutlet weak var sendBtn: UIButton!
+    
     
     @IBOutlet weak var timedTrackingLabel: UILabel!
     @IBOutlet weak var indefiniteTrackingLabel: UILabel!
@@ -33,11 +34,29 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     @IBAction func sendTracking(_ sender: Any) {
         
         var player_ID = ""
-
         getPlayerIdFromPhoneNumber(phoneNumber: phoneNumber.text!){(value) in
             player_ID = value
+            if !value.isEmpty {
             self.sendTracking2(player_id: player_ID)
+            self.reset()
+            }
+            else{
+                print("empty id")
+                self.phoneNumber.layer.borderColor = UIColor.red.cgColor
+                self.phoneNumber.layer.borderWidth = 1.0
+            }
         }
+    }
+    
+    func reset() {
+        self.phoneNumber.layer.borderColor = UIColor.gray.cgColor
+        self.phoneNumber.layer.borderWidth = 0.0
+        self.phoneNumber.text = nil
+        self.destinationInput.text = nil
+        self.trackingDurationSwitch.isOn = true
+        self.trackingDurationPicker.isEnabled = false
+        self.indefiniteTrackingLabel.textColor = UIColor.black
+        self.timedTrackingLabel.textColor = UIColor.gray
     }
     
     @IBAction func trackingDurationSwitchAction(_ sender: Any) {
@@ -67,7 +86,8 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    
+
+
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
         var userFirstName = ""
@@ -128,6 +148,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         phoneNumber.delegate = self
         destinationInput.delegate = self
         trackingDurationPicker.isEnabled = false
+    
     }
     
     

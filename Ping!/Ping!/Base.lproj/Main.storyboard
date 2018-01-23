@@ -192,6 +192,7 @@
                         <outlet property="indefiniteTrackingLabel" destination="enm-sY-upo" id="KAM-gB-QnI"/>
                         <outlet property="phoneNumber" destination="5N3-xG-3BA" id="tXF-1c-4mk"/>
                         <outlet property="searchDisplayController" destination="MTs-Bv-AdE" id="iTm-gf-lrg"/>
+                        <outlet property="sendBtn" destination="vKm-hS-Nq4" id="qZH-15-V5B"/>
                         <outlet property="timedTrackingLabel" destination="cHz-7G-Yet" id="9Wo-YG-WP4"/>
                         <outlet property="trackingDurationPicker" destination="cKl-KM-CSZ" id="oEG-fY-ftN"/>
                         <outlet property="trackingDurationSwitch" destination="zfp-hE-zsz" id="5No-eu-bxq"/>
