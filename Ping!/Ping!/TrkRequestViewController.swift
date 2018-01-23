@@ -9,16 +9,21 @@
 import UIKit
 import OneSignal
 import MapKit
+import CoreLocation
 
 class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!
+   
     @IBOutlet weak var destinationInput: UITextField!
+    var end_long = 0
+    var end_lat = 0
     
     @IBOutlet weak var trackingDurationSwitch: UISwitch!
     
     @IBOutlet weak var trackingDurationPicker: UIDatePicker!
     
+
     
     @IBOutlet weak var timedTrackingLabel: UILabel!
     @IBOutlet weak var indefiniteTrackingLabel: UILabel!
@@ -48,14 +53,27 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    //After user is done editing end destination set la&long
+    @IBAction func endDestination(_ sender: UITextField) {
+        let geocoder = CLGeocoder()
+        let address = destinationInput.text
+        geocoder.geocodeAddressString(address!) {
+            placemarks, error in
+            let placemark = placemarks?.first
+            let end_lat = placemark?.location?.coordinate.latitude
+            let end_long = placemark?.location?.coordinate.longitude
+            print("Lat: \(end_lat ?? 0), Lon: \(end_long ?? 0)")
+        }
+        
+    }
+    
     
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
         var userFirstName = ""
         var phone_number = ""
-        var end_long = 0
-        var end_lat = 0
-        
+
+        //Get hour & min set from date picker
         let date = trackingDurationPicker.date
         let components = Calendar.current.dateComponents([.hour, .minute], from: date)
         let hour = components.hour!
@@ -77,7 +95,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         
         let data = [
             "Phone" : phone_number,
-            "End-Location" : [end_long, end_lat],
+            "End-Location" : [end_lat,end_long],
             "Indefinite" : trackingDurationSwitch.isOn,
             "Duration" : [hour,minute],
             ] as [String : Any]
