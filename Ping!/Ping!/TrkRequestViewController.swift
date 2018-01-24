@@ -14,7 +14,7 @@ import CoreLocation
 class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!
-   
+    
     @IBOutlet weak var destinationInput: UITextField!
     var end_long = 0
     var end_lat = 0
@@ -37,8 +37,8 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         getPlayerIdFromPhoneNumber(phoneNumber: phoneNumber.text!){(value) in
             player_ID = value
             if !value.isEmpty {
-            self.sendTracking2(player_id: player_ID)
-            self.reset()
+                self.sendTracking2(player_id: player_ID)
+                self.reset()
             }
             else{
                 print("empty id")
@@ -86,13 +86,11 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-
-
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
         var userFirstName = ""
         var phone_number = ""
-
+        
         //Get hour & min set from date picker
         let date = trackingDurationPicker.date
         let components = Calendar.current.dateComponents([.hour, .minute], from: date)
@@ -140,6 +138,67 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         }, onFailure: {error in
             print("error = \(error!)")
         })
+        
+        // Send request to DB
+        let requestURL = NSURL(string: "http://52.42.38.63/ioswebservice/api/addrequest.php?")
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        request.httpMethod = "POST"
+        
+        //creating the post parameter by concatenating the keys and values
+        let fromNumber = phone_number
+        let toNumber = phoneNumber.text!
+        
+        let now = NSDate()
+        
+        let expireDateTime = Calendar.current.date(byAdding:
+                .minute,
+                value: hour * 60 + minute,
+                to: now as Date)
+        
+        
+        var postParameters = "req_from_user_phone=\(fromNumber)"
+        postParameters += "&req_to_user_phone=\(toNumber)"
+        
+        if(!trackingDurationSwitch.isOn) {
+        postParameters += "&req_expire_datetime=\(expireDateTime!)"
+        }
+        else {
+        postParameters += "&req_expire_datetime=indefinite"
+        }
+        postParameters += "&req_expire_location_latitude=\(end_lat)"
+        postParameters += "&req_expire_location_longitude=\(end_long)"
+        
+        
+        print("AddRequest PostParms=" + postParameters)
+        //adding the parameters to request body
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        //creating a task to send the post request
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            //parsing the response
+            do {
+                //converting resonse to NSDictionary
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                //parsing the json
+                if let parseJSON = myJSON {
+                    var msg : String!
+                    msg = parseJSON["message"] as! String?
+                    //printing the response
+                    //print(msg)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        //executing the task
+        task.resume()
+        //Prints HTTP POST data in console
+        print(postParameters)
+        
     }
     
     
@@ -148,7 +207,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         phoneNumber.delegate = self
         destinationInput.delegate = self
         trackingDurationPicker.isEnabled = false
-    
+        
     }
     
     
@@ -191,11 +250,11 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
                                 
                                 //Display success dialog
                                 let successAlert = UIAlertController(title: "Tracking request confirmation", message: "Request sent successfully!", preferredStyle: UIAlertControllerStyle.alert)
-                                 successAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                                successAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
                                     
                                     //action code
                                     
-                                 }))
+                                }))
                                 self.present(successAlert, animated: true, completion: nil)
                             } else if(msg == "User does not exist!"){
                                 player_ID = "INVALID"
