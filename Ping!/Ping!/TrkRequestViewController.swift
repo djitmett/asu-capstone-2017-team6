@@ -16,8 +16,6 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var phoneNumber: UITextField!
     
     @IBOutlet weak var destinationInput: UITextField!
-    var end_long = 0
-    var end_lat = 0
     
     @IBOutlet weak var trackingDurationSwitch: UISwitch!
     
@@ -25,6 +23,8 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var sendBtn: UIButton!
     
+    var end_long: Double? = 0.00
+    var end_lat: Double?  = 0.00
     
     @IBOutlet weak var timedTrackingLabel: UILabel!
     @IBOutlet weak var indefiniteTrackingLabel: UILabel!
@@ -79,9 +79,9 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         geocoder.geocodeAddressString(address!) {
             placemarks, error in
             let placemark = placemarks?.first
-            let end_lat = placemark?.location?.coordinate.latitude
-            let end_long = placemark?.location?.coordinate.longitude
-            print("Lat: \(end_lat ?? 0), Lon: \(end_long ?? 0)")
+            self.end_lat = placemark?.location?.coordinate.latitude
+            self.end_long = placemark?.location?.coordinate.longitude
+            print("Lat: \(self.end_lat ?? 0), Lon: \(self.end_long ?? 0)")
         }
         
     }
@@ -154,7 +154,6 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
                 .minute,
                 value: hour * 60 + minute,
                 to: now as Date)
-        
         
         var postParameters = "req_from_user_phone=\(fromNumber)"
         postParameters += "&req_to_user_phone=\(toNumber)"
