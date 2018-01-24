@@ -11,7 +11,7 @@ import OneSignal
 import MapKit
 import CoreLocation
 
-class TrkRequestViewController: UIViewController, UITextFieldDelegate {
+class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!
     
@@ -22,6 +22,9 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var trackingDurationPicker: UIDatePicker!
     
     @IBOutlet weak var sendBtn: UIButton!
+    
+    var resultSearchController = UISearchController(searchResultsController: nil)
+    
     
     var end_long: Double? = 0.00
     var end_lat: Double?  = 0.00
@@ -69,6 +72,47 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
             trackingDurationPicker.isEnabled = true
             timedTrackingLabel.textColor = UIColor.black
             indefiniteTrackingLabel.textColor = UIColor.gray
+        }
+    }
+    
+    @IBAction func enteringDestination(_ sender: Any) {
+        resultSearchController.searchBar.delegate = self
+        present(resultSearchController, animated: true, completion: nil)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //Ignore user events
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        //Activity
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+        
+        self.view.addSubview(activityIndicator)
+        
+        //hide search bar
+        searchBar.resignFirstResponder()
+        dismiss(animated: true, completion:nil)
+        
+        //Search request
+        let searchRequest = MKLocalSearchRequest()
+        searchRequest.naturalLanguageQuery = searchBar.text
+        
+        let activeSearch = MKLocalSearch(request: searchRequest)
+        activeSearch.start { (response, error) in
+            
+            activityIndicator.stopAnimating()
+            UIApplication.shared.endIgnoringInteractionEvents()
+            
+            if response == nil{
+                print("ERROR")
+            }
+            else {
+                 self.destinationInput.text = searchBar.text
+            }
+            
         }
     }
     
@@ -206,6 +250,12 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         phoneNumber.delegate = self
         destinationInput.delegate = self
         trackingDurationPicker.isEnabled = false
+        
+        let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
+        resultSearchController = UISearchController(searchResultsController: locationSearchTable)
+        resultSearchController.searchResultsUpdater = locationSearchTable
+
+        
         
     }
     
