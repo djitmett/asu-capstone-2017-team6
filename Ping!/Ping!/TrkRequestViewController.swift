@@ -8,25 +8,95 @@
 
 import UIKit
 import OneSignal
+import MapKit
+import CoreLocation
 
 class TrkRequestViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!
     
+    @IBOutlet weak var destinationInput: UITextField!
+    
+    @IBOutlet weak var trackingDurationSwitch: UISwitch!
+    
+    @IBOutlet weak var trackingDurationPicker: UIDatePicker!
+    
+    @IBOutlet weak var sendBtn: UIButton!
+    
+    var end_long: Double? = 0.00
+    var end_lat: Double?  = 0.00
+    
+    @IBOutlet weak var timedTrackingLabel: UILabel!
+    @IBOutlet weak var indefiniteTrackingLabel: UILabel!
+    
+    @IBOutlet weak var mapView: MKMapView!
+    
     @IBAction func sendTracking(_ sender: Any) {
         
         var player_ID = ""
-
         getPlayerIdFromPhoneNumber(phoneNumber: phoneNumber.text!){(value) in
             player_ID = value
-            self.sendTracking2(player_id: player_ID)
+            if !value.isEmpty {
+                self.sendTracking2(player_id: player_ID)
+                self.reset()
+            }
+            else{
+                print("empty id")
+                self.phoneNumber.layer.borderColor = UIColor.red.cgColor
+                self.phoneNumber.layer.borderWidth = 1.0
+            }
         }
+    }
+    
+    func reset() {
+        self.phoneNumber.layer.borderColor = UIColor.gray.cgColor
+        self.phoneNumber.layer.borderWidth = 0.0
+        self.phoneNumber.text = nil
+        self.destinationInput.text = nil
+        self.trackingDurationSwitch.isOn = true
+        self.trackingDurationPicker.isEnabled = false
+        self.indefiniteTrackingLabel.textColor = UIColor.black
+        self.timedTrackingLabel.textColor = UIColor.gray
+    }
+    
+    @IBAction func trackingDurationSwitchAction(_ sender: Any) {
+        if trackingDurationSwitch.isOn {
+            trackingDurationPicker.isEnabled = false
+            indefiniteTrackingLabel.textColor = UIColor.black
+            timedTrackingLabel.textColor = UIColor.gray
+        }
+        else {
+            trackingDurationPicker.isEnabled = true
+            timedTrackingLabel.textColor = UIColor.black
+            indefiniteTrackingLabel.textColor = UIColor.gray
+        }
+    }
+    
+    //After user is done editing end destination set la&long
+    @IBAction func endDestination(_ sender: UITextField) {
+        let geocoder = CLGeocoder()
+        let address = destinationInput.text
+        geocoder.geocodeAddressString(address!) {
+            placemarks, error in
+            let placemark = placemarks?.first
+            self.end_lat = placemark?.location?.coordinate.latitude
+            self.end_long = placemark?.location?.coordinate.longitude
+            print("Lat: \(self.end_lat ?? 0), Lon: \(self.end_long ?? 0)")
+        }
+        
     }
     
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
         var userFirstName = ""
         var phone_number = ""
+        
+        //Get hour & min set from date picker
+        let date = trackingDurationPicker.date
+        let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+        let hour = components.hour!
+        let minute = components.minute!
+        
         if (defaults.object(forKey: "userFirstName") != nil) {
             userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
         }
@@ -40,9 +110,14 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         }
         
         //All OneSignal content is in JSON format
+        
         let data = [
             "Phone" : phone_number,
-            ]
+            "End-Location" : [end_lat,end_long],
+            "Indefinite" : trackingDurationSwitch.isOn,
+            "Duration" : [hour,minute],
+            ] as [String : Any]
+        
         let message = userFirstName + " would like to share their location with you."
         print("Player_Id=", player_id)
         let notificationContent = [
@@ -63,21 +138,77 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
         }, onFailure: {error in
             print("error = \(error!)")
         })
+        
+        // Send request to DB
+        let requestURL = NSURL(string: "http://52.42.38.63/ioswebservice/api/addrequest.php?")
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        request.httpMethod = "POST"
+        
+        //creating the post parameter by concatenating the keys and values
+        let fromNumber = phone_number
+        let toNumber = phoneNumber.text!
+        
+        let now = NSDate()
+        
+        let expireDateTime = Calendar.current.date(byAdding:
+                .minute,
+                value: hour * 60 + minute,
+                to: now as Date)
+        
+        var postParameters = "req_from_user_phone=\(fromNumber)"
+        postParameters += "&req_to_user_phone=\(toNumber)"
+        
+        if(!trackingDurationSwitch.isOn) {
+        postParameters += "&req_expire_datetime=\(expireDateTime!)"
+        }
+        else {
+        postParameters += "&req_expire_datetime=indefinite"
+        }
+        postParameters += "&req_expire_location_latitude=\(end_lat)"
+        postParameters += "&req_expire_location_longitude=\(end_long)"
+        
+        
+        print("AddRequest PostParms=" + postParameters)
+        //adding the parameters to request body
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        //creating a task to send the post request
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            //parsing the response
+            do {
+                //converting resonse to NSDictionary
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                //parsing the json
+                if let parseJSON = myJSON {
+                    var msg : String!
+                    msg = parseJSON["message"] as! String?
+                    //printing the response
+                    //print(msg)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        //executing the task
+        task.resume()
+        //Prints HTTP POST data in console
+        print(postParameters)
+        
     }
     
-    @IBAction func clearTracking(_ sender: Any) {
-        print("@ClearTracking")
-        let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "currentTrackedUser") != nil){
-            defaults.removeObject(forKey: "currentTrackedUser")
-            print("Cleared tracked user")
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         phoneNumber.delegate = self
+        destinationInput.delegate = self
+        trackingDurationPicker.isEnabled = false
+        
     }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
@@ -115,8 +246,24 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
                             if(msg == "Operation successfully!"){
                                 data = parseJSON["data"] as! NSArray?
                                 player_ID = (data[1] as? String)!
+                                
+                                //Display success dialog
+                                let successAlert = UIAlertController(title: "Tracking request confirmation", message: "Request sent successfully!", preferredStyle: UIAlertControllerStyle.alert)
+                                successAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                                    
+                                    //action code
+                                    
+                                }))
+                                self.present(successAlert, animated: true, completion: nil)
                             } else if(msg == "User does not exist!"){
                                 player_ID = "INVALID"
+                                let failAlert = UIAlertController(title: "Tracking request confirmation", message: "Request failed! User does not exist.", preferredStyle: UIAlertControllerStyle.alert)
+                                failAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                                    
+                                    //action code
+                                    
+                                }))
+                                self.present(failAlert, animated: true, completion: nil)
                             }
                         }
                         completion(player_ID)
@@ -127,6 +274,8 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate {
             }
         })
         task.resume()
+        
+        
     }
     
 }
