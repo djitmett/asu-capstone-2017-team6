@@ -47,20 +47,26 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     //MARK: UIImagePickerControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         // Dismiss the picker if the user canceled.
+        print("image picker cancel")
         dismiss(animated: true, completion: nil)
+        
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        avatarImageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        print("image picker controller")
+        self.dismiss(animated: true, completion: nil)
         
+        //below was the original code:
         // The info dictionary may contain multiple representations of the image. You want to use the original.
-        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
-        }
-        
-        // Set photoImageView to display the selected image.
-        avatarImageView.image = selectedImage
-        
-        // Dismiss the picker.
-        dismiss(animated: true, completion: nil)
+//        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+//            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+//        }
+//
+//        // Set photoImageView to display the selected image.
+//        avatarImageView.image = selectedImage
+//
+//        // Dismiss the picker.
+//        dismiss(animated: true, completion: nil)
     }
     
     
@@ -76,26 +82,14 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         
         // UIImagePickerController is a view controller that lets a user pick media from their photo library.
         let imagePickerController = UIImagePickerController()
-        
-        // Only allow photos to be picked, not taken.
-        imagePickerController.sourceType = .photoLibrary
-        
-        // Make sure ViewController is notified when the user picks an image.
         imagePickerController.delegate = self
-        present(imagePickerController, animated: true, completion: nil)
-        
-        //DOESN'T WORK YET
-        //Save image
-        //let img = avatarImageView.image
-        //let data = UIImagePNGRepresentation(img!)
-        //UserDefaults.standard.set(data, forKey: "myImageKey")
-        //UserDefaults.standard.synchronize()
-        
+        imagePickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        self.present(imagePickerController, animated: true, completion: nil)
     }
     
     //Sign up button
     @IBAction func signupBtn(_ sender: Any) {
-        
+        print("signup button pressed ")
         //OneSignal player_id as user_device_id for now
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil){
@@ -122,18 +116,37 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         let todaysDate = dateFormatterGet.string(from: date)
         usertime = todaysDate
         
+        //save image and compress to lowest quality range is 0.0 to 1.0
+        //can also make PNG Rep
+        let imageData = UIImageJPEGRepresentation(avatarImageView.image!, 0.0)
+        //should never be nil because of default photo
+        if(imageData==nil) {
+            print("image data is nil")
+            return;
+            
+        }
+        //debug:
+        print("the image data is ", imageData)
+        
+        
         //CALL THE SIGN UP FUNCTION (SEND DATA TO DB)
-        sign_up(first_name: user_first_name, last_name: user_last_name)
+        sign_up(first_name: user_first_name, last_name: user_last_name, imageDataKey: imageData! as NSData)
+//        sign_up(first_name: user_first_name, last_name: user_last_name)
         
     }
     
-    func sign_up(first_name:String, last_name:String) {
-        
+    func sign_up(first_name:String, last_name:String, imageDataKey: NSData) {
+//    func sign_up(first_name:String, last_name:String) {
+    
         //URL is defined above
+        print("sign_up")
         let requestURL = NSURL(string: URL_SIGNUP)
         
         //creating NSMutableURLRequest
         let request = NSMutableURLRequest(url: requestURL! as URL)
+        
+        let useravatar_test = imageDataKey
+        print("useravatar_test", useravatar_test)
         
         //setting the method to post
         request.httpMethod = "POST"
@@ -168,7 +181,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
                     msg = parseJSON["message"] as! String?
                     
                     //printing the response
-                    //print(msg)
+                    print(msg)
                     
                 }
             } catch {
@@ -179,7 +192,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
-        //print(postParameters)
+        print(postParameters)
     }
     
     override func viewDidLoad() {
