@@ -357,7 +357,7 @@
         <!--Edit Profile-->
         <scene sceneID="PJ7-c7-eDz">
             <objects>
-                <viewController storyboardIdentifier="EditProfileViewController" id="8YV-7k-ZPY" customClass="EditProfileViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditProfileViewController" id="8YV-7k-ZPY" customClass="EditProfileViewController" customModule="Ping_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5JU-KA-qxK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -371,6 +371,9 @@
                                     <constraint firstAttribute="width" constant="136" id="28p-x4-dD2"/>
                                 </constraints>
                                 <state key="normal" title="Change Avatar"/>
+                                <connections>
+                                    <action selector="ChangeAvatarButton:" destination="8YV-7k-ZPY" eventType="touchUpInside" id="eR7-td-737"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="reT-cY-bI0">
                                 <rect key="frame" x="83" y="247" width="248" height="30"/>
@@ -413,6 +416,9 @@
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="SaveButtonTapped:" destination="8YV-7k-ZPY" eventType="touchUpInside" id="y13-W2-pZn"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -448,8 +454,21 @@
                         <viewLayoutGuide key="safeArea" id="0ne-Wl-SaL"/>
                     </view>
                     <navigationItem key="navigationItem" title="Edit Profile" id="V78-fp-4yU">
-                        <barButtonItem key="rightBarButtonItem" title="Done" id="84k-GP-qwZ"/>
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="84k-GP-qwZ">
+                            <connections>
+                                <action selector="doneButtonTapped:" destination="8YV-7k-ZPY" id="m7r-Hx-gJi"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="AvatarImageView" destination="Egv-rO-slI" id="ZF6-2v-2sH"/>
+                        <outlet property="EmailTextField" destination="M3x-2j-SRf" id="ehm-af-hB6"/>
+                        <outlet property="FirstNameTextField" destination="reT-cY-bI0" id="Gtq-nY-h1u"/>
+                        <outlet property="LastNameTextField" destination="m3n-Qv-tFJ" id="K1w-YM-apM"/>
+                        <outlet property="PasswordTextField" destination="4Wg-aY-Qcm" id="9sI-eh-9L3"/>
+                        <outlet property="PhoneNumberTextField" destination="XCf-hD-bbJ" id="Sa7-gu-aQX"/>
+                        <outlet property="RepeatPasswordTextField" destination="aK6-Jj-VCc" id="iCp-LJ-3qg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Ib-8q-cOw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
