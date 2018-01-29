@@ -10,7 +10,7 @@ import UIKit
 import OneSignal
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
+class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver  {
     
     var window: UIWindow?
     

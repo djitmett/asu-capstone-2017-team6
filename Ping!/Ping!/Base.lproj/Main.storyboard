@@ -372,7 +372,7 @@
                                 </constraints>
                                 <state key="normal" title="Change Avatar"/>
                                 <connections>
-                                    <action selector="ChangeAvatarButton:" destination="8YV-7k-ZPY" eventType="touchUpInside" id="eR7-td-737"/>
+                                    <action selector="ChangeAvatarTapped:" destination="8YV-7k-ZPY" eventType="touchUpInside" id="ENl-bQ-iiU"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="reT-cY-bI0">
@@ -417,7 +417,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Save"/>
                                 <connections>
-                                    <action selector="SaveButtonTapped:" destination="8YV-7k-ZPY" eventType="touchUpInside" id="y13-W2-pZn"/>
+                                    <action selector="SaveButtonTapped:" destination="8YV-7k-ZPY" eventType="touchUpInside" id="mPG-z4-vnh"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -456,7 +456,7 @@
                     <navigationItem key="navigationItem" title="Edit Profile" id="V78-fp-4yU">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="84k-GP-qwZ">
                             <connections>
-                                <action selector="doneButtonTapped:" destination="8YV-7k-ZPY" id="m7r-Hx-gJi"/>
+                                <action selector="doneButtonTapped:" destination="8YV-7k-ZPY" id="ZUp-iW-5BO"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
