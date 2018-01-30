@@ -21,7 +21,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
 func getRequestFromPhone(phone_number: String, completion: @escaping (_ trackLat: Double, _ trackLong: Double, _ lastUpdate: String) -> ()) {
         let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestbyto.php?"
         let postParameters = "user_phone="+phone_number;
-    var pendRequest = [String ] ()// array to fill with pending request
+    var pendRequest = [String] ()// array to fill with pending request
         var request = URLRequest(url: URL(string: requestURL+postParameters)!)
         request.httpMethod = "POST"
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
