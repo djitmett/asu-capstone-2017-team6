@@ -11,28 +11,31 @@ import OneSignal
 import MapKit
 import CoreLocation
 
+protocol HandleMapSearch {
+    func dropPinZoomIn(placemark:MKPlacemark)
+}
+
 class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!
-    
     @IBOutlet weak var destinationInput: UITextField!
-    
     @IBOutlet weak var trackingDurationSwitch: UISwitch!
-    
     @IBOutlet weak var trackingDurationPicker: UIDatePicker!
-    
     @IBOutlet weak var sendBtn: UIButton!
-    
-    var resultSearchController = UISearchController(searchResultsController: nil)
-    
-    
-    var end_long: Double? = 0.00
-    var end_lat: Double?  = 0.00
-    
     @IBOutlet weak var timedTrackingLabel: UILabel!
     @IBOutlet weak var indefiniteTrackingLabel: UILabel!
     
     @IBOutlet weak var mapView: MKMapView!
+    var selectedPin:MKPlacemark? = nil
+    let locationManager = CLLocationManager()
+    
+    var resultSearchController = UISearchController(searchResultsController: nil)
+    
+    //Default geocoords
+    var end_long: Double? = 0.00
+    var end_lat: Double?  = 0.00
+    
+
     
     @IBAction func sendTracking(_ sender: Any) {
         
@@ -111,24 +114,30 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
             }
             else {
                  self.destinationInput.text = searchBar.text
+                //self.destinationInput.text = mapView.ann
+                
+                print(self.mapView.annotations.description)
+                
             }
             
         }
     }
     
-    //After user is done editing end destination set la&long
+    //Previous version of obtaining lat & long
+    /*
     @IBAction func endDestination(_ sender: UITextField) {
         let geocoder = CLGeocoder()
         let address = destinationInput.text
+      
         geocoder.geocodeAddressString(address!) {
             placemarks, error in
             let placemark = placemarks?.first
             self.end_lat = placemark?.location?.coordinate.latitude
             self.end_long = placemark?.location?.coordinate.longitude
             print("Lat: \(self.end_lat ?? 0), Lon: \(self.end_long ?? 0)")
-        }
-        
-    }
+         }
+     }
+         */
     
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
@@ -208,8 +217,8 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
         else {
         postParameters += "&req_expire_datetime=indefinite"
         }
-        postParameters += "&req_expire_location_latitude=\(end_lat)"
-        postParameters += "&req_expire_location_longitude=\(end_long)"
+        postParameters += "&req_expire_location_latitude=\(end_lat!)"
+        postParameters += "&req_expire_location_longitude=\(end_long!)"
         
         
         print("AddRequest PostParms=" + postParameters)
@@ -244,21 +253,26 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
         
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         phoneNumber.delegate = self
         destinationInput.delegate = self
         trackingDurationPicker.isEnabled = false
         
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
+        
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
+        locationSearchTable.handleMapSearchDelegate = self
+        
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
         resultSearchController.searchResultsUpdater = locationSearchTable
-
-        
+        locationSearchTable.handleMapSearchDelegate = self
+        locationSearchTable.mapView = mapView
         
     }
-    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
@@ -329,3 +343,65 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
     }
     
 }
+extension TrkRequestViewController : CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.requestLocation()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            let span = MKCoordinateSpanMake(0.05, 0.05)
+            let region = MKCoordinateRegion(center: location.coordinate, span: span)
+            mapView.setRegion(region, animated: true)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error:: (error)")
+    }
+}
+
+extension TrkRequestViewController: HandleMapSearch {
+    func dropPinZoomIn(placemark:MKPlacemark){
+        selectedPin = placemark
+        mapView.removeAnnotations(mapView.annotations)
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        if let city = placemark.locality,
+            let state = placemark.administrativeArea {
+            annotation.subtitle = "\(city) \(state)"
+        }
+        
+        //Construct address
+        var addressLine = "\(placemark.subThoroughfare!) "
+        addressLine += "\(placemark.thoroughfare!), "
+        addressLine += "\(placemark.locality!) "
+        addressLine += "\(placemark.administrativeArea!)"
+        
+        //Update variables based on cell selection
+        destinationInput.text = addressLine
+        end_lat = annotation.coordinate.latitude
+        end_long = annotation.coordinate.longitude
+        
+        mapView.addAnnotation(annotation)
+        let span = MKCoordinateSpanMake(0.01, 0.01)
+        let region = MKCoordinateRegionMake(placemark.coordinate, span)
+        mapView.setRegion(region, animated: true)
+    }
+}
+
+extension LocationSearchTable {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+        let selectedItem = matchingItems[indexPath.row].placemark
+        handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
+        dismiss(animated: true, completion: nil)
+        print(selectedItem.coordinate.latitude)
+        print(selectedItem.coordinate.longitude)
+    }
+}
+
+

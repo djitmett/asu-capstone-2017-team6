@@ -108,38 +108,37 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="endDestination:" destination="FK0-ne-th7" eventType="editingDidEnd" id="Pwa-3j-uj7"/>
                                     <action selector="enteringDestination:" destination="FK0-ne-th7" eventType="editingDidBegin" id="oWi-oH-Aff"/>
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vKm-hS-Nq4">
-                                <rect key="frame" x="160" y="483" width="96" height="30"/>
+                                <rect key="frame" x="160" y="627" width="96" height="30"/>
                                 <state key="normal" title="Send Request"/>
                                 <connections>
                                     <action selector="sendTracking:" destination="FK0-ne-th7" eventType="touchUpInside" id="9id-cP-Y7c"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a tracking duration " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ef-n9-dGL">
-                                <rect key="frame" x="43" y="274" width="355" height="21"/>
+                                <rect key="frame" x="43" y="418" width="355" height="21"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zfp-hE-zsz">
-                                <rect key="frame" x="349" y="303" width="51" height="31"/>
+                                <rect key="frame" x="349" y="447" width="51" height="31"/>
                                 <connections>
                                     <action selector="trackingDurationSwitchAction:" destination="FK0-ne-th7" eventType="valueChanged" id="9aA-qk-oCN"/>
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timed tracking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHz-7G-Yet">
-                                <rect key="frame" x="43" y="344" width="274" height="21"/>
+                                <rect key="frame" x="43" y="488" width="274" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <datePicker contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" minuteInterval="15" translatesAutoresizingMaskIntoConstraints="NO" id="cKl-KM-CSZ">
-                                <rect key="frame" x="42" y="373" width="355" height="45"/>
+                                <rect key="frame" x="42" y="517" width="355" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="YBs-j3-g1G"/>
                                 </constraints>
@@ -148,11 +147,14 @@
                                 </date>
                             </datePicker>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Indefinite tracking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enm-sY-upo">
-                                <rect key="frame" x="43" y="308" width="274" height="21"/>
+                                <rect key="frame" x="43" y="452" width="274" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EOT-bl-25M">
+                                <rect key="frame" x="42" y="262" width="355" height="148"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -171,16 +173,20 @@
                             <constraint firstItem="cN8-zn-4zY" firstAttribute="trailing" secondItem="5N3-xG-3BA" secondAttribute="trailing" constant="3" id="VTl-Yt-UFp"/>
                             <constraint firstItem="5N3-xG-3BA" firstAttribute="top" secondItem="cN8-zn-4zY" secondAttribute="bottom" constant="20" id="XR1-ok-d2J"/>
                             <constraint firstItem="cKl-KM-CSZ" firstAttribute="top" secondItem="cHz-7G-Yet" secondAttribute="bottom" constant="8" symbolic="YES" id="bUl-bs-eh3"/>
+                            <constraint firstItem="4ef-n9-dGL" firstAttribute="top" secondItem="EOT-bl-25M" secondAttribute="bottom" constant="8" symbolic="YES" id="cqa-3D-69X"/>
+                            <constraint firstItem="EOT-bl-25M" firstAttribute="trailing" secondItem="djg-dg-0JU" secondAttribute="trailing" id="emY-Ic-EgC"/>
                             <constraint firstItem="djg-dg-0JU" firstAttribute="trailing" secondItem="4ef-n9-dGL" secondAttribute="trailing" constant="-1" id="gAn-eW-BqF"/>
-                            <constraint firstItem="4ef-n9-dGL" firstAttribute="top" secondItem="djg-dg-0JU" secondAttribute="bottom" constant="20" id="hVE-BP-qR0"/>
+                            <constraint firstItem="4ef-n9-dGL" firstAttribute="top" secondItem="djg-dg-0JU" secondAttribute="bottom" constant="164" id="hVE-BP-qR0"/>
                             <constraint firstItem="KT8-uJ-Fe7" firstAttribute="trailing" secondItem="djg-dg-0JU" secondAttribute="trailing" id="imm-5Q-n3Q"/>
                             <constraint firstItem="cN8-zn-4zY" firstAttribute="top" secondItem="xZj-ei-cG5" secondAttribute="top" constant="36" id="j8m-Zv-4i8"/>
+                            <constraint firstItem="EOT-bl-25M" firstAttribute="leading" secondItem="djg-dg-0JU" secondAttribute="leading" id="k4r-C5-xhc"/>
                             <constraint firstItem="cN8-zn-4zY" firstAttribute="leading" secondItem="xZj-ei-cG5" secondAttribute="leading" constant="42" id="lcH-Ld-9w9"/>
                             <constraint firstItem="cHz-7G-Yet" firstAttribute="leading" secondItem="cKl-KM-CSZ" secondAttribute="leading" constant="1" id="n0e-aS-AMh"/>
                             <constraint firstItem="xZj-ei-cG5" firstAttribute="trailing" secondItem="zfp-hE-zsz" secondAttribute="trailing" constant="16" id="oFc-ih-ABW"/>
                             <constraint firstItem="djg-dg-0JU" firstAttribute="top" secondItem="KT8-uJ-Fe7" secondAttribute="bottom" constant="16" id="p5B-k0-rrY"/>
                             <constraint firstItem="KT8-uJ-Fe7" firstAttribute="leading" secondItem="djg-dg-0JU" secondAttribute="leading" id="qZX-FV-H1V"/>
                             <constraint firstItem="cN8-zn-4zY" firstAttribute="leading" secondItem="5N3-xG-3BA" secondAttribute="leading" id="rcP-g0-KbG"/>
+                            <constraint firstItem="EOT-bl-25M" firstAttribute="top" secondItem="djg-dg-0JU" secondAttribute="bottom" constant="8" symbolic="YES" id="uRP-0N-nzX"/>
                             <constraint firstItem="KT8-uJ-Fe7" firstAttribute="leading" secondItem="5N3-xG-3BA" secondAttribute="leading" id="ued-H6-o5T"/>
                             <constraint firstItem="enm-sY-upo" firstAttribute="top" secondItem="4ef-n9-dGL" secondAttribute="bottom" constant="13" id="yLV-c1-qr7"/>
                             <constraint firstItem="enm-sY-upo" firstAttribute="leading" secondItem="cHz-7G-Yet" secondAttribute="leading" id="zG0-dy-Ttb"/>
@@ -191,6 +197,7 @@
                     <connections>
                         <outlet property="destinationInput" destination="djg-dg-0JU" id="kFm-bT-Rz8"/>
                         <outlet property="indefiniteTrackingLabel" destination="enm-sY-upo" id="KAM-gB-QnI"/>
+                        <outlet property="mapView" destination="EOT-bl-25M" id="7s6-do-d8e"/>
                         <outlet property="phoneNumber" destination="5N3-xG-3BA" id="tXF-1c-4mk"/>
                         <outlet property="searchDisplayController" destination="MTs-Bv-AdE" id="iTm-gf-lrg"/>
                         <outlet property="sendBtn" destination="vKm-hS-Nq4" id="qZH-15-V5B"/>
