@@ -6,7 +6,7 @@
 //  Copyright © 2017 Darya T Jitmetta. All rights reserved.
 //
 // test
-// this is a test
+// 
 import UIKit
 import OneSignal
 
