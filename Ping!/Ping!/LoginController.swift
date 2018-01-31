@@ -5,7 +5,6 @@
 //  Created by Darya T Jitmetta on 11/20/17.
 //  Copyright © 2017 Darya T Jitmetta. All rights reserved.
 //
-// user story 58 
 
 import UIKit
 
