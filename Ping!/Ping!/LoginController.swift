@@ -114,7 +114,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                                     
                                     if(logged){
                                         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
+                                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "MainNavController")
                                         self.present(nextViewController, animated:true, completion:nil)
                                     }
                                 }
