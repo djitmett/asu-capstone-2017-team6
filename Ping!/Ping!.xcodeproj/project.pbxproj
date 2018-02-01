@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		087BDF67081A8D75F4714EB7 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4283C5AEBECDAE902C9BE57 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411933001FBFE8D600EBF885 /* TrkRequestViewController.swift */; };
+		4B1385762018573E009AD8A9 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1385752018573E009AD8A9 /* LocationSearchTable.swift */; };
 		4B13FA4E1FBE4F6700282BAA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B13FA4D1FBE4F6700282BAA /* User.swift */; };
 		4B3283AC1F995D0A00302E3E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AB1F995D0A00302E3E /* AppDelegate.swift */; };
 		4B3283AE1F995D0A00302E3E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AD1F995D0A00302E3E /* ViewController.swift */; };
@@ -20,9 +21,11 @@
 		4B7C1EE41FC37EA500DB1EFB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C1EE31FC37EA500DB1EFB /* LoginController.swift */; };
 		4B7C1EE61FC37F8000DB1EFB /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */; };
 		4BACA2CE1F996AAA00CD0C2E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BACA2CD1F996AAA00CD0C2E /* MapKit.framework */; };
+		4BBAB1DB20155886001F7BD1 /* TrkRequestMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBAB1DA20155886001F7BD1 /* TrkRequestMainViewController.swift */; };
 		600A43EAC697AFB1C532EDAC /* Pods_Ping_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FB190DE3BDC4F2207D7548D /* Pods_Ping_Tests.framework */; };
 		739FDF82C96A27599AEAE22F /* Pods_Ping_UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8A5E7166BABD62E7C817A9 /* Pods_Ping_UITests.framework */; };
 		9798751D43F899639D7DE8CF /* Pods_Ping_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCDF405989B0AB456670615 /* Pods_Ping_.framework */; };
+		D71EE64D201E5C3700F12FFB /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71EE64C201E5C3700F12FFB /* EditProfileViewController.swift */; };
 		D72B3BA41FAE7A36000F3080 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72B3BA31FAE7A36000F3080 /* NotificationService.swift */; };
 		D72B3BA81FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D72B3BA11FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -71,6 +74,7 @@
 		1E8A5E7166BABD62E7C817A9 /* Pods_Ping_UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ping_UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		411933001FBFE8D600EBF885 /* TrkRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrkRequestViewController.swift; sourceTree = "<group>"; };
 		428A905D1767A819F40DB5F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		4B1385752018573E009AD8A9 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		4B13FA4D1FBE4F6700282BAA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4B3283A81F995D0A00302E3E /* Ping!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ping!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3283AB1F995D0A00302E3E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -88,12 +92,14 @@
 		4B7C1EE31FC37EA500DB1EFB /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		4BACA2CD1F996AAA00CD0C2E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		4BBAB1DA20155886001F7BD1 /* TrkRequestMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrkRequestMainViewController.swift; sourceTree = "<group>"; };
 		4BD4B86D1F99634C0094CCA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		7CCDF405989B0AB456670615 /* Pods_Ping_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ping_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D479030ACE8FFED384BDBD /* Pods-Ping!.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!/Pods-Ping!.debug.xcconfig"; sourceTree = "<group>"; };
 		A82F199438B6F1A583CA8A53 /* Pods-Ping!Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!Tests/Pods-Ping!Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		ACFD2CB78073CFB7B01AD42B /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		B86F9F615BC32FBCA0E4A952 /* Pods-Ping!.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!/Pods-Ping!.release.xcconfig"; sourceTree = "<group>"; };
+		D71EE64C201E5C3700F12FFB /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		D72B3BA11FAE7A36000F3080 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D72B3BA31FAE7A36000F3080 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		D72B3BA51FAE7A36000F3080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -171,6 +177,9 @@
 				4B3283AB1F995D0A00302E3E /* AppDelegate.swift */,
 				4B3283AD1F995D0A00302E3E /* ViewController.swift */,
 				4B3283AF1F995D0A00302E3E /* Main.storyboard */,
+				D71EE64C201E5C3700F12FFB /* EditProfileViewController.swift */,
+				4B1385752018573E009AD8A9 /* LocationSearchTable.swift */,
+				4BBAB1DA20155886001F7BD1 /* TrkRequestMainViewController.swift */,
 				4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */,
 				4B7C1EE31FC37EA500DB1EFB /* LoginController.swift */,
 				4B13FA4D1FBE4F6700282BAA /* User.swift */,
@@ -606,10 +615,13 @@
 				4B7C1EE61FC37F8000DB1EFB /* ProfileController.swift in Sources */,
 				411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */,
 				4B7C1EE41FC37EA500DB1EFB /* LoginController.swift in Sources */,
+				4B1385762018573E009AD8A9 /* LocationSearchTable.swift in Sources */,
 				4B13FA4E1FBE4F6700282BAA /* User.swift in Sources */,
 				4B3283AE1F995D0A00302E3E /* ViewController.swift in Sources */,
 				4B615DC51FBE2E6F006067F9 /* SignUpController.swift in Sources */,
 				4B3283AC1F995D0A00302E3E /* AppDelegate.swift in Sources */,
+				4BBAB1DB20155886001F7BD1 /* TrkRequestMainViewController.swift in Sources */,
+				D71EE64D201E5C3700F12FFB /* EditProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
