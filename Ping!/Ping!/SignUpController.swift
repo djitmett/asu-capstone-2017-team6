@@ -116,46 +116,56 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         let todaysDate = dateFormatterGet.string(from: date)
         usertime = todaysDate
         
-        //save image and compress to lowest quality range is 0.0 to 1.0
-        //can also make PNG Rep
-        let imageData = UIImageJPEGRepresentation(avatarImageView.image!, 0.0)
-        //should never be nil because of default photo
-        if(imageData==nil) {
-            print("image data is nil")
-            return;
-            
-        }
-        //debug:
-        print("the image data is ", imageData)
-        
-        
         //CALL THE SIGN UP FUNCTION (SEND DATA TO DB)
-        sign_up(first_name: user_first_name, last_name: user_last_name, imageDataKey: imageData! as NSData)
-//        sign_up(first_name: user_first_name, last_name: user_last_name)
+        sign_up(first_name: user_first_name, last_name: user_last_name)
         
     }
     
-    func sign_up(first_name:String, last_name:String, imageDataKey: NSData) {
-//    func sign_up(first_name:String, last_name:String) {
+    func sign_up(first_name:String, last_name:String) {
     
         //URL is defined above
         print("sign_up")
-        let requestURL = NSURL(string: URL_SIGNUP)
-        
-        //creating NSMutableURLRequest
-        let request = NSMutableURLRequest(url: requestURL! as URL)
-        
-        let useravatar_test = imageDataKey
-        print("useravatar_test", useravatar_test)
-        
-        //setting the method to post
+        var request = URLRequest(url: URL(string: URL_SIGNUP)!)
         request.httpMethod = "POST"
+        let boundary = generateBoundaryString()
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         //creating the post parameter by concatenating the keys and values from text field
-        let postParameters = "user_fb_id= "+userfbid+"&user_type="+usertype+"&user_device_id="+user_device_id+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_phone="+phone+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
+        let postParameters = [
+            "user_fb_id" : userfbid,
+            "user_type" : usertype,
+            "user_device_id" : user_device_id,
+            "user_first_name" : user_first_name,
+            "user_last_name" : user_last_name,
+            "user_phone" : phone,
+            "user_email" : email,
+            "user_password" : password,
+            "user_join_datetime" : usertime,
+            //            "user_avatar" : useravatar
+        ]
+        let imageData = UIImageJPEGRepresentation(avatarImageView.image!, 0.0)
         
-        //adding the parameters to request body
-        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        request.httpBody = createBody(parameters: postParameters,
+                                boundary: boundary,
+                                data: imageData!,
+                                mimeType: "image/jpg",
+                                filename: useravatar)
+        
+        let fileName = useravatar
+        //        let mimetype = "image/jpg"
+        //        let fieldName = "user_avatar1"
+        //
+        //
+        //
+        ////        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        //
+        //
+        //        //GET IMAGE DATA
+        ////        let avatarImageData = imageDataKey
+        //
+        ////        request.httpBody = createBodyWithParameters(parameters: postParameters, filePathKey: "user_avatar", imageDataKey: avatarImageData, boundary: boundary) as Data
+        
+        
         
         //creating a task to send the post request
         let task = URLSession.shared.dataTask(with: request as URLRequest){
@@ -195,6 +205,58 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         print(postParameters)
     }
     
+    func createBody(parameters: [String: String],
+                    boundary: String,
+                    data: Data,
+                    mimeType: String,
+                    filename: String) -> Data {
+        let body = NSMutableData()
+        
+        print("body1 is ", body.length)
+        //        print("body1 is ", body)
+        let stringTest1 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+        //        print("the body1 is ", stringTest1)
+        
+        let boundaryPrefix = "--\(boundary)\r\n"
+        
+        for (key, value) in parameters {
+            body.appendString(boundaryPrefix)
+            body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+            body.appendString("\(value)\r\n")
+        }
+        print("body2 is ", body.length)
+        //        print("body2 is ", body)
+        let stringTest2 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+        //        print("the body2 is ", stringTest2)
+        
+        body.appendString(boundaryPrefix)
+        //        body.appendString("Content-Disposition: form-data; name=\"user_avatar\"; filename=\"\(filename)\"\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"user_avatar\"\r\n\r\n")
+        //        body.appendString("Content-Type: \(mimeType)\r\n\r\n")
+        
+        print("body3 is ", body.length)
+        //        print("body3 is ", body)
+        let stringTest3 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+        print("the body3 is ", stringTest3)
+        
+        body.appendString("testimage.jpg\r\n")
+        
+        //        body.append(data)
+        //        body.appendString("\r\n")
+        body.appendString("--".appending(boundary.appending("--")))
+        
+        print("body4 is ", body.length)
+        //        print("body4 is ", body)
+        let stringTest4 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+        print("the body4 is ", stringTest4)
+        
+        return body as Data
+    }
+    
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().uuidString)"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -207,3 +269,10 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     }
     
 }
+extension NSMutableData{
+    func appendString(_ string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: false)
+        append(data!)
+    }
+}
+
