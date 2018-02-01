@@ -11,6 +11,7 @@ import CoreLocation
 import OneSignal
 
 //Loading extension for map loading spinner
+/*
 extension UIViewController {
     class func displaySpinner(onView : UIView) -> UIView {
         let spinnerView = UIView.init(frame: onView.bounds)
@@ -26,6 +27,7 @@ extension UIViewController {
         
         return spinnerView
     }
+
     
     class func removeSpinner(spinner :UIView) {
         DispatchQueue.main.async {
@@ -33,7 +35,7 @@ extension UIViewController {
         }
     }
 }
-
+ */
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     //Spinner view variable
@@ -94,7 +96,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         
         //Create spinner view
-        sv = UIViewController.displaySpinner(onView: self.view)
+       // sv = UIViewController.displaySpinner(onView: self.view)
         
         //Map
         manager.delegate = self
@@ -116,7 +118,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //}
         
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
-        //mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
+        mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
     }
     
     func updateUserLocation(userPhone:String, latitude:Double, longitude:Double) {
@@ -194,7 +196,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             else {
                 //NO DATA TO SEND
                 //Remove spinner view after labels have been updated
-                UIViewController.removeSpinner(spinner: sv)
+               // UIViewController.removeSpinner(spinner: sv)
                 
             }
         }
@@ -232,7 +234,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.line3Label.text = "User loc updated @ " + locUpdate
         
         //Remove spinner view after labels have been updated
-        UIViewController.removeSpinner(spinner: sv)
+        //UIViewController.removeSpinner(spinner: sv)
     }
     
     func getLocationFromPhone(phone_number: String, completion: @escaping (_ trackLat: Double, _ trackLong: Double, _ lastUpdate: String) -> ()) {

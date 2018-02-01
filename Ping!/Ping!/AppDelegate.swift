@@ -5,12 +5,12 @@
 //  Created by Darya T Jitmetta on 10/19/17.
 //  Copyright © 2017 Darya T Jitmetta. All rights reserved.
 //
-// test1
+// test
 import UIKit
 import OneSignal
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver  {
+class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
     
     var window: UIWindow?
     
@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver  {
                     print("Indefinite tracking is ON")
                 }
                 else {
-                   print("Set tracking duration: ", additionalData["Duration"]!)
+                    print("Set tracking duration: ", additionalData["Duration"]!)
                 }
                 
                 let phone_number = additionalData["Phone"]! as! String
@@ -67,7 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver  {
                         defaults.set(phone_number, forKey: "currentTrackedUser") // was user_id, now phone_number
                         // Navigate to map page
                         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
+                        //let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! UITabBarController
+                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "MainNavController")
                         self.window = UIWindow(frame: UIScreen.main.bounds)
                         self.window?.rootViewController = nextViewController
                         self.window?.makeKeyAndVisible()
@@ -117,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver  {
             
             window = UIWindow(frame: UIScreen.main.bounds)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            window?.rootViewController = storyboard.instantiateViewController(withIdentifier: (logged ? "TabController" : "Login"))
+            window?.rootViewController = storyboard.instantiateViewController(withIdentifier: (logged ? "MainNavController" : "Login"))
             window?.makeKeyAndVisible()
         }
         
