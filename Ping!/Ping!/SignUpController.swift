@@ -48,20 +48,26 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     //MARK: UIImagePickerControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         // Dismiss the picker if the user canceled.
+        print("image picker cancel")
         dismiss(animated: true, completion: nil)
+        
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        avatarImageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        print("image picker controller")
+        self.dismiss(animated: true, completion: nil)
         
+        //below was the original code:
         // The info dictionary may contain multiple representations of the image. You want to use the original.
-        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
-        }
-        
-        // Set photoImageView to display the selected image.
-        avatarImageView.image = selectedImage
-        
-        // Dismiss the picker.
-        dismiss(animated: true, completion: nil)
+//        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+//            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+//        }
+//
+//        // Set photoImageView to display the selected image.
+//        avatarImageView.image = selectedImage
+//
+//        // Dismiss the picker.
+//        dismiss(animated: true, completion: nil)
     }
     
     
@@ -77,26 +83,14 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         
         // UIImagePickerController is a view controller that lets a user pick media from their photo library.
         let imagePickerController = UIImagePickerController()
-        
-        // Only allow photos to be picked, not taken.
-        imagePickerController.sourceType = .photoLibrary
-        
-        // Make sure ViewController is notified when the user picks an image.
         imagePickerController.delegate = self
-        present(imagePickerController, animated: true, completion: nil)
-        
-        //DOESN'T WORK YET
-        //Save image
-        //let img = avatarImageView.image
-        //let data = UIImagePNGRepresentation(img!)
-        //UserDefaults.standard.set(data, forKey: "myImageKey")
-        //UserDefaults.standard.synchronize()
-        
+        imagePickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        self.present(imagePickerController, animated: true, completion: nil)
     }
     
     //Sign up button
     @IBAction func signupBtn(_ sender: Any) {
-        
+        print("signup button pressed ")
         //OneSignal player_id as user_device_id for now
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil){
@@ -129,21 +123,50 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     }
     
     func sign_up(first_name:String, last_name:String) {
-        
+    
         //URL is defined above
-        let requestURL = NSURL(string: URL_SIGNUP)
-        
-        //creating NSMutableURLRequest
-        let request = NSMutableURLRequest(url: requestURL! as URL)
-        
-        //setting the method to post
+        print("sign_up")
+        var request = URLRequest(url: URL(string: URL_SIGNUP)!)
         request.httpMethod = "POST"
+        let boundary = generateBoundaryString()
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         //creating the post parameter by concatenating the keys and values from text field
-        let postParameters = "user_fb_id= "+userfbid+"&user_type="+usertype+"&user_device_id="+user_device_id+"&user_first_name="+first_name+"&user_last_name="+last_name+"&user_phone="+phone+"&user_email="+email+"&user_password="+password+"&user_avatar="+useravatar+"&user_join_datetime="+usertime;
+        let postParameters = [
+            "user_fb_id" : userfbid,
+            "user_type" : usertype,
+            "user_device_id" : user_device_id,
+            "user_first_name" : user_first_name,
+            "user_last_name" : user_last_name,
+            "user_phone" : phone,
+            "user_email" : email,
+            "user_password" : password,
+            "user_join_datetime" : usertime,
+            //            "user_avatar" : useravatar
+        ]
+        let imageData = UIImageJPEGRepresentation(avatarImageView.image!, 0.0)
         
-        //adding the parameters to request body
-        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        request.httpBody = createBody(parameters: postParameters,
+                                boundary: boundary,
+                                data: imageData!,
+                                mimeType: "image/jpg",
+                                filename: useravatar)
+        
+        let fileName = useravatar
+        //        let mimetype = "image/jpg"
+        //        let fieldName = "user_avatar1"
+        //
+        //
+        //
+        ////        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        //
+        //
+        //        //GET IMAGE DATA
+        ////        let avatarImageData = imageDataKey
+        //
+        ////        request.httpBody = createBodyWithParameters(parameters: postParameters, filePathKey: "user_avatar", imageDataKey: avatarImageData, boundary: boundary) as Data
+        
+        
         
         //creating a task to send the post request
         let task = URLSession.shared.dataTask(with: request as URLRequest){
@@ -169,7 +192,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
                     msg = parseJSON["message"] as! String?
                     
                     //printing the response
-                    //print(msg)
+                    print(msg)
                     
                 }
             } catch {
@@ -180,7 +203,59 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
-        //print(postParameters)
+        print(postParameters)
+    }
+    
+    func createBody(parameters: [String: String],
+                    boundary: String,
+                    data: Data,
+                    mimeType: String,
+                    filename: String) -> Data {
+        let body = NSMutableData()
+        
+        print("body1 is ", body.length)
+        //        print("body1 is ", body)
+        let stringTest1 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+        //        print("the body1 is ", stringTest1)
+        
+        let boundaryPrefix = "--\(boundary)\r\n"
+        
+        for (key, value) in parameters {
+            body.appendString(boundaryPrefix)
+            body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+            body.appendString("\(value)\r\n")
+        }
+        print("body2 is ", body.length)
+        //        print("body2 is ", body)
+        let stringTest2 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+        //        print("the body2 is ", stringTest2)
+        
+        body.appendString(boundaryPrefix)
+        //        body.appendString("Content-Disposition: form-data; name=\"user_avatar\"; filename=\"\(filename)\"\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"user_avatar\"\r\n\r\n")
+        //        body.appendString("Content-Type: \(mimeType)\r\n\r\n")
+        
+        print("body3 is ", body.length)
+        //        print("body3 is ", body)
+        let stringTest3 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+        print("the body3 is ", stringTest3)
+        
+        body.appendString("testimage.jpg\r\n")
+        
+        //        body.append(data)
+        //        body.appendString("\r\n")
+        body.appendString("--".appending(boundary.appending("--")))
+        
+        print("body4 is ", body.length)
+        //        print("body4 is ", body)
+        let stringTest4 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+        print("the body4 is ", stringTest4)
+        
+        return body as Data
+    }
+    
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().uuidString)"
     }
     
     override func viewDidLoad() {
@@ -195,3 +270,10 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     }
     
 }
+extension NSMutableData{
+    func appendString(_ string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: false)
+        append(data!)
+    }
+}
+
