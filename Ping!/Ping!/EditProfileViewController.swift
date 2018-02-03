@@ -45,13 +45,6 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         
         self.present(myPickerController, animated: true, completion: nil)
         
-        //Hide the keyboard
-        FirstNameTextField.resignFirstResponder()
-        LastNameTextField.resignFirstResponder()
-        PhoneNumberTextField.resignFirstResponder()
-        EmailTextField.resignFirstResponder()
-        PasswordTextField.resignFirstResponder()
-        RepeatPasswordTextField.resignFirstResponder()
         
         //DOESN'T WORK YET
         //Save image
@@ -180,6 +173,16 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
     }
     
     override func viewDidLoad() {
+        
+        //Text field delegation
+         FirstNameTextField.delegate = self
+         LastNameTextField.delegate = self
+         PhoneNumberTextField.delegate = self
+         EmailTextField.delegate = self
+         PasswordTextField.delegate = self
+         RepeatPasswordTextField.delegate = self
+        
+        
         var firstName = ""
         var lastName = ""
         var phoneNumber = ""
