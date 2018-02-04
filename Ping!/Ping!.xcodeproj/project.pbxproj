@@ -11,6 +11,7 @@
 		411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411933001FBFE8D600EBF885 /* TrkRequestViewController.swift */; };
 		4B1385762018573E009AD8A9 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1385752018573E009AD8A9 /* LocationSearchTable.swift */; };
 		4B13FA4E1FBE4F6700282BAA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B13FA4D1FBE4F6700282BAA /* User.swift */; };
+		4B26D0772027C884002BC21C /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26D0762027C884002BC21C /* RoundButton.swift */; };
 		4B3283AC1F995D0A00302E3E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AB1F995D0A00302E3E /* AppDelegate.swift */; };
 		4B3283AE1F995D0A00302E3E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AD1F995D0A00302E3E /* ViewController.swift */; };
 		4B3283B11F995D0A00302E3E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B3283AF1F995D0A00302E3E /* Main.storyboard */; };
@@ -78,6 +79,7 @@
 		428A905D1767A819F40DB5F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		4B1385752018573E009AD8A9 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		4B13FA4D1FBE4F6700282BAA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		4B26D0762027C884002BC21C /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		4B3283A81F995D0A00302E3E /* Ping!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ping!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3283AB1F995D0A00302E3E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B3283AD1F995D0A00302E3E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				4B3283B21F995D0A00302E3E /* Assets.xcassets */,
 				4B3283B71F995D0A00302E3E /* Info.plist */,
 				8A505D972022CACA00F255C0 /* LaunchScreen.storyboard */,
+				4B26D0762027C884002BC21C /* RoundButton.swift */,
 			);
 			path = "Ping!";
 			sourceTree = "<group>";
@@ -508,10 +511,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Ping!/Pods-Ping!-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Font-Awesome-Swift/Font_Awesome_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Font_Awesome_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -622,6 +627,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B26D0772027C884002BC21C /* RoundButton.swift in Sources */,
 				4B7C1EE61FC37F8000DB1EFB /* ProfileController.swift in Sources */,
 				8A505D9A2022CE9C00F255C0 /* SideMenuTableController.swift in Sources */,
 				411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */,

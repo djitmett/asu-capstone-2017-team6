@@ -34,6 +34,8 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     
     @IBOutlet weak var signupButton: UIButton!
     
+    
+    
     //DATABASE PHP SCRIPT
     let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/adduserdata.php?"
     
