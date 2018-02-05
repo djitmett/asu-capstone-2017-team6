@@ -181,7 +181,7 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
          EmailTextField.delegate = self
          PasswordTextField.delegate = self
          RepeatPasswordTextField.delegate = self
-        self.hideKeyboard()
+         self.hideKeyboard()
         
         var firstName = ""
         var lastName = ""
