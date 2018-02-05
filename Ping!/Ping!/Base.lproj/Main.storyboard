@@ -143,13 +143,13 @@
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <datePicker contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" minuteInterval="15" translatesAutoresizingMaskIntoConstraints="NO" id="cKl-KM-CSZ">
+                            <datePicker contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKl-KM-CSZ">
                                 <rect key="frame" x="42" y="517" width="355" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="YBs-j3-g1G"/>
                                 </constraints>
-                                <date key="date" timeIntervalSinceReferenceDate="538269394.84082103">
-                                    <!--2018-01-21 23:16:34 +0000-->
+                                <date key="date" timeIntervalSinceReferenceDate="538215300.84082103">
+                                    <!--2018-01-21 08:15:00 +0000-->
                                 </date>
                             </datePicker>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Indefinite tracking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enm-sY-upo">

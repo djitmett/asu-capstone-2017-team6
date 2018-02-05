@@ -266,6 +266,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         phonenumberField.delegate = self
         emailField.delegate = self
         passwordField.delegate = self
+        self.hideKeyboard()
         
     }
     
@@ -276,4 +277,13 @@ extension NSMutableData{
         append(data!)
     }
 }
-
+extension UIViewController {
+    @objc func hideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}

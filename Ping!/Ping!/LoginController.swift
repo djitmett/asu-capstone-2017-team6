@@ -160,10 +160,21 @@ class LoginController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         phoneNumber.delegate = self
         password.delegate = self
+        self.hideKeyboard()
         
     }
     
     //Segue link
     @IBAction func unwindToLogin(segue:UIStoryboardSegue) { }
     
+}
+extension UIViewController {
+    @objc func hideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }

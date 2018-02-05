@@ -181,7 +181,7 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
          EmailTextField.delegate = self
          PasswordTextField.delegate = self
          RepeatPasswordTextField.delegate = self
-        
+        self.hideKeyboard()
         
         var firstName = ""
         var lastName = ""
@@ -307,4 +307,13 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         //print(postParameters)
     }
 }
-
+extension UIViewController {
+    @objc func hideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
