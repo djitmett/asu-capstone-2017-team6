@@ -126,7 +126,9 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
             sign_up(first_name: user_first_name, last_name: user_last_name)
         }
         else {
-            print("Missing fields")
+            let alert = UIAlertController(title: "Error", message: "Please fill all fields.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
         
     }
