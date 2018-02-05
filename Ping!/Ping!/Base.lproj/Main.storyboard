@@ -919,7 +919,6 @@
                                 <state key="normal" title="Sign up"/>
                                 <connections>
                                     <action selector="signupBtn:" destination="C8r-kc-brJ" eventType="touchUpInside" id="9nr-IJ-9oA"/>
-                                    <segue destination="Jb2-jV-DFm" kind="show" id="z86-Uc-iZf"/>
                                 </connections>
                             </button>
                         </subviews>
