@@ -163,6 +163,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         phoneNumber.delegate = self
         password.delegate = self
+        self.hideKeyboard()
         
         // Left View Icons
         phoneNumber.setLeftViewFAIcon(icon: .FAEnvelope, leftViewMode: .always, textColor: .gray, backgroundColor: .clear, size: nil)
@@ -175,3 +176,4 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBAction func unwindToLogin(segue:UIStoryboardSegue) { }
     
 }
+
