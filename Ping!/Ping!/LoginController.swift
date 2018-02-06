@@ -160,6 +160,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         phoneNumber.delegate = self
         password.delegate = self
+        self.hideKeyboard()
         
     }
     
@@ -167,3 +168,4 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBAction func unwindToLogin(segue:UIStoryboardSegue) { }
     
 }
+

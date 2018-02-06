@@ -35,7 +35,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
     var end_long: Double? = 0.00
     var end_lat: Double?  = 0.00
     
-
+    
     
     @IBAction func sendTracking(_ sender: Any) {
         
@@ -113,7 +113,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
                 print("ERROR")
             }
             else {
-                 self.destinationInput.text = searchBar.text
+                self.destinationInput.text = searchBar.text
                 //self.destinationInput.text = mapView.ann
                 
                 print(self.mapView.annotations.description)
@@ -125,19 +125,19 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
     
     //Previous version of obtaining lat & long
     /*
-    @IBAction func endDestination(_ sender: UITextField) {
-        let geocoder = CLGeocoder()
-        let address = destinationInput.text
-      
-        geocoder.geocodeAddressString(address!) {
-            placemarks, error in
-            let placemark = placemarks?.first
-            self.end_lat = placemark?.location?.coordinate.latitude
-            self.end_long = placemark?.location?.coordinate.longitude
-            print("Lat: \(self.end_lat ?? 0), Lon: \(self.end_long ?? 0)")
-         }
+     @IBAction func endDestination(_ sender: UITextField) {
+     let geocoder = CLGeocoder()
+     let address = destinationInput.text
+     
+     geocoder.geocodeAddressString(address!) {
+     placemarks, error in
+     let placemark = placemarks?.first
+     self.end_lat = placemark?.location?.coordinate.latitude
+     self.end_long = placemark?.location?.coordinate.longitude
+     print("Lat: \(self.end_lat ?? 0), Lon: \(self.end_long ?? 0)")
      }
-         */
+     }
+     */
     
     func sendTracking2(player_id:String){
         let defaults = UserDefaults.standard
@@ -149,6 +149,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
         let components = Calendar.current.dateComponents([.hour, .minute], from: date)
         let hour = components.hour!
         let minute = components.minute!
+        
         
         if (defaults.object(forKey: "userFirstName") != nil) {
             userFirstName = (defaults.object(forKey: "userFirstName") as? String)!
@@ -204,18 +205,18 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
         let now = NSDate()
         
         let expireDateTime = Calendar.current.date(byAdding:
-                .minute,
-                value: hour * 60 + minute,
-                to: now as Date)
+            .minute,
+                                                   value: hour * 60 + minute,
+                                                   to: now as Date)
         
         var postParameters = "req_from_user_phone=\(fromNumber)"
         postParameters += "&req_to_user_phone=\(toNumber)"
         
         if(!trackingDurationSwitch.isOn) {
-        postParameters += "&req_expire_datetime=\(expireDateTime!)"
+            postParameters += "&req_expire_datetime=\(expireDateTime!)"
         }
         else {
-        postParameters += "&req_expire_datetime=indefinite"
+            postParameters += "&req_expire_datetime=indefinite"
         }
         postParameters += "&req_expire_location_latitude=\(end_lat!)"
         postParameters += "&req_expire_location_longitude=\(end_long!)"
@@ -257,6 +258,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
         super.viewDidLoad()
         phoneNumber.delegate = self
         destinationInput.delegate = self
+        self.hideKeyboard()
         trackingDurationPicker.isEnabled = false
         
         locationManager.delegate = self
@@ -272,6 +274,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
         locationSearchTable.handleMapSearchDelegate = self
         locationSearchTable.mapView = mapView
         
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -279,6 +282,7 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
         textField.resignFirstResponder()
         return true
     }
+    
     
     func getPlayerIdFromPhoneNumber(phoneNumber: String, completion: @escaping (_ retPlayerID: String) -> ()) {
         let requestURL = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
@@ -373,14 +377,23 @@ extension TrkRequestViewController: HandleMapSearch {
         annotation.title = placemark.name
         if let city = placemark.locality,
             let state = placemark.administrativeArea {
-            annotation.subtitle = "\(city) \(state)"
+            annotation.subtitle = "\(city), \(state)"
         }
         
         //Construct address
-        var addressLine = "\(placemark.subThoroughfare!) "
-        addressLine += "\(placemark.thoroughfare!), "
-        addressLine += "\(placemark.locality!) "
-        addressLine += "\(placemark.administrativeArea!)"
+        var addressLine = ""
+        if placemark.subThoroughfare != nil {
+            addressLine += "\(placemark.thoroughfare!), "
+        }
+        if placemark.thoroughfare != nil {
+            addressLine += "\(placemark.thoroughfare!), "
+        }
+        if placemark.locality != nil {
+            addressLine += "\(placemark.locality!) "
+        }
+        if placemark.administrativeArea != nil {
+            addressLine += "\(placemark.administrativeArea!)"
+        }
         
         //Update variables based on cell selection
         destinationInput.text = addressLine
