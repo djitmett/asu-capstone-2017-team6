@@ -382,15 +382,19 @@ extension TrkRequestViewController: HandleMapSearch {
         
         //Construct address
         var addressLine = ""
+        //Street #
         if placemark.subThoroughfare != nil {
-            addressLine += "\(placemark.thoroughfare!), "
+            addressLine += "\(placemark.subThoroughfare!) "
         }
+        //Street name
         if placemark.thoroughfare != nil {
             addressLine += "\(placemark.thoroughfare!), "
         }
+        //City
         if placemark.locality != nil {
             addressLine += "\(placemark.locality!) "
         }
+        //State
         if placemark.administrativeArea != nil {
             addressLine += "\(placemark.administrativeArea!)"
         }
