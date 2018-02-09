@@ -60,28 +60,46 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         
         //OneSignal player_id as user_device_id for now
         let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil) {
+            user_device_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
+        }
         
         //DB Variables
         user_first_name = FirstNameTextField.text!
         user_last_name = LastNameTextField.text!
         phone = PhoneNumberTextField.text!
-        //email = EmailTextField.text!
-        //password = PasswordTextField.text!
+        email = EmailTextField.text!
+        password = PasswordTextField.text!
+        
+        if (user_first_name != "" &&
+            user_last_name != "" &&
+            phone != "" &&
+            email != "" &&
+            password != "") {
         
         //Store values in UserDefaults TODO: Commented out for now to stop sign out on
-        //defaults.set(user_first_name, forKey: "userFirstName")
-        //defaults.set(user_last_name, forKey: "userLastName")
-        //defaults.set(phone, forKey: "userPhone")
-        //defaults.set(true, forKey: "isLogged")
-        //defaults.synchronize()
+        defaults.set(user_first_name, forKey: "userFirstName")
+        defaults.set(user_last_name, forKey: "userLastName")
+        defaults.set(phone, forKey: "userPhone")
+        defaults.set(email, forKey: "userEmail")
+        defaults.set(password, forKey: "userPassword")
+        defaults.set(true, forKey: "isLogged")
+        defaults.synchronize()
         
-        //CALL THE SIGN UP FUNCTION (SEND DATA TO DB)
+        //CALL THE EDIT FUNCTION (SEND DATA TO DB)
         edit(first_name: user_first_name, last_name: user_last_name)
-        
+            
+        }
+        else {
+            let alert = UIAlertController(title: "Error", message: "Please fill all fields.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func edit(first_name:String, last_name:String) {
         
+        print("edit")
         //let postParameters = "user_fb_id=84&user_device_id=12345&user_type=changed&user_first_name=testfirst1&user_last_name=testlast1&user_phone=12345&user_email=TestEmail&user_password=testpass&user_avatar=none&user_join_datetime=nodatetime";
         
         //URL is defined above
@@ -213,6 +231,7 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         self.PhoneNumberTextField.text = phoneNumber
         self.EmailTextField.text = emailAddress
         self.PasswordTextField.text = myPassword
+        self.RepeatPasswordTextField.text = myPassword
         
         loadData(phone_number:phoneNumber)
         
