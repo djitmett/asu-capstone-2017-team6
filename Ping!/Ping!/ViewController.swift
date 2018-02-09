@@ -178,8 +178,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
             getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
                 let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
-                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
+//                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
+                self.updateMap2(phone_number: currentTrackedUser, latitude: 38.8, longitude: -076.862, locUpdate: myLocUpdate)
             }
+            mapDisplay.showsUserLocation = true
         } else {
             // Show current user's current location
             let currLoc = manager.location
@@ -191,7 +193,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             
             //BREAK POINT IF USER DOESN'T ALLOW USER LOCATIONS
             if(currLoc != nil) {
-                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
+                mapDisplay.showsUserLocation = true
+//                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
             }
             else {
                 //NO DATA TO SEND
