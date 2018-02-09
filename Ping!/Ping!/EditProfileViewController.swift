@@ -176,13 +176,13 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
     override func viewDidLoad() {
         
         //Text field delegation
-         FirstNameTextField.delegate = self
-         LastNameTextField.delegate = self
-         PhoneNumberTextField.delegate = self
-         EmailTextField.delegate = self
-         PasswordTextField.delegate = self
-         RepeatPasswordTextField.delegate = self
-        
+        FirstNameTextField.delegate = self
+        LastNameTextField.delegate = self
+        PhoneNumberTextField.delegate = self
+        EmailTextField.delegate = self
+        PasswordTextField.delegate = self
+        RepeatPasswordTextField.delegate = self
+        self.hideKeyboard()
         
         var firstName = ""
         var lastName = ""
@@ -288,11 +288,15 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
                         //let user_first_name = myData[2] as? String
                         //let user_last_name = myData[3] as? String
                         let encodedAvatar = myData[7] as? String
-                        //print (encodedAvatar)
-                        if (encodedAvatar != nil){
-                            let dataDecoded : Data = Data(base64Encoded: encodedAvatar!, options: .ignoreUnknownCharacters)!
-                            let decodedImage = UIImage(data: dataDecoded)!
-                            self.AvatarImageView.image = decodedImage
+                        //print (encodedAvatar!)
+                        if (encodedAvatar != nil) {
+                            if (encodedAvatar! != "testimage.jpg") {
+                                let dataDecoded : Data = Data(base64Encoded: encodedAvatar!, options: .ignoreUnknownCharacters)!
+                                let decodedImage = UIImage(data: dataDecoded)!
+                                  DispatchQueue.main.async {
+                                    self.AvatarImageView.image = decodedImage
+                                }
+                            }
                         }
                     }
                 }
@@ -308,4 +312,13 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         //print(postParameters)
     }
 }
-
+extension UIViewController {
+    @objc func hideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}

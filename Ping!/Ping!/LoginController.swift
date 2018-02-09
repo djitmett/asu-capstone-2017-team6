@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import Font_Awesome_Swift
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var error: UILabel!
+    @IBOutlet weak var continueBtn: UIButton!
+    
     
     //Define UserDefaults
     let defaults = UserDefaults.standard
@@ -160,6 +163,12 @@ class LoginController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         phoneNumber.delegate = self
         password.delegate = self
+        self.hideKeyboard()
+        
+        // Left View Icons
+        phoneNumber.setLeftViewFAIcon(icon: .FAEnvelope, leftViewMode: .always, textColor: .gray, backgroundColor: .clear, size: nil)
+        password.setLeftViewFAIcon(icon: .FALock, leftViewMode: .always, textColor: .gray, backgroundColor: .clear, size: nil)
+        
         
     }
     
@@ -167,3 +176,4 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBAction func unwindToLogin(segue:UIStoryboardSegue) { }
     
 }
+

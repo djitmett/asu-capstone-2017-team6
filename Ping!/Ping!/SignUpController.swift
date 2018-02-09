@@ -34,6 +34,8 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     
     @IBOutlet weak var signupButton: UIButton!
     
+    
+    
     //DATABASE PHP SCRIPT
     let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/adduserdata.php?"
     
@@ -59,15 +61,15 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         
         //below was the original code:
         // The info dictionary may contain multiple representations of the image. You want to use the original.
-//        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-//            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
-//        }
-//
-//        // Set photoImageView to display the selected image.
-//        avatarImageView.image = selectedImage
-//
-//        // Dismiss the picker.
-//        dismiss(animated: true, completion: nil)
+        //        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+        //            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+        //        }
+        //
+        //        // Set photoImageView to display the selected image.
+        //        avatarImageView.image = selectedImage
+        //
+        //        // Dismiss the picker.
+        //        dismiss(animated: true, completion: nil)
     }
     
     
@@ -103,27 +105,38 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         email = emailField.text!
         password = passwordField.text!
         
-        //Store values in UserDefaults
-        defaults.set(user_first_name, forKey: "userFirstName")
-        defaults.set(user_last_name, forKey: "userLastName")
-        defaults.set(phone, forKey: "userPhone")
-        defaults.set(true, forKey: "isLogged")
-        defaults.synchronize()
-        
-        //date time
-        let date = Date()
-        let dateFormatterGet = DateFormatter()
-        dateFormatterGet.dateFormat = "yyyy-MM-dd hh:mm:ss"
-        let todaysDate = dateFormatterGet.string(from: date)
-        usertime = todaysDate
-        
-        //CALL THE SIGN UP FUNCTION (SEND DATA TO DB)
-        sign_up(first_name: user_first_name, last_name: user_last_name)
+        if (user_first_name != "" &&
+            user_last_name != "" &&
+            phone != "" &&
+            email != "" &&
+            password != ""){
+            
+            //Store values in UserDefaults
+            defaults.set(user_first_name, forKey: "userFirstName")
+            defaults.set(user_last_name, forKey: "userLastName")
+            defaults.set(phone, forKey: "userPhone")
+            defaults.synchronize()
+            
+            //date time
+            let date = Date()
+            let dateFormatterGet = DateFormatter()
+            dateFormatterGet.dateFormat = "yyyy-MM-dd hh:mm:ss"
+            let todaysDate = dateFormatterGet.string(from: date)
+            usertime = todaysDate
+            
+            //CALL THE SIGN UP FUNCTION (SEND DATA TO DB)
+            sign_up(first_name: user_first_name, last_name: user_last_name)
+        }
+        else {
+            let alert = UIAlertController(title: "Error", message: "Please fill all fields.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
         
     }
     
     func sign_up(first_name:String, last_name:String) {
-    
+        
         //URL is defined above
         print("sign_up")
         var request = URLRequest(url: URL(string: URL_SIGNUP)!)
@@ -147,10 +160,10 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         let imageData = UIImageJPEGRepresentation(avatarImageView.image!, 0.0)
         
         request.httpBody = createBody(parameters: postParameters,
-                                boundary: boundary,
-                                data: imageData!,
-                                mimeType: "image/jpg",
-                                filename: useravatar)
+                                      boundary: boundary,
+                                      data: imageData!,
+                                      mimeType: "image/jpg",
+                                      filename: useravatar)
         
         let fileName = useravatar
         //        let mimetype = "image/jpg"
@@ -190,9 +203,19 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
                     
                     //getting the json response
                     msg = parseJSON["message"] as! String?
+                    if(msg == "Data added successfully!"){
+                        let defaults = UserDefaults.standard
+                        defaults.set(true, forKey: "isLogged")
+                        defaults.synchronize()
+                        self.segueMap()
+                        
+                    }
+                    if (msg == "User already exists!"){
+                        let alert = UIAlertController(title: "Error", message: "This user already exists.", preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
                     
-                    //printing the response
-                    print(msg)
                     
                 }
             } catch {
@@ -266,7 +289,14 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         phonenumberField.delegate = self
         emailField.delegate = self
         passwordField.delegate = self
+        self.hideKeyboard()
         
+    }
+    
+    func segueMap() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "MainNavController")
+        self.present(nextViewController, animated:true, completion:nil)
     }
     
 }
