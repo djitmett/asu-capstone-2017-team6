@@ -36,6 +36,7 @@ extension UIViewController {
     }
 }
  */
+
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     //Spinner view variable
@@ -56,7 +57,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var lastPhone: String! = ""
     
     let manager = CLLocationManager()
-    let appDelegate = UIApplication.shared.delegate! as! AppDelegate
+    
+   // let appDelegate = UIApplication.shared.delegate! as! AppDelegate
+    
+    let appDelegate =  AppDelegate.appDelegate
+    
     var player_id = ""
     
     var lastUpdateTime = DispatchTime.now() - 60 // Force DB update as soon as app loads by changing lastUpdateTime to an arbitrary time

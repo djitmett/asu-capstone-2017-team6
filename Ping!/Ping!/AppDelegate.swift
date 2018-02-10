@@ -14,6 +14,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
     
     var window: UIWindow?
     
+    static var appDelegate: AppDelegate!
+    
+    override init() {
+        super.init()
+        AppDelegate.appDelegate = self
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
         

@@ -52,7 +52,7 @@ class SideMenuController: UITableViewController {
         if (defaults.object(forKey: "userPhone") != nil) {
             phoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
-        usernameLabel.setTitle(firstName + " "  + lastName, for: .normal)
+        usernameLabel.setTitle(firstName, for: .normal)
         
         //load avatar
         loadData(phone_number: phoneNumber)
