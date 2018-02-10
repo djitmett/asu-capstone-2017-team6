@@ -28,6 +28,7 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
     var email = "email@test.com"
     var phone = "180012345678"
     var password = "password"
+    var repeatpassword = "password"
     var useravatar = "avatar.jpeg"
     var usertime = "test"
     
@@ -70,6 +71,7 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         phone = PhoneNumberTextField.text!
         email = EmailTextField.text!
         password = PasswordTextField.text!
+        repeatpassword = RepeatPasswordTextField.text!
         
         if (user_first_name != "" &&
             user_last_name != "" &&
@@ -77,18 +79,25 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
             email != "" &&
             password != "") {
         
-        //Store values in UserDefaults TODO: Commented out for now to stop sign out on
-        defaults.set(user_first_name, forKey: "userFirstName")
-        defaults.set(user_last_name, forKey: "userLastName")
-        defaults.set(phone, forKey: "userPhone")
-        defaults.set(email, forKey: "userEmail")
-        defaults.set(password, forKey: "userPassword")
-        defaults.set(true, forKey: "isLogged")
-        defaults.synchronize()
-        
-        //CALL THE EDIT FUNCTION (SEND DATA TO DB)
-        edit(first_name: user_first_name, last_name: user_last_name)
+            if (repeatpassword == password) {
             
+                //Store values in UserDefaults TODO: Commented out for now to stop sign out on
+                defaults.set(user_first_name, forKey: "userFirstName")
+                defaults.set(user_last_name, forKey: "userLastName")
+                defaults.set(phone, forKey: "userPhone")
+                defaults.set(email, forKey: "userEmail")
+                defaults.set(password, forKey: "userPassword")
+                defaults.set(true, forKey: "isLogged")
+                defaults.synchronize()
+        
+                //CALL THE EDIT FUNCTION (SEND DATA TO DB)
+                edit(first_name: user_first_name, last_name: user_last_name)
+            }
+            else {
+                let alert = UIAlertController(title: "Error", message: "Passwords don't match.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
         else {
             let alert = UIAlertController(title: "Error", message: "Please fill all fields.", preferredStyle: UIAlertControllerStyle.alert)
