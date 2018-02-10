@@ -115,6 +115,8 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
             defaults.set(user_first_name, forKey: "userFirstName")
             defaults.set(user_last_name, forKey: "userLastName")
             defaults.set(phone, forKey: "userPhone")
+            defaults.set(email, forKey: "userEmail")
+            defaults.set(password, forKey: "userPassword")
             defaults.synchronize()
             
             //date time

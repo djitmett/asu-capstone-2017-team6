@@ -91,7 +91,8 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
                 defaults.synchronize()
         
                 //CALL THE EDIT FUNCTION (SEND DATA TO DB)
-                edit(first_name: user_first_name, last_name: user_last_name)
+                edit(first_name: user_first_name, last_name: user_last_name,
+                     phone_num: phone, user_email: email, user_password: password)
             }
             else {
                 let alert = UIAlertController(title: "Error", message: "Passwords don't match.", preferredStyle: UIAlertControllerStyle.alert)
@@ -106,7 +107,8 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         }
     }
     
-    func edit(first_name:String, last_name:String) {
+    func edit(first_name:String, last_name:String, phone_num:String, user_email:String,
+              user_password:String) {
         
         print("edit")
         //let postParameters = "user_fb_id=84&user_device_id=12345&user_type=changed&user_first_name=testfirst1&user_last_name=testlast1&user_phone=12345&user_email=TestEmail&user_password=testpass&user_avatar=none&user_join_datetime=nodatetime";
@@ -132,9 +134,9 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         postParameters += "&user_device_id=" + user_device_id
         postParameters += "&user_first_name=" + first_name
         postParameters += "&user_last_name=" + last_name
-        postParameters += "&user_phone=" + phone
-        postParameters += "&user_email=" + email
-        postParameters += "&user_password=" + password
+        postParameters += "&user_phone=" + phone_num
+        postParameters += "&user_email=" + user_email
+        postParameters += "&user_password=" + user_password
         postParameters += "&user_join_datetime=" + usertime
         postParameters += "&user_avatar=" + encodedAvatar!
         
