@@ -287,12 +287,14 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
                         //let user_first_name = myData[2] as? String
                         //let user_last_name = myData[3] as? String
                         let encodedAvatar = myData[7] as? String
-                        print (encodedAvatar!)
+                        //print (encodedAvatar!)
                         if (encodedAvatar != nil) {
                             if (encodedAvatar! != "testimage.jpg") {
                                 let dataDecoded : Data = Data(base64Encoded: encodedAvatar!, options: .ignoreUnknownCharacters)!
                                 let decodedImage = UIImage(data: dataDecoded)!
-                                self.AvatarImageView.image = decodedImage
+                                  DispatchQueue.main.async {
+                                    self.AvatarImageView.image = decodedImage
+                                }
                             }
                         }
                     }
