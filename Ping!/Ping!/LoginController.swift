@@ -166,9 +166,11 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.hideKeyboard()
         
         // Left View Icons
-        phoneNumber.setLeftViewFAIcon(icon: .FAEnvelope, leftViewMode: .always, textColor: .gray, backgroundColor: .clear, size: nil)
-        password.setLeftViewFAIcon(icon: .FALock, leftViewMode: .always, textColor: .gray, backgroundColor: .clear, size: nil)
+        phoneNumber.setLeftViewFAIcon(icon: .FAPhone, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        password.setLeftViewFAIcon(icon: .FALock, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
         
+        phoneNumber.layer.cornerRadius = 5
+        password.layer.cornerRadius = 5
         
     }
     

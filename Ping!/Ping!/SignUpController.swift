@@ -291,6 +291,26 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         passwordField.delegate = self
         self.hideKeyboard()
         
+        //Round avatar placeholder
+        self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2;
+        self.avatarImageView.clipsToBounds = true;
+        
+        //Set Icons & Round Corners
+        firstNameField.setLeftViewFAIcon(icon: .FAUser, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        firstNameField.layer.cornerRadius = 5
+        
+        lastNameField.setLeftViewFAIcon(icon: .FAUser, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        lastNameField.layer.cornerRadius = 5
+        
+        phonenumberField.setLeftViewFAIcon(icon: .FAPhone, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        phonenumberField.layer.cornerRadius = 5
+        
+        emailField.setLeftViewFAIcon(icon: .FAEnvelope, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        emailField.layer.cornerRadius = 5
+        
+        passwordField.setLeftViewFAIcon(icon: .FALock, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        passwordField.layer.cornerRadius = 5
+        
     }
     
     func segueMap() {
