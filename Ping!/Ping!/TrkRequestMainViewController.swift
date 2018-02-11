@@ -22,8 +22,9 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
 
     
     func getRequestFrom(phone_number: String) -> () {
-        let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestFrom.php?"
-        let postParameters = "user_phone=" + (phone_number)
+        let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestsbyfrom.php?"
+        let postParameters = "from_user_phone=" + (phone_number)
+        print(requestURL+postParameters)
         var pendRequest = [String] ()// array to fill with pending request
         var request = URLRequest(url: URL(string: requestURL+postParameters)!)
         request.httpMethod = "POST"
@@ -48,12 +49,17 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                         //getting the json response
                         msg = parseJSON["message"] as! String?
                         print("MESSAGE=",msg)
-                        if(msg == "Operation successfully!"){
+                        if(msg == "Operation successful!"){
                             data = parseJSON["data"] as! NSArray?
-                            let tempRequest = (data[0] as? String)!
-                            pendRequest.append(tempRequest)
+                            var i=0 as Int
+                            while (i<data.count){
+                                print(data[i])
+                                i = i + 1
+                            }
+                            //let tempRequest = (data[0] as? String)!
+                            //pendRequest.append(tempRequest)
                         } else {
-                            pendRequest.append("No Request")
+                            //pendRequest.append("No Request")
                         }
                     }
                     //completion(lat, long, lastUpdate)
@@ -89,8 +95,11 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
 override func viewDidLoad() {
     super.viewDidLoad()
+    let defaults = UserDefaults.standard
+    if (defaults.object(forKey: "userPhone") != nil){
+        getRequestFrom(phone_number:defaults.object(forKey: "userPhone") as! String)
+    }
     
-    // Do any additional setup after loading the view.
 }
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     if (tableView.tag == 1){
@@ -130,3 +139,29 @@ override func didReceiveMemoryWarning() {
  */
 
 }
+
+
+class trackingRequest {
+    var req_ID: Int
+    var req_from_user_phone: String
+    var req_to_user_phone: String
+    var req_expire_datetime: String
+    var req_expire_location_latitude: String
+    var req_expire_location_longitude: String
+    var req_create_datetime: String
+    var req_status: String
+    var req_status_change_datetime: String
+    
+    init (req_ID: Int, req_from_user_phone: String, req_to_user_phone: String, req_expire_datetime: String, req_expire_location_latitude: String, req_expire_location_longitude: String, req_create_datetime: String, req_status: String, req_status_change_datetime: String) {
+        self.req_ID = req_ID
+        self.req_from_user_phone = req_from_user_phone
+        self.req_to_user_phone = req_to_user_phone
+        self.req_expire_datetime = req_expire_datetime
+        self.req_expire_location_latitude = req_expire_location_latitude
+        self.req_expire_location_longitude = req_expire_location_longitude
+        self.req_create_datetime = req_create_datetime
+        self.req_status = req_status
+        self.req_status_change_datetime = req_status_change_datetime
+    }
+}
+
