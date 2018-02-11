@@ -274,6 +274,10 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
         locationSearchTable.handleMapSearchDelegate = self
         locationSearchTable.mapView = mapView
         
+        //Stop navbar from hiding
+        self.resultSearchController.hidesNavigationBarDuringPresentation = false;
+        self.definesPresentationContext = false;
+        
         phoneNumber.setLeftViewFAIcon(icon: .FAPhone, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
         phoneNumber.layer.cornerRadius = 5
         

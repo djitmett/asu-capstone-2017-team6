@@ -127,14 +127,14 @@ class SideMenuController: UITableViewController {
     
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        //super.viewWillAppear(animated)
         
         // refresh cell blur effect in case it changed
         tableView.reloadData()
         
-        guard SideMenuManager.default.menuBlurEffectStyle == nil else {
-            return
-        }
+        //guard SideMenuManager.default.menuBlurEffectStyle == nil else {
+        //    return
+        //}
         
     }
     
