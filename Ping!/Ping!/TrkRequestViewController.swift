@@ -274,6 +274,10 @@ class TrkRequestViewController: UIViewController, UITextFieldDelegate, UISearchB
         locationSearchTable.handleMapSearchDelegate = self
         locationSearchTable.mapView = mapView
         
+        phoneNumber.setLeftViewFAIcon(icon: .FAPhone, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        phoneNumber.layer.cornerRadius = 5
+        
+        destinationInput.setLeftViewFAIcon(icon: .FAMap, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
         
     }
     
