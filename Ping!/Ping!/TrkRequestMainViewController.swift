@@ -14,21 +14,27 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     @IBOutlet weak var table2: UITableView!
     
     
-    let request = ["Brian", "Corey", "Josh", "Darya", "Nathan"]
-    let request2 = ["Nathan","Darya", "Josh", "Corey","Brian" ]
-    var pending = [String] ()
+    let request = ["Brian", "Corey", "Josh", "Darya", "Nathan"]//hardcoded
+    let request2 = ["Nathan","Darya", "Josh", "Corey","Brian" ]//hardcode
+    var pending = [String] ()// for storage of array after request
     var tracking = [String] ()
-    
+    var userPhoneNumber = ""
 
     
-    func getRequestFrom(phone_number: String) -> () {
-        let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestFrom.php?"
-        let postParameters = "user_phone=" + (phone_number)
+    func getRequestFrom(phone_number: String) -> Array<String> {
+        let defaults = UserDefaults.standard
+        if(defaults.object(forKey: "userPhone") != nil){
+            userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
+        }
+        let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestsbyfrom.php?"
+        print("got here")
+        let postParameters = "from_user_phone=" + (userPhoneNumber)
         var pendRequest = [String] ()// array to fill with pending request
         var request = URLRequest(url: URL(string: requestURL+postParameters)!)
         request.httpMethod = "POST"
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
         let urlSession = URLSession.shared
+        print("made request")
         let task = urlSession.dataTask(with: request, completionHandler:{
         (data, response, error) -> Void in
         DispatchQueue.main.async {
@@ -45,12 +51,14 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                         //creating a string
                         var msg : String!
                         var data : NSArray!
+                        
                         //getting the json response
                         msg = parseJSON["message"] as! String?
-                        print("MESSAGE=",msg)
-                        if(msg == "Operation successfully!"){
+                        if(msg == "Operation successful!"){
                             data = parseJSON["data"] as! NSArray?
-                            let tempRequest = (data[0] as? String)!
+                            print(data)
+                            //let tempRequest = (data[0] as? String)!
+                            print(tempRequest)
                             pendRequest.append(tempRequest)
                         } else {
                             pendRequest.append("No Request")
@@ -66,6 +74,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         }
     })
     task.resume()
+    return pendRequest
     }
     
 
@@ -89,6 +98,13 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
 override func viewDidLoad() {
     super.viewDidLoad()
+    pending = getRequestFrom(phone_number: userPhoneNumber)
+    if(pending.count == 0){
+        return
+    }else{
+        print(pending[0])
+    }
+    print(pending)
     
     // Do any additional setup after loading the view.
 }
