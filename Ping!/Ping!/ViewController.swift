@@ -12,29 +12,29 @@ import OneSignal
 
 //Loading extension for map loading spinner
 /*
-extension UIViewController {
-    class func displaySpinner(onView : UIView) -> UIView {
-        let spinnerView = UIView.init(frame: onView.bounds)
-        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
-        ai.startAnimating()
-        ai.center = spinnerView.center
-        
-        DispatchQueue.main.async {
-            spinnerView.addSubview(ai)
-            onView.addSubview(spinnerView)
-        }
-        
-        return spinnerView
-    }
-
-    
-    class func removeSpinner(spinner :UIView) {
-        DispatchQueue.main.async {
-            spinner.removeFromSuperview()
-        }
-    }
-}
+ extension UIViewController {
+ class func displaySpinner(onView : UIView) -> UIView {
+ let spinnerView = UIView.init(frame: onView.bounds)
+ spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+ let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+ ai.startAnimating()
+ ai.center = spinnerView.center
+ 
+ DispatchQueue.main.async {
+ spinnerView.addSubview(ai)
+ onView.addSubview(spinnerView)
+ }
+ 
+ return spinnerView
+ }
+ 
+ 
+ class func removeSpinner(spinner :UIView) {
+ DispatchQueue.main.async {
+ spinner.removeFromSuperview()
+ }
+ }
+ }
  */
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
@@ -50,6 +50,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var requestLabel: UILabel!
     @IBOutlet var phoneNumField: UITextField!
     @IBOutlet var requestBtn: UIButton!
+    @IBOutlet weak var pingBtn: UIButton!
+    @IBOutlet weak var refreshBtn: UIBarButtonItem!
+    @IBOutlet weak var menuBtn: UIBarButtonItem!
+    
     
     var mapUpdateTimer: Timer!
     var mapLoadTimer: Timer!
@@ -58,7 +62,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     let manager = CLLocationManager()
     
-   // let appDelegate = UIApplication.shared.delegate! as! AppDelegate
+    // let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     
     let appDelegate =  AppDelegate.appDelegate
     
@@ -101,7 +105,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         
         //Create spinner view
-       // sv = UIViewController.displaySpinner(onView: self.view)
+        // sv = UIViewController.displaySpinner(onView: self.view)
         
         //Map
         manager.delegate = self
@@ -124,6 +128,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
         mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
+        
+        //Ping! Button
+        pingBtn.setFAIcon(icon: .FAMapMarker, iconSize: 50, forState: .normal)
+        //Menu Button
+        menuBtn.setFAIcon(icon: .FABars, iconSize: 20)
+        //Refresh Button
+        refreshBtn.setFAIcon(icon: .FARefresh, iconSize: 20)
     }
     
     func updateUserLocation(userPhone:String, latitude:Double, longitude:Double) {
@@ -201,7 +212,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             else {
                 //NO DATA TO SEND
                 //Remove spinner view after labels have been updated
-               // UIViewController.removeSpinner(spinner: sv)
+                // UIViewController.removeSpinner(spinner: sv)
                 
             }
         }
