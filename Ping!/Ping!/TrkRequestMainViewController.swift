@@ -16,7 +16,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
     let request = ["Brian", "Corey", "Josh", "Darya", "Nathan"]//hardcoded
     let request2 = ["Nathan","Darya", "Josh", "Corey","Brian" ]//hardcode
-    var pending = [String] ()// for storage of array after request
+    var pending = [String] ()
     var tracking = [String] ()
     var userPhoneNumber = ""
 
@@ -27,14 +27,12 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
         let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestsbyfrom.php?"
-        print("got here")
         let postParameters = "from_user_phone=" + (userPhoneNumber)
         var pendRequest = [String] ()// array to fill with pending request
         var request = URLRequest(url: URL(string: requestURL+postParameters)!)
         request.httpMethod = "POST"
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
         let urlSession = URLSession.shared
-        print("made request")
         let task = urlSession.dataTask(with: request, completionHandler:{
         (data, response, error) -> Void in
         DispatchQueue.main.async {
@@ -51,22 +49,20 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                         //creating a string
                         var msg : String!
                         var data : NSArray!
-                        
                         //getting the json response
                         msg = parseJSON["message"] as! String?
                         if(msg == "Operation successful!"){
                             data = parseJSON["data"] as! NSArray?
-                            print(data)
-                            //let tempRequest = (data[0] as? String)!
-                            print(tempRequest)
-                            pendRequest.append(tempRequest)
+                            for request in data{
+                                let element = request as! NSArray
+                                pendRequest.append(element[2] as! String)
+                            }
                         } else {
-                            pendRequest.append("No Request")
+                            pendRequest.append("No Requests")
                         }
                     }
-                    //completion(lat, long, lastUpdate)
-                    self.pending = pendRequest
-                    print(self.pending)
+                    
+                    print(pendRequest)
                 } catch {
                     print(error)
                 }
@@ -76,11 +72,6 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     task.resume()
     return pendRequest
     }
-    
-
-
-    
-
     
     @IBAction func clearMapBtn(_ sender: Any) {
         print("@ClearTracking")
@@ -98,7 +89,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
 override func viewDidLoad() {
     super.viewDidLoad()
-    pending = getRequestFrom(phone_number: userPhoneNumber)
+    pending.self = getRequestFrom(phone_number: userPhoneNumber)
     if(pending.count == 0){
         return
     }else{
