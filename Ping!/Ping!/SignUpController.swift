@@ -91,7 +91,6 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     
     //Sign up button
     @IBAction func signupBtn(_ sender: Any) {
-        print("signup button pressed ")
         //OneSignal player_id as user_device_id for now
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil){
@@ -151,8 +150,6 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         let customAllowedSet = NSCharacterSet(charactersIn:"+").inverted
         encodedAvatar = encodedAvatar?.addingPercentEncoding(withAllowedCharacters:customAllowedSet as CharacterSet)!
         
-        
-        
         //Creating post paramter
         var postParameters = "user_fb_id= " + userfbid
         postParameters += "&user_type=" + usertype
@@ -165,10 +162,8 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         postParameters += "&user_join_datetime=" + usertime
         postParameters += "&user_avatar=" + encodedAvatar!
         
-
         //adding the parameters to request body
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
-        
         
         //creating a task to send the post request
         let task = URLSession.shared.dataTask(with: request as URLRequest){
@@ -215,7 +210,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
-        print(postParameters)
+        //print(postParameters)
     }
     
 
