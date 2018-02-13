@@ -16,12 +16,14 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
     let request = ["Brian", "Corey", "Josh", "Darya", "Nathan"]//hardcoded
     let request2 = ["Nathan","Darya", "Josh", "Corey","Brian" ]//hardcode
-    var pending = [String] ()
-    var tracking = [String] ()
     var userPhoneNumber = ""
+    var pending = [TrackingRequest] ()
+    var tracking = [TrackingRequest] ()
+    var allRequests = [TrackingRequest] ()
 
     
-    func getRequestFrom(phone_number: String) -> Array<String> {
+    //func getRequestFrom(phone_number: String) -> Array<String> {
+    func getRequestFrom(phone_number: String) {
         let defaults = UserDefaults.standard
         if(defaults.object(forKey: "userPhone") != nil){
             userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
@@ -53,9 +55,79 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                         msg = parseJSON["message"] as! String?
                         if(msg == "Operation successful!"){
                             data = parseJSON["data"] as! NSArray?
+                            self.allRequests.removeAll()
                             for request in data{
                                 let element = request as! NSArray
-                                pendRequest.append(element[2] as! String)
+                                // Define variables for tracking request
+                                var myReq_ID : Int
+                                var myReq_from_user_phone : String
+                                var myReq_to_user_phone : String
+                                var myReq_expire_datetime : String
+                                var myReq_expire_location_latitude : String
+                                var myReq_expire_location_longitude : String
+                                var myReq_create_datetime : String
+                                var myReq_status : String
+                                var myReq_status_change_datetime : String
+                                
+                                // Error check each field in array before conversion
+                                if let tempVar = element[0] as? Int {
+                                    myReq_ID = (element[0] as? Int)!
+                                } else {
+                                    myReq_ID = -999
+                                }
+                                if let tempVar = element[1] as? String {
+                                    myReq_from_user_phone = (element[1] as? String)!
+                                } else {
+                                    myReq_from_user_phone = ""
+                                }
+                                if let tempVar = element[2] as? String {
+                                    myReq_to_user_phone = (element[2] as? String)!
+                                } else {
+                                    myReq_to_user_phone = ""
+                                }
+                                if let tempVar = element[3] as? String {
+                                    myReq_expire_datetime = (element[3] as? String)!
+                                } else {
+                                    myReq_expire_datetime = ""
+                                }
+                                if let tempVar = element[4] as? String {
+                                    myReq_expire_location_latitude = (element[4] as? String)!
+                                } else {
+                                    myReq_expire_location_latitude = ""
+                                }
+                                if let tempVar = element[5] as? String {
+                                    myReq_expire_location_longitude = (element[5] as? String)!
+                                } else {
+                                    myReq_expire_location_longitude = ""
+                                }
+                                if let tempVar = element[6] as? String {
+                                    myReq_create_datetime = (element[6] as? String)!
+                                } else {
+                                    myReq_create_datetime = ""
+                                }
+                                if let tempVar = element[7] as? String {
+                                    myReq_status = (element[7] as? String)!
+                                } else {
+                                    myReq_status = ""
+                                }
+                                if let tempVar = element[8] as? String {
+                                    myReq_status_change_datetime = (element[8] as? String)!
+                                } else {
+                                    myReq_status_change_datetime = ""
+                                }
+                                
+                                // Create Tracking Request object
+                                let tempTR = TrackingRequest(req_ID: myReq_ID, req_from_user_phone: myReq_from_user_phone, req_to_user_phone: myReq_to_user_phone, req_expire_datetime: myReq_expire_datetime, req_expire_location_latitude: myReq_expire_location_latitude, req_expire_location_longitude: myReq_expire_location_longitude, req_create_datetime: myReq_create_datetime, req_status: myReq_status, req_status_change_datetime: myReq_status_change_datetime)
+                                // If pending, add to pending array
+                                if (tempTR.getReq_status()=="PENDING"){
+                                    self.pending.append(tempTR)
+                                }
+                                // If approved, add to current tracking array
+                                if (tempTR.getReq_status()=="APPROVED"){
+                                    self.tracking.append(tempTR)
+                                }
+                                // Store all tracking reqeusts
+                                self.allRequests.append(tempTR)
                             }
                         } else {
                             pendRequest.append("No Requests")
@@ -63,6 +135,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                     }
                     
                     print(pendRequest)
+                    print(self.allRequests)
                 } catch {
                     print(error)
                 }
@@ -70,7 +143,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         }
     })
     task.resume()
-    return pendRequest
+    //return pendRequest
     }
     
     @IBAction func clearMapBtn(_ sender: Any) {
@@ -89,7 +162,8 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
 override func viewDidLoad() {
     super.viewDidLoad()
-    pending.self = getRequestFrom(phone_number: userPhoneNumber)
+    //pending.self = getRequestFrom(phone_number: userPhoneNumber)
+    getRequestFrom(phone_number: userPhoneNumber)
     if(pending.count == 0){
         return
     }else{
@@ -136,4 +210,58 @@ override func didReceiveMemoryWarning() {
  }
  */
 
+}
+
+// Define class for a TrackingRequest
+class TrackingRequest {
+    var req_ID: Int
+    var req_from_user_phone: String
+    var req_to_user_phone: String
+    var req_expire_datetime: String
+    var req_expire_location_latitude: String
+    var req_expire_location_longitude: String
+    var req_create_datetime: String
+    var req_status: String
+    var req_status_change_datetime: String
+    
+    init (req_ID: Int, req_from_user_phone: String, req_to_user_phone: String, req_expire_datetime: String, req_expire_location_latitude: String, req_expire_location_longitude: String, req_create_datetime: String, req_status: String, req_status_change_datetime: String) {
+        self.req_ID = req_ID
+        self.req_from_user_phone = req_from_user_phone
+        self.req_to_user_phone = req_to_user_phone
+        self.req_expire_datetime = req_expire_datetime
+        self.req_expire_location_latitude = req_expire_location_latitude
+        self.req_expire_location_longitude = req_expire_location_longitude
+        self.req_create_datetime = req_create_datetime
+        self.req_status = req_status
+        self.req_status_change_datetime = req_status_change_datetime
+    }
+    
+    // Getters
+    public func getReq_ID() -> Int{
+        return self.req_ID
+    }
+    public func getReq_from_user_phone() -> String{
+        return self.req_from_user_phone
+    }
+    public func getReq_to_user_phone() -> String{
+        return self.req_to_user_phone
+    }
+    public func getReq_expire_datetime() -> String{
+        return self.req_expire_datetime
+    }
+    public func getReq_expire_location_latitude() -> String{
+        return self.req_expire_location_latitude
+    }
+    public func getReq_expire_location_longitude() -> String{
+        return self.req_expire_location_longitude
+    }
+    public func getReq_create_datetime() -> String{
+        return self.req_create_datetime
+    }
+    public func getReq_status() -> String{
+        return self.req_status
+    }
+    public func getReq_status_change_datetime() -> String{
+        return self.req_status_change_datetime
+    }
 }
