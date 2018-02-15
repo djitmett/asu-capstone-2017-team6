@@ -114,9 +114,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             print("NO PLAYER ID CAPTURED")
         }
         
-//        let user = UserAnnotation(name:"a user", lat: 38.8, long:-076.862)
-//        mapView.addAnnotation(user)
-
         //Avatar imaged -- NEEDS TO BE FIXED ; DOES NOT WORK
         //if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
         //   retrievedImg.image = UIImage(data: imgData as Data)
@@ -323,6 +320,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? UserAnnotation{
             let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
+            //change this to make the pin whatever image we want
             view.image = avatarImage
             view.isEnabled = true
             view.canShowCallout = true
