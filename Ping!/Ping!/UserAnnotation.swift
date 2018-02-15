@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 
 class UserAnnotation: NSObject, MKAnnotation {
+    var identifier = "user"
     var title: String?
     var coordinate: CLLocationCoordinate2D
     init (name:String, lat: CLLocationDegrees, long:CLLocationDegrees){

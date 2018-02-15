@@ -36,7 +36,7 @@ extension UIViewController {
     }
 }
  */
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     //Spinner view variable
     var sv : UIView!
@@ -45,7 +45,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var line1Label: UILabel!
     @IBOutlet var line2Label: UILabel!
     @IBOutlet var line3Label: UILabel!
-    @IBOutlet var mapDisplay: MKMapView!
+    @IBOutlet var mapView: MKMapView!
     @IBOutlet var requestLabel: UILabel!
     @IBOutlet var phoneNumField: UITextField!
     @IBOutlet var requestBtn: UIButton!
@@ -54,6 +54,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var mapLoadTimer: Timer!
     
     var lastPhone: String! = ""
+    let avatarImage = UIImage(named: "default_avatar")
     
     let manager = CLLocationManager()
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
@@ -112,6 +113,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         else {
             print("NO PLAYER ID CAPTURED")
         }
+        
+//        let user = UserAnnotation(name:"a user", lat: 38.8, long:-076.862)
+//        mapView.addAnnotation(user)
+
         //Avatar imaged -- NEEDS TO BE FIXED ; DOES NOT WORK
         //if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
         //   retrievedImg.image = UIImage(data: imgData as Data)
@@ -119,6 +124,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
         mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
+        mapView.delegate = self
     }
     
     func updateUserLocation(userPhone:String, latitude:Double, longitude:Double) {
@@ -163,6 +169,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 print(error)
             }
         }
+
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
@@ -174,14 +181,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //print("update map start")
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
-            self.mapDisplay.showsUserLocation=false
+            self.mapView.showsUserLocation=false
             let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
             getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
                 let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
 //                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
                 self.updateMap2(phone_number: currentTrackedUser, latitude: 38.8, longitude: -076.862, locUpdate: myLocUpdate)
             }
-            mapDisplay.showsUserLocation = true
+            mapView.showsUserLocation = true
         } else {
             // Show current user's current location
             let currLoc = manager.location
@@ -193,8 +200,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             
             //BREAK POINT IF USER DOESN'T ALLOW USER LOCATIONS
             if(currLoc != nil) {
-                mapDisplay.showsUserLocation = true
-//                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
+                mapView.showsUserLocation = true
+                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
             }
             else {
                 //NO DATA TO SEND
@@ -203,28 +210,35 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
             }
         }
+//        let user = UserAnnotation(name:"a user", lat: 38.8, long:-076.862)
+//        mapView.addAnnotation(user)
+
     }
     
     func updateMap2(phone_number: String, latitude: Double, longitude: Double, locUpdate:String){
         //print("LAT=",latitude," LONG=", longitude, " @", locUpdate)
         let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-        var region = mapDisplay.region
+        var region = mapView.region
         if (phone_number != lastPhone){
             region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
             lastPhone = phone_number
         } else {
-            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
+            region = MKCoordinateRegionMake(myLocation, mapView.region.span)
         }
-        let allAnnotations = mapDisplay.annotations
-        self.mapDisplay.removeAnnotations(allAnnotations)
+        let allAnnotations = mapView.annotations
+        self.mapView.removeAnnotations(allAnnotations)
         
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = myLocation
-        annotation.title = phone_number
-        mapDisplay.addAnnotation(annotation)
+        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
+        mapView.addAnnotation(user)
+
+//
+//        let annotation = MKPointAnnotation()
+//        annotation.coordinate = myLocation
+//        annotation.title = phone_number
+//        mapView.addAnnotation(annotation)
         
-        mapDisplay.setRegion(region, animated:false)
-        mapDisplay.centerCoordinate = myLocation
+        mapView.setRegion(region, animated:false)
+        mapView.centerCoordinate = myLocation
         //mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)
         
         self.line1Label.text = String(format: "Tracking user %@ Lat=%.2f Long=%.2f",phone_number, latitude, longitude)
@@ -303,5 +317,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         dateFormatter.timeStyle = .medium
         return dateFormatter.string(from: dt!)
     }
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? UserAnnotation{
+            let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
+            view.image = avatarImage
+            view.isEnabled = true
+            view.canShowCallout = true
+            view.leftCalloutAccessoryView = UIImageView(image: avatarImage)
+            return view
+        }
+        return nil
+    }
+    
 }
 
