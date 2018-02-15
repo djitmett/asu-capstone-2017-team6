@@ -12,31 +12,33 @@ import OneSignal
 
 //Loading extension for map loading spinner
 /*
-extension UIViewController {
-    class func displaySpinner(onView : UIView) -> UIView {
-        let spinnerView = UIView.init(frame: onView.bounds)
-        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
-        ai.startAnimating()
-        ai.center = spinnerView.center
-        
-        DispatchQueue.main.async {
-            spinnerView.addSubview(ai)
-            onView.addSubview(spinnerView)
-        }
-        
-        return spinnerView
-    }
-
-    
-    class func removeSpinner(spinner :UIView) {
-        DispatchQueue.main.async {
-            spinner.removeFromSuperview()
-        }
-    }
-}
+ extension UIViewController {
+ class func displaySpinner(onView : UIView) -> UIView {
+ let spinnerView = UIView.init(frame: onView.bounds)
+ spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+ let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+ ai.startAnimating()
+ ai.center = spinnerView.center
+ 
+ DispatchQueue.main.async {
+ spinnerView.addSubview(ai)
+ onView.addSubview(spinnerView)
+ }
+ 
+ return spinnerView
+ }
+ 
+ 
+ class func removeSpinner(spinner :UIView) {
+ DispatchQueue.main.async {
+ spinner.removeFromSuperview()
+ }
+ }
+ }
  */
 class ViewController: UIViewController, CLLocationManagerDelegate {
+    
+    var userPhoneNumber = ""
     
     //Spinner view variable
     var sv : UIView!
@@ -95,8 +97,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //Create spinner view
-       // sv = UIViewController.displaySpinner(onView: self.view)
+        // sv = UIViewController.displaySpinner(onView: self.view)
         
         //Map
         manager.delegate = self
@@ -119,7 +122,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
         mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
+        
+        //Requests
+        if(defaults.object(forKey: "userPhone") != nil){
+            userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
+        }
+        //****************
+        // Call on getRequestsFrom function in tracking view
+        //Populates global arrays
+        //****************
+        TrkRequestMainViewController().getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
+            if success {
+                print(pending[0].getReq_from_user_phone())
+                print(pending[0].getReq_to_user_phone())
+                print(pending[0].getReq_status())
+                
+                
+            }
+        }
     }
+    
     
     func updateUserLocation(userPhone:String, latitude:Double, longitude:Double) {
         //DATABASE PHP SCRIPT
@@ -196,7 +218,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             else {
                 //NO DATA TO SEND
                 //Remove spinner view after labels have been updated
-               // UIViewController.removeSpinner(spinner: sv)
+                // UIViewController.removeSpinner(spinner: sv)
                 
             }
         }

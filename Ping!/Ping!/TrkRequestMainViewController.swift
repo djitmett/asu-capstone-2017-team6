@@ -8,22 +8,23 @@
 
 import UIKit
 
+//Global arrays for tracking
+var pending = [TrackingRequest] ()
+var tracking = [TrackingRequest] ()
+var allRequests = [TrackingRequest] ()
+
+
 class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table2: UITableView!
     
-    
     let request = ["Brian", "Corey", "Josh", "Darya", "Nathan"]//hardcoded
     let request2 = ["Nathan","Darya", "Josh", "Corey","Brian" ]//hardcode
     var userPhoneNumber = ""
-    var pending = [TrackingRequest] ()
-    var tracking = [TrackingRequest] ()
-    var allRequests = [TrackingRequest] ()
-
     
     //func getRequestFrom(phone_number: String) -> Array<String> {
-    func getRequestFrom(phone_number: String) {
+    func getRequestFrom(phone_number: String, completion: @escaping (_ success: Bool) -> Void) {
         let defaults = UserDefaults.standard
         if(defaults.object(forKey: "userPhone") != nil){
             userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
@@ -55,7 +56,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                         msg = parseJSON["message"] as! String?
                         if(msg == "Operation successful!"){
                             data = parseJSON["data"] as! NSArray?
-                            self.allRequests.removeAll()
+                            allRequests.removeAll()
                             for request in data{
                                 let element = request as! NSArray
                                 // Define variables for tracking request
@@ -120,29 +121,33 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                 let tempTR = TrackingRequest(req_ID: myReq_ID, req_from_user_phone: myReq_from_user_phone, req_to_user_phone: myReq_to_user_phone, req_expire_datetime: myReq_expire_datetime, req_expire_location_latitude: myReq_expire_location_latitude, req_expire_location_longitude: myReq_expire_location_longitude, req_create_datetime: myReq_create_datetime, req_status: myReq_status, req_status_change_datetime: myReq_status_change_datetime)
                                 // If pending, add to pending array
                                 if (tempTR.getReq_status()=="PENDING"){
-                                    self.pending.append(tempTR)
+                                    pending.append(tempTR)
                                 }
                                 // If approved, add to current tracking array
                                 if (tempTR.getReq_status()=="APPROVED"){
-                                    self.tracking.append(tempTR)
+                                    tracking.append(tempTR)
                                 }
                                 // Store all tracking reqeusts
-                                self.allRequests.append(tempTR)
+                                allRequests.append(tempTR)
                             }
                         } else {
                             pendRequest.append("No Requests")
                         }
+                        
                     }
                     
                     print(pendRequest)
-                    print(self.allRequests)
+                    print(allRequests)
                 } catch {
                     print(error)
                 }
+                
             }
+            completion(true)
         }
     })
     task.resume()
+
     //return pendRequest
     }
     
@@ -163,13 +168,16 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
 override func viewDidLoad() {
     super.viewDidLoad()
     //pending.self = getRequestFrom(phone_number: userPhoneNumber)
-    getRequestFrom(phone_number: userPhoneNumber)
-    if(pending.count == 0){
-        return
-    }else{
-        print(pending[0])
+    getRequestFrom(phone_number: userPhoneNumber) { (success) -> Void in
+        if success {
+            if(pending.count == 0){
+                return
+            }else{
+                //print(pending[0])
+            }
+            print(pending)
+        }
     }
-    print(pending)
     
     // Do any additional setup after loading the view.
 }
