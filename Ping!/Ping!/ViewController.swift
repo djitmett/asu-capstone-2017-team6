@@ -249,6 +249,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //let myLocUpdate = convertGmtToLocal(date:locUpdate)
         self.line3Label.text = "User loc updated @ " + locUpdate
         
+        //remove +0.002 from final code. offest in place for testing self messages
         let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
         mapView.addAnnotation(user)
         
