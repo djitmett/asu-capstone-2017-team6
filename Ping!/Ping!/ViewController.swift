@@ -181,7 +181,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //print("update map start")
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
-            self.mapView.showsUserLocation=false
+//            self.mapView.showsUserLocation=false
             let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
             getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
                 let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
@@ -199,20 +199,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let timeStamp = Date()
             
             //BREAK POINT IF USER DOESN'T ALLOW USER LOCATIONS
+            
+            //if not tracking anyone, show user's location:
             if(currLoc != nil) {
+                var region = mapView.region
+                let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake((currLoc?.coordinate.latitude)!, (currLoc?.coordinate.longitude)!)
+                region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
+                region = MKCoordinateRegionMake(myLocation, mapView.region.span)
+                mapView.setRegion(region, animated:false)
+                mapView.centerCoordinate = myLocation
                 mapView.showsUserLocation = true
-                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
-            }
-            else {
-                //NO DATA TO SEND
-                //Remove spinner view after labels have been updated
-               // UIViewController.removeSpinner(spinner: sv)
-                
+                //removed the following to prevent pin from showing self
+//                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
             }
         }
-//        let user = UserAnnotation(name:"a user", lat: 38.8, long:-076.862)
-//        mapView.addAnnotation(user)
-
     }
     
     func updateMap2(phone_number: String, latitude: Double, longitude: Double, locUpdate:String){
