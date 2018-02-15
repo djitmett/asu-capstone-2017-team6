@@ -202,6 +202,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             //if not tracking anyone, show user's location:
             if(currLoc != nil) {
+                let allAnnotations = mapView.annotations
+                self.mapView.removeAnnotations(allAnnotations)
                 var region = mapView.region
                 let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake((currLoc?.coordinate.latitude)!, (currLoc?.coordinate.longitude)!)
                 region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
@@ -209,6 +211,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 mapView.setRegion(region, animated:false)
                 mapView.centerCoordinate = myLocation
                 mapView.showsUserLocation = true
+                
                 //removed the following to prevent pin from showing self
 //                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
             }
@@ -227,10 +230,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         let allAnnotations = mapView.annotations
         self.mapView.removeAnnotations(allAnnotations)
-        
-        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
-        mapView.addAnnotation(user)
-
 //
 //        let annotation = MKPointAnnotation()
 //        annotation.coordinate = myLocation
@@ -249,6 +248,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.line2Label.text = String(format: "Map updated @ %@", dateFormatter.string(from: timeStamp))
         //let myLocUpdate = convertGmtToLocal(date:locUpdate)
         self.line3Label.text = "User loc updated @ " + locUpdate
+        
+        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
+        mapView.addAnnotation(user)
         
         //Remove spinner view after labels have been updated
         //UIViewController.removeSpinner(spinner: sv)
