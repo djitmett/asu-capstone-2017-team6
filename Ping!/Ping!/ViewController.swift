@@ -185,8 +185,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
             getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
                 let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
-//                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
-                self.updateMap2(phone_number: currentTrackedUser, latitude: 38.8, longitude: -076.862, locUpdate: myLocUpdate)
+                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
+//                self.updateMap2(phone_number: currentTrackedUser, latitude: 38.8, longitude: -076.862, locUpdate: myLocUpdate)
             }
             mapView.showsUserLocation = true
         } else {
