@@ -323,7 +323,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             view.image = avatarImage
             view.isEnabled = true
             view.canShowCallout = true
-            view.leftCalloutAccessoryView = UIImageView(image: avatarImage)
+            //add image to callout:
+//            view.leftCalloutAccessoryView = UIImageView(image: avatarImage)
             return view
         }
         return nil
