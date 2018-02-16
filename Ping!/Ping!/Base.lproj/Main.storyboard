@@ -72,7 +72,7 @@
                         <outlet property="line1Label" destination="PVu-iT-NqY" id="afR-Ss-2H3"/>
                         <outlet property="line2Label" destination="pyV-Gk-0zX" id="J0c-ao-6mQ"/>
                         <outlet property="line3Label" destination="D7A-ji-WS4" id="Wtk-ss-pMS"/>
-                        <outlet property="mapDisplay" destination="sqZ-C0-WmI" id="wd8-Ku-4K2"/>
+                        <outlet property="mapView" destination="sqZ-C0-WmI" id="wd8-Ku-4K2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

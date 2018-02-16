@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		087BDF67081A8D75F4714EB7 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4283C5AEBECDAE902C9BE57 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411933001FBFE8D600EBF885 /* TrkRequestViewController.swift */; };
+		41D790BF2033DCA500DE1E17 /* UserAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D790BE2033DCA500DE1E17 /* UserAnnotation.swift */; };
 		4B1385762018573E009AD8A9 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1385752018573E009AD8A9 /* LocationSearchTable.swift */; };
 		4B13FA4E1FBE4F6700282BAA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B13FA4D1FBE4F6700282BAA /* User.swift */; };
 		4B26D0772027C884002BC21C /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26D0762027C884002BC21C /* RoundButton.swift */; };
@@ -76,6 +77,7 @@
 		1747DF184AE822047CC43BCE /* Pods-Ping!UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ping!UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ping!UITests/Pods-Ping!UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		1E8A5E7166BABD62E7C817A9 /* Pods_Ping_UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ping_UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		411933001FBFE8D600EBF885 /* TrkRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrkRequestViewController.swift; sourceTree = "<group>"; };
+		41D790BE2033DCA500DE1E17 /* UserAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserAnnotation.swift; path = "/Users/crakes/Documents/Projects/asu-capstone-2017-team6/Ping!/Ping!/UserAnnotation.swift"; sourceTree = "<absolute>"; };
 		428A905D1767A819F40DB5F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		4B1385752018573E009AD8A9 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		4B13FA4D1FBE4F6700282BAA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				4BBAB1DA20155886001F7BD1 /* TrkRequestMainViewController.swift */,
 				4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */,
 				4B7C1EE31FC37EA500DB1EFB /* LoginController.swift */,
+				41D790BE2033DCA500DE1E17 /* UserAnnotation.swift */,
 				4B13FA4D1FBE4F6700282BAA /* User.swift */,
 				411933001FBFE8D600EBF885 /* TrkRequestViewController.swift */,
 				4B615DC41FBE2E6F006067F9 /* SignUpController.swift */,
@@ -636,6 +639,7 @@
 				4B13FA4E1FBE4F6700282BAA /* User.swift in Sources */,
 				4B3283AE1F995D0A00302E3E /* ViewController.swift in Sources */,
 				4B615DC51FBE2E6F006067F9 /* SignUpController.swift in Sources */,
+				41D790BF2033DCA500DE1E17 /* UserAnnotation.swift in Sources */,
 				4B3283AC1F995D0A00302E3E /* AppDelegate.swift in Sources */,
 				4BBAB1DB20155886001F7BD1 /* TrkRequestMainViewController.swift in Sources */,
 				D71EE64D201E5C3700F12FFB /* EditProfileViewController.swift in Sources */,

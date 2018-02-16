@@ -36,7 +36,7 @@ extension UIViewController {
     }
 }
  */
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     //Spinner view variable
     var sv : UIView!
@@ -45,7 +45,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var line1Label: UILabel!
     @IBOutlet var line2Label: UILabel!
     @IBOutlet var line3Label: UILabel!
-    @IBOutlet var mapDisplay: MKMapView!
+    @IBOutlet var mapView: MKMapView!
     @IBOutlet var requestLabel: UILabel!
     @IBOutlet var phoneNumField: UITextField!
     @IBOutlet var requestBtn: UIButton!
@@ -54,6 +54,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var mapLoadTimer: Timer!
     
     var lastPhone: String! = ""
+    let defualtAvatar = UIImage(named: "default_avatar")
+    var avatarImage: UIImage!
     
     let manager = CLLocationManager()
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
@@ -112,6 +114,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         else {
             print("NO PLAYER ID CAPTURED")
         }
+        
         //Avatar imaged -- NEEDS TO BE FIXED ; DOES NOT WORK
         //if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
         //   retrievedImg.image = UIImage(data: imgData as Data)
@@ -119,6 +122,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
         mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
+        mapView.delegate = self
     }
     
     func updateUserLocation(userPhone:String, latitude:Double, longitude:Double) {
@@ -163,6 +167,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 print(error)
             }
         }
+
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
@@ -174,12 +179,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //print("update map start")
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
-            self.mapDisplay.showsUserLocation=false
+//            self.mapView.showsUserLocation=false
             let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
             getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
                 let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
                 self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
+//                self.updateMap2(phone_number: currentTrackedUser, latitude: 38.8, longitude: -076.862, locUpdate: myLocUpdate)
             }
+            mapView.showsUserLocation = true
         } else {
             // Show current user's current location
             let currLoc = manager.location
@@ -190,14 +197,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let timeStamp = Date()
             
             //BREAK POINT IF USER DOESN'T ALLOW USER LOCATIONS
+            
+            //if not tracking anyone, show user's location:
             if(currLoc != nil) {
-                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
-            }
-            else {
-                //NO DATA TO SEND
-                //Remove spinner view after labels have been updated
-               // UIViewController.removeSpinner(spinner: sv)
+                let allAnnotations = mapView.annotations
+                self.mapView.removeAnnotations(allAnnotations)
+                var region = mapView.region
+                let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake((currLoc?.coordinate.latitude)!, (currLoc?.coordinate.longitude)!)
+                region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
+                region = MKCoordinateRegionMake(myLocation, mapView.region.span)
+                mapView.setRegion(region, animated:false)
+                mapView.centerCoordinate = myLocation
+                mapView.showsUserLocation = true
                 
+                //removed the following to prevent pin from showing self
+//                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
             }
         }
     }
@@ -205,23 +219,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     func updateMap2(phone_number: String, latitude: Double, longitude: Double, locUpdate:String){
         //print("LAT=",latitude," LONG=", longitude, " @", locUpdate)
         let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-        var region = mapDisplay.region
+        var region = mapView.region
         if (phone_number != lastPhone){
             region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
             lastPhone = phone_number
         } else {
-            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
+            region = MKCoordinateRegionMake(myLocation, mapView.region.span)
         }
-        let allAnnotations = mapDisplay.annotations
-        self.mapDisplay.removeAnnotations(allAnnotations)
+        let allAnnotations = mapView.annotations
+        self.mapView.removeAnnotations(allAnnotations)
+//
+//        let annotation = MKPointAnnotation()
+//        annotation.coordinate = myLocation
+//        annotation.title = phone_number
+//        mapView.addAnnotation(annotation)
         
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = myLocation
-        annotation.title = phone_number
-        mapDisplay.addAnnotation(annotation)
-        
-        mapDisplay.setRegion(region, animated:false)
-        mapDisplay.centerCoordinate = myLocation
+        mapView.setRegion(region, animated:false)
+        mapView.centerCoordinate = myLocation
         //mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)
         
         self.line1Label.text = String(format: "Tracking user %@ Lat=%.2f Long=%.2f",phone_number, latitude, longitude)
@@ -232,6 +246,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.line2Label.text = String(format: "Map updated @ %@", dateFormatter.string(from: timeStamp))
         //let myLocUpdate = convertGmtToLocal(date:locUpdate)
         self.line3Label.text = "User loc updated @ " + locUpdate
+        
+        //remove +0.002 from final code. offest in place for testing self messages. Leave in place for testing callouts later
+//        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
+        let user = UserAnnotation(name:phone_number, lat: latitude, long:longitude)
+        loadData(phone_number: phone_number)
+        mapView.addAnnotation(user)
         
         //Remove spinner view after labels have been updated
         //UIViewController.removeSpinner(spinner: sv)
@@ -289,6 +309,74 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         task.resume()
     }
     
+    //Validate login with database
+    func loadData(phone_number:String) {
+        
+        //DATABASE PHP SCRIPT
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
+        //URL is defined above
+        let requestURL = NSURL(string: URL_SIGNUP)
+        //creating NSMutableURLRequest
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        //setting the method to post
+        request.httpMethod = "POST"
+        //creating the post parameter by concatenating the keys and values from text field
+        let postParameters = "user_phone="+phone_number;
+        //adding the parameters to request body
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        //creating a task to send the post request
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            //parsing the response
+            do {
+                //converting resonse to NSDictionary
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                //parsing the json
+                if let parseJSON = myJSON {
+                    //creating a string
+                    var msg : String!
+                    var myData : NSArray!
+                    //getting the json response
+                    msg = parseJSON["message"] as! String?
+                    //printing the response
+                    //print(msg)
+                    //If phonenumber exists in DB
+                    if(msg == "Operation successfully!"){
+                        myData = parseJSON["data"] as! NSArray?
+                        // TODO: load DB info into text fields
+                        //let db_password = myData[5] as? String
+                        //let user_first_name = myData[2] as? String
+                        //let user_last_name = myData[3] as? String
+                        let encodedAvatar = myData[7] as? String
+                        //print (encodedAvatar!)
+                        if (encodedAvatar != nil) {
+                            if (encodedAvatar! != "testimage.jpg") {
+                                let dataDecoded : Data = Data(base64Encoded: encodedAvatar!, options: .ignoreUnknownCharacters)!
+                                let decodedImage = UIImage(data: dataDecoded)!
+                                DispatchQueue.main.async {
+                                    self.avatarImage = decodedImage
+//                                    self.AvatarImageView.image = decodedImage
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch {
+                print(error)
+            }
+            
+        }
+        
+        //executing the task
+        task.resume()
+        //Prints HTTP POST data in console
+        //print(postParameters)
+    }
+    
     func convertGmtToLocal(date:String) -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss SSSS"
@@ -300,5 +388,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         dateFormatter.timeStyle = .medium
         return dateFormatter.string(from: dt!)
     }
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? UserAnnotation{
+            let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
+            //change this to make the pin whatever image we want
+            if avatarImage != nil {
+                let resizeImage = self.resizeImage(image: avatarImage, targetSize: CGSize.init(width:60,height:60))
+                view.image = resizeImage
+            }
+            
+            //            view.image = avatarImage
+            view.isEnabled = true
+            view.canShowCallout = true
+            //add image to callout:
+//            view.leftCalloutAccessoryView = UIImageView(image: avatarImage)
+            return view
+        }
+        return nil
+    }
+    
 }
 
