@@ -29,8 +29,8 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         if(defaults.object(forKey: "userPhone") != nil){
             userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
-        let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestsbyfrom.php?"
-        let postParameters = "from_user_phone=" + (userPhoneNumber)
+        let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestsbyto.php?"
+        let postParameters = "to_user_phone=" + (userPhoneNumber)
         var pendRequest = [String] ()// array to fill with pending request
         var request = URLRequest(url: URL(string: requestURL+postParameters)!)
         request.httpMethod = "POST"
