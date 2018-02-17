@@ -36,9 +36,12 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
     
     let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updateuserdata.php?"
     
-    @IBAction func doneButtonTapped(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
+   // @IBAction func doneButtonTapped(_ sender: Any) {
+    //    let nextViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProfileController") as! ProfileController
+   //     self.navigationController?.pushViewController(nextViewController, animated: true)
+        //self.present(nextViewController, animated:true, completion:nil)
+        
+    //}
     
     @IBAction func ChangeAvatarTapped(_ sender: Any) {
         var myPickerController = UIImagePickerController()
@@ -93,6 +96,11 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
                 //CALL THE EDIT FUNCTION (SEND DATA TO DB)
                 edit(first_name: user_first_name, last_name: user_last_name,
                      phone_num: phone, user_email: email, user_password: password)
+               
+                let alert = UIAlertController(title: "Confirmation", message: "Your profile information has been saved.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
             }
             else {
                 let alert = UIAlertController(title: "Error", message: "Passwords don't match.", preferredStyle: UIAlertControllerStyle.alert)
@@ -219,6 +227,8 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         var emailAddress = ""
         var myPassword = ""
         
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
         super.viewDidLoad()
         
         if (defaults.object(forKey: "userFirstName") != nil) {
@@ -245,6 +255,7 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         self.RepeatPasswordTextField.text = myPassword
         
         loadData(phone_number:phoneNumber)
+        
         
         // Do any additional setup after loading the view.
     }
@@ -342,6 +353,14 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         //print(postParameters)
     }
 }
+
+
+//override func viewWillDisappear(animated: Bool) {
+ //   let SideMenuTableController = ViewController(nibNameOrNil: NibName, bundleOrNil: nil)
+   // self.EditProfileViewController(SideMenuTableController, animated: true, completion: nil)
+//}
+
+
 extension UIViewController {
     @objc func hideKeyboard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
@@ -352,3 +371,5 @@ extension UIViewController {
         view.endEditing(true)
     }
 }
+
+
