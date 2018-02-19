@@ -181,7 +181,6 @@ override func viewDidLoad() {
         }
     }
     
-    // Do any additional setup after loading the view.
 }
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     if (tableView.tag == 1){
