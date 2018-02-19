@@ -12,31 +12,33 @@ import OneSignal
 
 //Loading extension for map loading spinner
 /*
-extension UIViewController {
-    class func displaySpinner(onView : UIView) -> UIView {
-        let spinnerView = UIView.init(frame: onView.bounds)
-        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
-        ai.startAnimating()
-        ai.center = spinnerView.center
-        
-        DispatchQueue.main.async {
-            spinnerView.addSubview(ai)
-            onView.addSubview(spinnerView)
-        }
-        
-        return spinnerView
-    }
-
-    
-    class func removeSpinner(spinner :UIView) {
-        DispatchQueue.main.async {
-            spinner.removeFromSuperview()
-        }
-    }
-}
+ extension UIViewController {
+ class func displaySpinner(onView : UIView) -> UIView {
+ let spinnerView = UIView.init(frame: onView.bounds)
+ spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+ let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+ ai.startAnimating()
+ ai.center = spinnerView.center
+ 
+ DispatchQueue.main.async {
+ spinnerView.addSubview(ai)
+ onView.addSubview(spinnerView)
+ }
+ 
+ return spinnerView
+ }
+ 
+ 
+ class func removeSpinner(spinner :UIView) {
+ DispatchQueue.main.async {
+ spinner.removeFromSuperview()
+ }
+ }
+ }
  */
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+    
+    var userPhoneNumber = ""
     
     //Spinner view variable
     var sv : UIView!
@@ -45,7 +47,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var line1Label: UILabel!
     @IBOutlet var line2Label: UILabel!
     @IBOutlet var line3Label: UILabel!
-    @IBOutlet var mapDisplay: MKMapView!
+    @IBOutlet var mapView: MKMapView!
     @IBOutlet var requestLabel: UILabel!
     @IBOutlet var phoneNumField: UITextField!
     @IBOutlet var requestBtn: UIButton!
@@ -58,6 +60,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     let manager = CLLocationManager()
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var player_id = ""
+    var autoRepositionMap = true as Bool
     
     var lastUpdateTime = DispatchTime.now() - 60 // Force DB update as soon as app loads by changing lastUpdateTime to an arbitrary time
     
@@ -78,7 +81,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
             let elapsedTime = Double(nanoTime)/1_000_000_000
             if (elapsedTime > 30){
-                print("Update location in DB")
+                //print("Update location in DB")
                 updateUserLocation(userPhone:userPhoneNumber,latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
                 lastUpdateTime = DispatchTime.now()
             }
@@ -90,19 +93,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var retrievedImg: UIImageView!
     
     //redirect from login
-    @IBAction func unwindSegueToMap(segue:UIStoryboardSegue) { }
+    @IBAction func unwindSegueToMap(segue:UIStoryboardSegue) {
+
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //Create spinner view
-       // sv = UIViewController.displaySpinner(onView: self.view)
+        // sv = UIViewController.displaySpinner(onView: self.view)
         
         //Map
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
+        
+        self.mapView.delegate = self
+        autoRepositionMap = true
         
         //USER DEFAULTS FOR ONESIGNAL ID
         let defaults = UserDefaults.standard
@@ -119,7 +128,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
         mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
+        
+        //Requests
+        if(defaults.object(forKey: "userPhone") != nil){
+            userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
+        }
+        //****************
+        // Call on getRequestsFrom function in tracking view
+        //Populates global arrays
+        //****************
+        TrkRequestMainViewController().getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
+            //            if success {
+            //                print(pending[0].getReq_from_user_phone())
+            //                print(pending[0].getReq_to_user_phone())
+            //                print(pending[0].getReq_status())
+            //
+            //
+            //            }
+        }
     }
+    
     
     func updateUserLocation(userPhone:String, latitude:Double, longitude:Double) {
         //DATABASE PHP SCRIPT
@@ -172,14 +200,75 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @objc func updateMap(){
         // If currently tracking a user, show their location, otherwise show user's current location on map.
         //print("update map start")
-        let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
-            self.mapDisplay.showsUserLocation=false
-            let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
-            getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
-                let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
-                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
+        //let defaults = UserDefaults.standard
+        //if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
+        if (tracking.count > 0){
+            self.mapView.showsUserLocation=true
+            //let allAnnotations = mapDisplay.annotations
+            //self.mapDisplay.removeAnnotations(allAnnotations)
+            //let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
+            for req in tracking{
+                //print("Updating:"+req.getReq_from_user_phone())
+                getLocationFromPhone(phone_number: req.getReq_from_user_phone()){(lat, long, lastUpdate) in
+                    let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
+                    self.updateMap2(phone_number: req.getReq_from_user_phone(), latitude: lat, longitude: long, locUpdate: myLocUpdate)
+                }
             }
+            // remove any unreferenced annotations
+            var i=0 as Int
+            while (i < mapView.annotations.count){
+                let ann = mapView.annotations[i]
+                var x=0 as Int
+                var deleteMe = true as Bool
+                while (x < tracking.count){
+                    if ((ann.title as! String).contains(tracking[x].getReq_from_user_phone())){
+                        deleteMe = false
+                    }
+                    x = x + 1
+                }
+                if (deleteMe){
+                    //print("Removing Title=" + (ann.title as! String))
+                    self.mapView.removeAnnotation(ann)
+                }
+                i = i + 1
+            }
+            // find min/max lat/long
+            //Top Left Coords
+            var topLeftLat = -90.0 as Double
+            var topLeftLong = 180.0  as Double
+            
+            //Bottom Right Coords
+            var bottomRightLong = -180.0 as Double
+            var bottomRightLat = 90.0  as Double
+            
+            for ann in mapView.annotations{
+                if (ann.coordinate.longitude < topLeftLong){
+                    topLeftLong = ann.coordinate.longitude
+                }
+                if (ann.coordinate.longitude > bottomRightLong){
+                    bottomRightLong = ann.coordinate.longitude
+                }
+                if (ann.coordinate.latitude < bottomRightLat){
+                    bottomRightLat = ann.coordinate.latitude
+                }
+                if (ann.coordinate.latitude > topLeftLat){
+                    topLeftLat = ann.coordinate.latitude
+                }
+            }
+            //print(String(format:"MinLong=%f MaxLong=%f MinLat=%f MaxLat=%f", topLeftLong, bottomRightLong, bottomRightLat, topLeftLat))
+            // Based on min/max lat/long, zoom map
+            if (autoRepositionMap){
+                if (topLeftLong != 180 || bottomRightLong != -180 || bottomRightLat != 90 || topLeftLat != -90){
+                    var region: MKCoordinateRegion = MKCoordinateRegion()
+                    region.center.latitude = topLeftLat - (topLeftLat - bottomRightLat) * 0.5
+                    region.center.longitude = topLeftLong + (bottomRightLong - topLeftLong) * 0.5
+                    region.span.latitudeDelta = fabs(topLeftLat - bottomRightLat) * 1.4
+                    region.span.longitudeDelta = fabs(bottomRightLong - topLeftLong) * 1.4
+                    region = mapView.regionThatFits(region)
+                    mapView.setRegion(region, animated: true)
+                }
+            }
+            
         } else {
             // Show current user's current location
             let currLoc = manager.location
@@ -196,7 +285,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             else {
                 //NO DATA TO SEND
                 //Remove spinner view after labels have been updated
-               // UIViewController.removeSpinner(spinner: sv)
+                // UIViewController.removeSpinner(spinner: sv)
                 
             }
         }
@@ -204,24 +293,42 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func updateMap2(phone_number: String, latitude: Double, longitude: Double, locUpdate:String){
         //print("LAT=",latitude," LONG=", longitude, " @", locUpdate)
-        let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-        var region = mapDisplay.region
-        if (phone_number != lastPhone){
-            region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
-            lastPhone = phone_number
-        } else {
-            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
-        }
-        let allAnnotations = mapDisplay.annotations
-        self.mapDisplay.removeAnnotations(allAnnotations)
+        //var allAnnotations = mapDisplay.annotations
+        //self.mapDisplay.removeAnnotations(allAnnotations)
         
-        let annotation = MKPointAnnotation()
+        let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+        //        var region = mapDisplay.region
+        //        if (phone_number != lastPhone){
+        //            region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
+        //            lastPhone = phone_number
+        //        } else {
+        //            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
+        //        }
+        
+        var newAnnotation = true as Bool
+        var i=0 as Int
+        while (i < mapView.annotations.count){
+            let ann = mapView.annotations[i]
+            //print("Title=" + (ann.title as! String) + " Phone=" + phone_number)
+            if ((ann.title as! String).contains(phone_number)){
+                //print("Removing Title=" + (ann.title as! String) + " Phone=" + phone_number)
+                self.mapView.removeAnnotation(ann)
+                newAnnotation = false
+            }
+            i = i + 1
+        }
+        // If this is a new tracking request, reset autoreposition
+        if (newAnnotation){
+            autoRepositionMap = true
+        }
+        
+        var annotation = MKPointAnnotation()
         annotation.coordinate = myLocation
         annotation.title = phone_number
-        mapDisplay.addAnnotation(annotation)
+        mapView.addAnnotation(annotation)
         
-        mapDisplay.setRegion(region, animated:false)
-        mapDisplay.centerCoordinate = myLocation
+        //mapDisplay.setRegion(region, animated:false)
+        //mapDisplay.centerCoordinate = myLocation
         //mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)
         
         self.line1Label.text = String(format: "Tracking user %@ Lat=%.2f Long=%.2f",phone_number, latitude, longitude)
@@ -300,5 +407,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         dateFormatter.timeStyle = .medium
         return dateFormatter.string(from: dt!)
     }
+    
+    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+        if (!animated){
+            autoRepositionMap = false
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool){
+        super.viewDidAppear(false)
+        autoRepositionMap = true
+    }
+    
 }
 
