@@ -132,13 +132,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //Populates global arrays
         //****************
         TrkRequestMainViewController().getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
-//            if success {
-//                print(pending[0].getReq_from_user_phone())
-//                print(pending[0].getReq_to_user_phone())
-//                print(pending[0].getReq_status())
-//                
-//                
-//            }
+            //            if success {
+            //                print(pending[0].getReq_from_user_phone())
+            //                print(pending[0].getReq_to_user_phone())
+            //                print(pending[0].getReq_status())
+            //
+            //
+            //            }
         }
     }
     
@@ -197,7 +197,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //let defaults = UserDefaults.standard
         //if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
         if (tracking.count > 0){
-            self.mapDisplay.showsUserLocation=false
+            self.mapDisplay.showsUserLocation=true
             //let allAnnotations = mapDisplay.annotations
             //self.mapDisplay.removeAnnotations(allAnnotations)
             //let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
@@ -227,39 +227,55 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 i = i + 1
             }
             // find min/max lat/long
-            var minLong = 180.0  as Double
-            var maxLong = -180.0 as Double
-            var minLat = 90.0  as Double
-            var maxLat = -90.0 as Double
+            //Top Left Coords
+            var topLeftLat = -90.0 as Double
+            var topLeftLong = 180.0  as Double
+            
+            //Bottom Right Coords
+            var bottomRightLong = -180.0 as Double
+            var bottomRightLat = 90.0  as Double
+            
             for ann in mapDisplay.annotations{
-                if (ann.coordinate.longitude < minLong){
-                    minLong = ann.coordinate.longitude
+                if (ann.coordinate.longitude < topLeftLong){
+                    topLeftLong = ann.coordinate.longitude
                 }
-                if (ann.coordinate.longitude > maxLong){
-                    maxLong = ann.coordinate.longitude
+                if (ann.coordinate.longitude > bottomRightLong){
+                    bottomRightLong = ann.coordinate.longitude
                 }
-                if (ann.coordinate.latitude < minLat){
-                    minLat = ann.coordinate.latitude
+                if (ann.coordinate.latitude < bottomRightLat){
+                    bottomRightLat = ann.coordinate.latitude
                 }
-                if (ann.coordinate.latitude > maxLat){
-                    maxLat = ann.coordinate.latitude
+                if (ann.coordinate.latitude > topLeftLat){
+                    topLeftLat = ann.coordinate.latitude
                 }
             }
-            print(String(format:"MinLong=%f MaxLong=%f MinLat=%f MaxLat=%f", minLong, maxLong, minLat, maxLat))
+            print(String(format:"MinLong=%f MaxLong=%f MinLat=%f MaxLat=%f", topLeftLong, bottomRightLong, bottomRightLat, topLeftLat))
             // Based on min/max lat/long, zoom map
             //TODO: This code is not working yet! Math is wrong!!
-            if (minLong != 180 || maxLong != -180 || minLat != 90 || maxLat != -90){
-                var locationSpan = MKCoordinateSpan(latitudeDelta: 0,longitudeDelta: 0)
-                locationSpan.latitudeDelta = maxLat - minLat
-                locationSpan.longitudeDelta = maxLong - minLong
-                var locationCenter = CLLocationCoordinate2D(latitude: 0,longitude: 0)
-                locationCenter.latitude = (maxLat - minLat) / 2;
-                locationCenter.longitude = (maxLong - minLong) / 2;
+            if (topLeftLong != 180 || bottomRightLong != -180 || bottomRightLat != 90 || topLeftLat != -90){
+                /**
+                 var locationSpan = MKCoordinateSpan(latitudeDelta: 0,longitudeDelta: 0)
+                 locationSpan.latitudeDelta = (topLat - bottomLat) * 1.4
+                 locationSpan.longitudeDelta = (bottomLong - topLong) * 1.4
+                 
+                 var locationCenter = CLLocationCoordinate2D(latitude: 0,longitude: 0)
+                 locationCenter.latitude = (topLat - bottomLat) / 2;
+                 locationCenter.longitude = (bottomLong - topLong) / 2;
+                 
+                 var region = mapDisplay.region
+                 region = MKCoordinateRegionMake(locationCenter, locationSpan)
+                 region = mapDisplay.regionThatFits(region)
+                 mapDisplay.setRegion(region, animated:true)
+                 mapDisplay.centerCoordinate = locationCenter
+                 **/
+                var region: MKCoordinateRegion = MKCoordinateRegion()
+                region.center.latitude = topLeftLat - (topLeftLat - bottomRightLat) * 0.5
+                region.center.longitude = topLeftLong + (bottomRightLong - topLeftLong) * 0.5
+                region.span.latitudeDelta = fabs(topLeftLat - bottomRightLat) * 1.4
+                region.span.longitudeDelta = fabs(bottomRightLong - topLeftLong) * 1.4
+                region = mapDisplay.regionThatFits(region)
+                mapDisplay.setRegion(region, animated: true)
                 
-                var region = mapDisplay.region
-                region = MKCoordinateRegionMake(locationCenter, locationSpan)
-                mapDisplay.setRegion(region, animated:false)
-                mapDisplay.centerCoordinate = locationCenter
             }
             
         } else {
@@ -290,13 +306,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //self.mapDisplay.removeAnnotations(allAnnotations)
         
         let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-//        var region = mapDisplay.region
-//        if (phone_number != lastPhone){
-//            region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
-//            lastPhone = phone_number
-//        } else {
-//            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
-//        }
+        //        var region = mapDisplay.region
+        //        if (phone_number != lastPhone){
+        //            region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
+        //            lastPhone = phone_number
+        //        } else {
+        //            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
+        //        }
         
         var i=0 as Int
         while (i < mapDisplay.annotations.count){
