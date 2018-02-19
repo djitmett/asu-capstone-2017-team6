@@ -5,7 +5,6 @@
 //  Created by Nathan Waitman on 1/28/18.
 //  Copyright © 2018 Darya T Jitmetta. All rights reserved.
 //
-// creating branch
 
 import UIKit
 
@@ -28,7 +27,6 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
     var email = "email@test.com"
     var phone = "180012345678"
     var password = "password"
-    var repeatpassword = "password"
     var useravatar = "avatar.jpeg"
     var usertime = "test"
     
@@ -36,12 +34,9 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
     
     let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updateuserdata.php?"
     
-   // @IBAction func doneButtonTapped(_ sender: Any) {
-    //    let nextViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProfileController") as! ProfileController
-   //     self.navigationController?.pushViewController(nextViewController, animated: true)
-        //self.present(nextViewController, animated:true, completion:nil)
-        
-    //}
+    @IBAction func doneButtonTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
     @IBAction func ChangeAvatarTapped(_ sender: Any) {
         var myPickerController = UIImagePickerController()
@@ -64,61 +59,28 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         
         //OneSignal player_id as user_device_id for now
         let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil) {
-            user_device_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
-        }
         
         //DB Variables
         user_first_name = FirstNameTextField.text!
         user_last_name = LastNameTextField.text!
         phone = PhoneNumberTextField.text!
-        email = EmailTextField.text!
-        password = PasswordTextField.text!
-        repeatpassword = RepeatPasswordTextField.text!
+        //email = EmailTextField.text!
+        //password = PasswordTextField.text!
         
-        if (user_first_name != "" &&
-            user_last_name != "" &&
-            phone != "" &&
-            email != "" &&
-            password != "") {
+        //Store values in UserDefaults TODO: Commented out for now to stop sign out on
+        //defaults.set(user_first_name, forKey: "userFirstName")
+        //defaults.set(user_last_name, forKey: "userLastName")
+        //defaults.set(phone, forKey: "userPhone")
+        //defaults.set(true, forKey: "isLogged")
+        //defaults.synchronize()
         
-            if (repeatpassword == password) {
-            
-                //Store values in UserDefaults TODO: Commented out for now to stop sign out on
-                defaults.set(user_first_name, forKey: "userFirstName")
-                defaults.set(user_last_name, forKey: "userLastName")
-                defaults.set(phone, forKey: "userPhone")
-                defaults.set(email, forKey: "userEmail")
-                defaults.set(password, forKey: "userPassword")
-                defaults.set(true, forKey: "isLogged")
-                defaults.synchronize()
+        //CALL THE SIGN UP FUNCTION (SEND DATA TO DB)
+        edit(first_name: user_first_name, last_name: user_last_name)
         
-                //CALL THE EDIT FUNCTION (SEND DATA TO DB)
-                edit(first_name: user_first_name, last_name: user_last_name,
-                     phone_num: phone, user_email: email, user_password: password)
-               
-                let alert = UIAlertController(title: "Confirmation", message: "Your profile information has been saved.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                
-            }
-            else {
-                let alert = UIAlertController(title: "Error", message: "Passwords don't match.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }
-        }
-        else {
-            let alert = UIAlertController(title: "Error", message: "Please fill all fields.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
     }
     
-    func edit(first_name:String, last_name:String, phone_num:String, user_email:String,
-              user_password:String) {
+    func edit(first_name:String, last_name:String) {
         
-        print("edit")
         //let postParameters = "user_fb_id=84&user_device_id=12345&user_type=changed&user_first_name=testfirst1&user_last_name=testlast1&user_phone=12345&user_email=TestEmail&user_password=testpass&user_avatar=none&user_join_datetime=nodatetime";
         
         //URL is defined above
@@ -142,9 +104,9 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         postParameters += "&user_device_id=" + user_device_id
         postParameters += "&user_first_name=" + first_name
         postParameters += "&user_last_name=" + last_name
-        postParameters += "&user_phone=" + phone_num
-        postParameters += "&user_email=" + user_email
-        postParameters += "&user_password=" + user_password
+        postParameters += "&user_phone=" + phone
+        postParameters += "&user_email=" + email
+        postParameters += "&user_password=" + password
         postParameters += "&user_join_datetime=" + usertime
         postParameters += "&user_avatar=" + encodedAvatar!
         
@@ -227,8 +189,6 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         var emailAddress = ""
         var myPassword = ""
         
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
         super.viewDidLoad()
         
         if (defaults.object(forKey: "userFirstName") != nil) {
@@ -252,10 +212,8 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         self.PhoneNumberTextField.text = phoneNumber
         self.EmailTextField.text = emailAddress
         self.PasswordTextField.text = myPassword
-        self.RepeatPasswordTextField.text = myPassword
         
         loadData(phone_number:phoneNumber)
-        
         
         // Do any additional setup after loading the view.
     }
@@ -353,14 +311,6 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         //print(postParameters)
     }
 }
-
-
-//override func viewWillDisappear(animated: Bool) {
- //   let SideMenuTableController = ViewController(nibNameOrNil: NibName, bundleOrNil: nil)
-   // self.EditProfileViewController(SideMenuTableController, animated: true, completion: nil)
-//}
-
-
 extension UIViewController {
     @objc func hideKeyboard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
@@ -371,5 +321,3 @@ extension UIViewController {
         view.endEditing(true)
     }
 }
-
-
