@@ -119,6 +119,16 @@ class LoginController: UIViewController, UITextFieldDelegate {
                                         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "MainNavController")
                                         self.present(nextViewController, animated:true, completion:nil)
+                                        
+                                        var user_device_id = ""
+                                        var user_phone_number = ""
+                                        //userPhone
+                                        if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil){
+                                            user_device_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!}
+                                        if (defaults.object(forKey: "userPhone") != nil){
+                                            user_phone_number = (defaults.object(forKey: "userPhone") as? String)!}
+                                        
+                                        self.updateUserDevice(user_phone_number: user_phone_number,user_device_id: user_device_id)
                                     }
                                 }
                             })                                                        
@@ -153,6 +163,52 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.password.text = ""
     }
     
+    func updateUserDevice(user_phone_number: String,user_device_id: String){
+        //DATABASE PHP SCRIPT
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updateuserdevice.php?"
+        let requestURL = NSURL(string: URL_SIGNUP)
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        request.httpMethod = "POST"
+        
+        var postParameters = "user_device_id=" + user_device_id
+        postParameters += "&user_phone=" + user_phone_number
+        //print("PostParms=" + postParameters)
+        
+        //adding the parameters to request body
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        
+        //creating a task to send the post request
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            
+            //parsing the response
+            do {
+                //converting resonse to NSDictionary
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                //parsing the json
+                if let parseJSON = myJSON {
+                    //creating a string
+                    var msg : String!
+                    //getting the json response
+                    msg = parseJSON["message"] as! String?
+                    //printing the response
+                    print("MESSAGE=" + msg)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        //executing the task
+        task.resume()
+        //Prints HTTP POST data in console
+        //print(postParameters)
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
         textField.resignFirstResponder()
@@ -166,9 +222,11 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.hideKeyboard()
         
         // Left View Icons
-        phoneNumber.setLeftViewFAIcon(icon: .FAEnvelope, leftViewMode: .always, textColor: .gray, backgroundColor: .clear, size: nil)
-        password.setLeftViewFAIcon(icon: .FALock, leftViewMode: .always, textColor: .gray, backgroundColor: .clear, size: nil)
+        phoneNumber.setLeftViewFAIcon(icon: .FAPhone, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        password.setLeftViewFAIcon(icon: .FALock, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
         
+        phoneNumber.layer.cornerRadius = 5
+        password.layer.cornerRadius = 5
         
     }
     

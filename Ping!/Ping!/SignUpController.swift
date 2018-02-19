@@ -54,22 +54,18 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         dismiss(animated: true, completion: nil)
         
     }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        avatarImageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
-        print("image picker controller")
-        self.dismiss(animated: true, completion: nil)
-        
-        //below was the original code:
         // The info dictionary may contain multiple representations of the image. You want to use the original.
-        //        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-        //            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
-        //        }
-        //
-        //        // Set photoImageView to display the selected image.
-        //        avatarImageView.image = selectedImage
-        //
-        //        // Dismiss the picker.
-        //        dismiss(animated: true, completion: nil)
+        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+        }
+        
+        // Set photoImageView to display the selected image.
+        avatarImageView.image = resizeImage(image: selectedImage, targetSize: CGSize.init(width:200,height:200))
+        // Dismiss the picker.
+        self.dismiss(animated: true, completion: nil)
+    
     }
     
     
@@ -90,9 +86,11 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         self.present(imagePickerController, animated: true, completion: nil)
     }
     
+    
+    
+    
     //Sign up button
     @IBAction func signupBtn(_ sender: Any) {
-        print("signup button pressed ")
         //OneSignal player_id as user_device_id for now
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil){
@@ -140,48 +138,34 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     func sign_up(first_name:String, last_name:String) {
         
         //URL is defined above
-        print("sign_up")
-        var request = URLRequest(url: URL(string: URL_SIGNUP)!)
+        let requestURL = NSURL(string: URL_SIGNUP)
+        
+        //creating NSMutableURLRequest
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        
+        //Create request
         request.httpMethod = "POST"
-        let boundary = generateBoundaryString()
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
-        //creating the post parameter by concatenating the keys and values from text field
-        let postParameters = [
-            "user_fb_id" : userfbid,
-            "user_type" : usertype,
-            "user_device_id" : user_device_id,
-            "user_first_name" : user_first_name,
-            "user_last_name" : user_last_name,
-            "user_phone" : phone,
-            "user_email" : email,
-            "user_password" : password,
-            "user_join_datetime" : usertime,
-            //            "user_avatar" : useravatar
-        ]
-        let imageData = UIImageJPEGRepresentation(avatarImageView.image!, 0.0)
+        // Encode avatar image for saving in DB
+        let imageData = UIImagePNGRepresentation(avatarImageView.image!)
+        var encodedAvatar = imageData?.base64EncodedString(options: .lineLength64Characters)
+        let customAllowedSet = NSCharacterSet(charactersIn:"+").inverted
+        encodedAvatar = encodedAvatar?.addingPercentEncoding(withAllowedCharacters:customAllowedSet as CharacterSet)!
         
-        request.httpBody = createBody(parameters: postParameters,
-                                      boundary: boundary,
-                                      data: imageData!,
-                                      mimeType: "image/jpg",
-                                      filename: useravatar)
+        //Creating post paramter
+        var postParameters = "user_fb_id= " + userfbid
+        postParameters += "&user_type=" + usertype
+        postParameters += "&user_device_id=" + user_device_id
+        postParameters += "&user_first_name=" + user_first_name
+        postParameters += "&user_last_name=" + user_last_name
+        postParameters += "&user_phone=" + phone
+        postParameters += "&user_email=" + email
+        postParameters += "&user_password=" + password
+        postParameters += "&user_join_datetime=" + usertime
+        postParameters += "&user_avatar=" + encodedAvatar!
         
-        let fileName = useravatar
-        //        let mimetype = "image/jpg"
-        //        let fieldName = "user_avatar1"
-        //
-        //
-        //
-        ////        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        //
-        //
-        //        //GET IMAGE DATA
-        ////        let avatarImageData = imageDataKey
-        //
-        ////        request.httpBody = createBodyWithParameters(parameters: postParameters, filePathKey: "user_avatar", imageDataKey: avatarImageData, boundary: boundary) as Data
-        
-        
+        //adding the parameters to request body
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
         
         //creating a task to send the post request
         let task = URLSession.shared.dataTask(with: request as URLRequest){
@@ -228,60 +212,10 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
-        print(postParameters)
+        //print(postParameters)
     }
     
-    func createBody(parameters: [String: String],
-                    boundary: String,
-                    data: Data,
-                    mimeType: String,
-                    filename: String) -> Data {
-        let body = NSMutableData()
-        
-        print("body1 is ", body.length)
-        //        print("body1 is ", body)
-        let stringTest1 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
-        //        print("the body1 is ", stringTest1)
-        
-        let boundaryPrefix = "--\(boundary)\r\n"
-        
-        for (key, value) in parameters {
-            body.appendString(boundaryPrefix)
-            body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
-            body.appendString("\(value)\r\n")
-        }
-        print("body2 is ", body.length)
-        //        print("body2 is ", body)
-        let stringTest2 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
-        //        print("the body2 is ", stringTest2)
-        
-        body.appendString(boundaryPrefix)
-        //        body.appendString("Content-Disposition: form-data; name=\"user_avatar\"; filename=\"\(filename)\"\r\n")
-        body.appendString("Content-Disposition: form-data; name=\"user_avatar\"\r\n\r\n")
-        //        body.appendString("Content-Type: \(mimeType)\r\n\r\n")
-        
-        print("body3 is ", body.length)
-        //        print("body3 is ", body)
-        let stringTest3 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
-        print("the body3 is ", stringTest3)
-        
-        body.appendString("testimage.jpg\r\n")
-        
-        //        body.append(data)
-        //        body.appendString("\r\n")
-        body.appendString("--".appending(boundary.appending("--")))
-        
-        print("body4 is ", body.length)
-        //        print("body4 is ", body)
-        let stringTest4 = String(data: body as Data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
-        print("the body4 is ", stringTest4)
-        
-        return body as Data
-    }
-    
-    func generateBoundaryString() -> String {
-        return "Boundary-\(NSUUID().uuidString)"
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -293,6 +227,52 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         passwordField.delegate = self
         self.hideKeyboard()
         
+        //Round avatar placeholder
+        self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2;
+        self.avatarImageView.clipsToBounds = true;
+        
+        //Set Icons & Round Corners
+        firstNameField.setLeftViewFAIcon(icon: .FAUser, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        firstNameField.layer.cornerRadius = 5
+        
+        lastNameField.setLeftViewFAIcon(icon: .FAUser, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        lastNameField.layer.cornerRadius = 5
+        
+        phonenumberField.setLeftViewFAIcon(icon: .FAPhone, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        phonenumberField.layer.cornerRadius = 5
+        
+        emailField.setLeftViewFAIcon(icon: .FAEnvelope, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        emailField.layer.cornerRadius = 5
+        
+        passwordField.setLeftViewFAIcon(icon: .FALock, leftViewMode: .always, textColor: .white, backgroundColor: .clear, size: nil)
+        passwordField.layer.cornerRadius = 5
+        
+    }
+    
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
     }
     
     func segueMap() {

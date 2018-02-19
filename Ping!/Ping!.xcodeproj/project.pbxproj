@@ -13,12 +13,14 @@
 		4B1385762018573E009AD8A9 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1385752018573E009AD8A9 /* LocationSearchTable.swift */; };
 		4B13FA4E1FBE4F6700282BAA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B13FA4D1FBE4F6700282BAA /* User.swift */; };
 		4B26D0772027C884002BC21C /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26D0762027C884002BC21C /* RoundButton.swift */; };
+		4B26D079202E7E06002BC21C /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26D078202E7E06002BC21C /* SideMenuController.swift */; };
 		4B3283AC1F995D0A00302E3E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AB1F995D0A00302E3E /* AppDelegate.swift */; };
 		4B3283AE1F995D0A00302E3E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AD1F995D0A00302E3E /* ViewController.swift */; };
 		4B3283B11F995D0A00302E3E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B3283AF1F995D0A00302E3E /* Main.storyboard */; };
 		4B3283B31F995D0A00302E3E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3283B21F995D0A00302E3E /* Assets.xcassets */; };
 		4B3283C11F995D0A00302E3E /* Ping_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283C01F995D0A00302E3E /* Ping_Tests.swift */; };
 		4B3283CC1F995D0A00302E3E /* Ping_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283CB1F995D0A00302E3E /* Ping_UITests.swift */; };
+		4B35E08A203391400072612E /* SettingsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B35E0892033913F0072612E /* SettingsTableController.swift */; };
 		4B615DC51FBE2E6F006067F9 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B615DC41FBE2E6F006067F9 /* SignUpController.swift */; };
 		4B7C1EE41FC37EA500DB1EFB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C1EE31FC37EA500DB1EFB /* LoginController.swift */; };
 		4B7C1EE61FC37F8000DB1EFB /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */; };
@@ -82,6 +84,7 @@
 		4B1385752018573E009AD8A9 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		4B13FA4D1FBE4F6700282BAA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4B26D0762027C884002BC21C /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		4B26D078202E7E06002BC21C /* SideMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		4B3283A81F995D0A00302E3E /* Ping!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ping!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3283AB1F995D0A00302E3E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B3283AD1F995D0A00302E3E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +97,7 @@
 		4B3283C71F995D0A00302E3E /* Ping!UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ping!UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3283CB1F995D0A00302E3E /* Ping_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ping_UITests.swift; sourceTree = "<group>"; };
 		4B3283CD1F995D0A00302E3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4B35E0892033913F0072612E /* SettingsTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableController.swift; sourceTree = "<group>"; };
 		4B615DC41FBE2E6F006067F9 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		4B7C1EE31FC37EA500DB1EFB /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
@@ -157,6 +161,7 @@
 		4B32839F1F995D0A00302E3E = {
 			isa = PBXGroup;
 			children = (
+				4B35E0892033913F0072612E /* SettingsTableController.swift */,
 				4B3283AA1F995D0A00302E3E /* Ping! */,
 				4B3283BF1F995D0A00302E3E /* Ping!Tests */,
 				4B3283CA1F995D0A00302E3E /* Ping!UITests */,
@@ -185,6 +190,7 @@
 				4B3283AB1F995D0A00302E3E /* AppDelegate.swift */,
 				4B3283AD1F995D0A00302E3E /* ViewController.swift */,
 				4B3283AF1F995D0A00302E3E /* Main.storyboard */,
+				4B26D078202E7E06002BC21C /* SideMenuController.swift */,
 				8A505D992022CE9C00F255C0 /* SideMenuTableController.swift */,
 				D71EE64C201E5C3700F12FFB /* EditProfileViewController.swift */,
 				4B1385752018573E009AD8A9 /* LocationSearchTable.swift */,
@@ -631,8 +637,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B26D0772027C884002BC21C /* RoundButton.swift in Sources */,
+				4B35E08A203391400072612E /* SettingsTableController.swift in Sources */,
 				4B7C1EE61FC37F8000DB1EFB /* ProfileController.swift in Sources */,
 				8A505D9A2022CE9C00F255C0 /* SideMenuTableController.swift in Sources */,
+				4B26D079202E7E06002BC21C /* SideMenuController.swift in Sources */,
 				411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */,
 				4B7C1EE41FC37EA500DB1EFB /* LoginController.swift in Sources */,
 				4B1385762018573E009AD8A9 /* LocationSearchTable.swift in Sources */,
