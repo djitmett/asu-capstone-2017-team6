@@ -490,6 +490,27 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         return dateFormatter.string(from: dt!)
     }
     
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? UserAnnotation{
+            let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
+            if avatarImage != nil {
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+                imageView.image = avatarImage
+                imageView.layer.cornerRadius = imageView.layer.frame.size.width / 2
+                imageView.layer.masksToBounds = true
+                imageView.layer.borderWidth = 5
+                imageView.layer.borderColor = UIColor.white.cgColor
+                //                imageView.isUserInteractionEnabled = false
+                view.addSubview(imageView)
+                view.isUserInteractionEnabled = true
+                view.isEnabled = true
+                view.canShowCallout = true
+            }
+            return view
+        }
+        return nil
+    }
+    
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
         if (!animated){
             autoRepositionMap = false

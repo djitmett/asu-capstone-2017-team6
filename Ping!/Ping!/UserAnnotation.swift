@@ -1,10 +1,9 @@
 //
 //  UserAnnotation.swift
-//  
+//
 //
 //  Created by Corey Rakes on 2/13/18.
 //
-
 import Foundation
 import UIKit
 import MapKit
