@@ -56,6 +56,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var mapLoadTimer: Timer!
     
     var lastPhone: String! = ""
+    let defualtAvatar = UIImage(named: "default_avatar")
+    var avatarImage: UIImage!
     
     let manager = CLLocationManager()
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
@@ -121,6 +123,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         else {
             print("NO PLAYER ID CAPTURED")
         }
+        
         //Avatar imaged -- NEEDS TO BE FIXED ; DOES NOT WORK
         //if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
         //   retrievedImg.image = UIImage(data: imgData as Data)
@@ -191,6 +194,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 print(error)
             }
         }
+
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
@@ -279,6 +283,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let timeStamp = Date()
             
             //BREAK POINT IF USER DOESN'T ALLOW USER LOCATIONS
+            
+            //if not tracking anyone, show user's location:
             if(currLoc != nil) {
                 self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
             }
@@ -287,6 +293,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 //Remove spinner view after labels have been updated
                 // UIViewController.removeSpinner(spinner: sv)
                 
+                //removed the following to prevent pin from showing self
+//                self.updateMap2(phone_number: "Self", latitude: (currLoc?.coordinate.latitude)!, longitude: (currLoc?.coordinate.longitude)!, locUpdate: dateFormatter.string(from: timeStamp))
             }
         }
     }
@@ -339,6 +347,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.line2Label.text = String(format: "Map updated @ %@", dateFormatter.string(from: timeStamp))
         //let myLocUpdate = convertGmtToLocal(date:locUpdate)
         self.line3Label.text = "User loc updated @ " + locUpdate
+        
+        //remove +0.002 from final code. offest in place for testing self messages. Leave in place for testing callouts later
+//        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
+        let user = UserAnnotation(name:phone_number, lat: latitude, long:longitude)
+        loadData(phone_number: phone_number)
+        mapView.addAnnotation(user)
         
         //Remove spinner view after labels have been updated
         //UIViewController.removeSpinner(spinner: sv)
@@ -394,6 +408,74 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         })
         task.resume()
+    }
+    
+    //Validate login with database
+    func loadData(phone_number:String) {
+        
+        //DATABASE PHP SCRIPT
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
+        //URL is defined above
+        let requestURL = NSURL(string: URL_SIGNUP)
+        //creating NSMutableURLRequest
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        //setting the method to post
+        request.httpMethod = "POST"
+        //creating the post parameter by concatenating the keys and values from text field
+        let postParameters = "user_phone="+phone_number;
+        //adding the parameters to request body
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        //creating a task to send the post request
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            //parsing the response
+            do {
+                //converting resonse to NSDictionary
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                //parsing the json
+                if let parseJSON = myJSON {
+                    //creating a string
+                    var msg : String!
+                    var myData : NSArray!
+                    //getting the json response
+                    msg = parseJSON["message"] as! String?
+                    //printing the response
+                    //print(msg)
+                    //If phonenumber exists in DB
+                    if(msg == "Operation successfully!"){
+                        myData = parseJSON["data"] as! NSArray?
+                        // TODO: load DB info into text fields
+                        //let db_password = myData[5] as? String
+                        //let user_first_name = myData[2] as? String
+                        //let user_last_name = myData[3] as? String
+                        let encodedAvatar = myData[7] as? String
+                        //print (encodedAvatar!)
+                        if (encodedAvatar != nil) {
+                            if (encodedAvatar! != "testimage.jpg") {
+                                let dataDecoded : Data = Data(base64Encoded: encodedAvatar!, options: .ignoreUnknownCharacters)!
+                                let decodedImage = UIImage(data: dataDecoded)!
+                                DispatchQueue.main.async {
+                                    self.avatarImage = decodedImage
+//                                    self.AvatarImageView.image = decodedImage
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch {
+                print(error)
+            }
+            
+        }
+        
+        //executing the task
+        task.resume()
+        //Prints HTTP POST data in console
+        //print(postParameters)
     }
     
     func convertGmtToLocal(date:String) -> String{
