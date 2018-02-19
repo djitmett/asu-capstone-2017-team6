@@ -58,6 +58,13 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                             }
                             //let tempRequest = (data[0] as? String)!
                             //pendRequest.append(tempRequest)
+                            let element = data[0] as! NSArray
+                            //Prints request ID
+                            print(element[0])
+                            //Prints req_from_user_phone
+                            print(element[1])
+                            //Prints req_to_user_phone
+                            print(element[2])
                         } else {
                             //pendRequest.append("No Request")
                         }
