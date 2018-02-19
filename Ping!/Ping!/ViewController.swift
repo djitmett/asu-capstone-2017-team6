@@ -36,7 +36,7 @@ import OneSignal
  }
  }
  */
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     var userPhoneNumber = ""
     
@@ -47,7 +47,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var line1Label: UILabel!
     @IBOutlet var line2Label: UILabel!
     @IBOutlet var line3Label: UILabel!
-    @IBOutlet var mapDisplay: MKMapView!
+    @IBOutlet var mapView: MKMapView!
     @IBOutlet var requestLabel: UILabel!
     @IBOutlet var phoneNumField: UITextField!
     @IBOutlet var requestBtn: UIButton!
@@ -60,6 +60,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     let manager = CLLocationManager()
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var player_id = ""
+    var autoRepositionMap = true as Bool
     
     var lastUpdateTime = DispatchTime.now() - 60 // Force DB update as soon as app loads by changing lastUpdateTime to an arbitrary time
     
@@ -80,7 +81,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
             let elapsedTime = Double(nanoTime)/1_000_000_000
             if (elapsedTime > 30){
-                print("Update location in DB")
+                //print("Update location in DB")
                 updateUserLocation(userPhone:userPhoneNumber,latitude:location.coordinate.latitude,longitude:location.coordinate.longitude)
                 lastUpdateTime = DispatchTime.now()
             }
@@ -92,7 +93,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var retrievedImg: UIImageView!
     
     //redirect from login
-    @IBAction func unwindSegueToMap(segue:UIStoryboardSegue) { }
+    @IBAction func unwindSegueToMap(segue:UIStoryboardSegue) {
+
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,6 +109,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
+        
+        self.mapView.delegate = self
+        autoRepositionMap = true
         
         //USER DEFAULTS FOR ONESIGNAL ID
         let defaults = UserDefaults.standard
@@ -197,7 +203,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //let defaults = UserDefaults.standard
         //if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
         if (tracking.count > 0){
-            self.mapDisplay.showsUserLocation=true
+            self.mapView.showsUserLocation=true
             //let allAnnotations = mapDisplay.annotations
             //self.mapDisplay.removeAnnotations(allAnnotations)
             //let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
@@ -210,8 +216,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
             // remove any unreferenced annotations
             var i=0 as Int
-            while (i < mapDisplay.annotations.count){
-                let ann = mapDisplay.annotations[i]
+            while (i < mapView.annotations.count){
+                let ann = mapView.annotations[i]
                 var x=0 as Int
                 var deleteMe = true as Bool
                 while (x < tracking.count){
@@ -222,7 +228,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 }
                 if (deleteMe){
                     //print("Removing Title=" + (ann.title as! String))
-                    self.mapDisplay.removeAnnotation(ann)
+                    self.mapView.removeAnnotation(ann)
                 }
                 i = i + 1
             }
@@ -235,7 +241,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             var bottomRightLong = -180.0 as Double
             var bottomRightLat = 90.0  as Double
             
-            for ann in mapDisplay.annotations{
+            for ann in mapView.annotations{
                 if (ann.coordinate.longitude < topLeftLong){
                     topLeftLong = ann.coordinate.longitude
                 }
@@ -249,33 +255,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     topLeftLat = ann.coordinate.latitude
                 }
             }
-            print(String(format:"MinLong=%f MaxLong=%f MinLat=%f MaxLat=%f", topLeftLong, bottomRightLong, bottomRightLat, topLeftLat))
+            //print(String(format:"MinLong=%f MaxLong=%f MinLat=%f MaxLat=%f", topLeftLong, bottomRightLong, bottomRightLat, topLeftLat))
             // Based on min/max lat/long, zoom map
-            //TODO: This code is not working yet! Math is wrong!!
-            if (topLeftLong != 180 || bottomRightLong != -180 || bottomRightLat != 90 || topLeftLat != -90){
-                /**
-                 var locationSpan = MKCoordinateSpan(latitudeDelta: 0,longitudeDelta: 0)
-                 locationSpan.latitudeDelta = (topLat - bottomLat) * 1.4
-                 locationSpan.longitudeDelta = (bottomLong - topLong) * 1.4
-                 
-                 var locationCenter = CLLocationCoordinate2D(latitude: 0,longitude: 0)
-                 locationCenter.latitude = (topLat - bottomLat) / 2;
-                 locationCenter.longitude = (bottomLong - topLong) / 2;
-                 
-                 var region = mapDisplay.region
-                 region = MKCoordinateRegionMake(locationCenter, locationSpan)
-                 region = mapDisplay.regionThatFits(region)
-                 mapDisplay.setRegion(region, animated:true)
-                 mapDisplay.centerCoordinate = locationCenter
-                 **/
-                var region: MKCoordinateRegion = MKCoordinateRegion()
-                region.center.latitude = topLeftLat - (topLeftLat - bottomRightLat) * 0.5
-                region.center.longitude = topLeftLong + (bottomRightLong - topLeftLong) * 0.5
-                region.span.latitudeDelta = fabs(topLeftLat - bottomRightLat) * 1.4
-                region.span.longitudeDelta = fabs(bottomRightLong - topLeftLong) * 1.4
-                region = mapDisplay.regionThatFits(region)
-                mapDisplay.setRegion(region, animated: true)
-                
+            if (autoRepositionMap){
+                if (topLeftLong != 180 || bottomRightLong != -180 || bottomRightLat != 90 || topLeftLat != -90){
+                    var region: MKCoordinateRegion = MKCoordinateRegion()
+                    region.center.latitude = topLeftLat - (topLeftLat - bottomRightLat) * 0.5
+                    region.center.longitude = topLeftLong + (bottomRightLong - topLeftLong) * 0.5
+                    region.span.latitudeDelta = fabs(topLeftLat - bottomRightLat) * 1.4
+                    region.span.longitudeDelta = fabs(bottomRightLong - topLeftLong) * 1.4
+                    region = mapView.regionThatFits(region)
+                    mapView.setRegion(region, animated: true)
+                }
             }
             
         } else {
@@ -314,21 +305,27 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
         //        }
         
+        var newAnnotation = true as Bool
         var i=0 as Int
-        while (i < mapDisplay.annotations.count){
-            let ann = mapDisplay.annotations[i]
+        while (i < mapView.annotations.count){
+            let ann = mapView.annotations[i]
             //print("Title=" + (ann.title as! String) + " Phone=" + phone_number)
             if ((ann.title as! String).contains(phone_number)){
                 //print("Removing Title=" + (ann.title as! String) + " Phone=" + phone_number)
-                self.mapDisplay.removeAnnotation(ann)
+                self.mapView.removeAnnotation(ann)
+                newAnnotation = false
             }
             i = i + 1
+        }
+        // If this is a new tracking request, reset autoreposition
+        if (newAnnotation){
+            autoRepositionMap = true
         }
         
         var annotation = MKPointAnnotation()
         annotation.coordinate = myLocation
         annotation.title = phone_number
-        mapDisplay.addAnnotation(annotation)
+        mapView.addAnnotation(annotation)
         
         //mapDisplay.setRegion(region, animated:false)
         //mapDisplay.centerCoordinate = myLocation
@@ -410,5 +407,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         dateFormatter.timeStyle = .medium
         return dateFormatter.string(from: dt!)
     }
+    
+    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+        if (!animated){
+            autoRepositionMap = false
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool){
+        super.viewDidAppear(false)
+        autoRepositionMap = true
+    }
+    
 }
 
