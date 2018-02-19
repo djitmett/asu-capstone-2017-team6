@@ -75,8 +75,32 @@ class ProfileController: UIViewController {
             phoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
         
+       
         self.userName.text = firstName + " "  + lastName
         self.userPhoneNumber.text = phoneNumber
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        var firstName = ""
+        var lastName = ""
+        var phoneNumber = ""
+        
+        super.viewDidLoad()
+        
+        if (defaults.object(forKey: "userFirstName") != nil) {
+            firstName = (defaults.object(forKey: "userFirstName") as? String)!
+        }
+        if (defaults.object(forKey: "userLastName") != nil) {
+            lastName = (defaults.object(forKey: "userLastName") as? String)!
+        }
+        if (defaults.object(forKey: "userPhone") != nil) {
+            phoneNumber = (defaults.object(forKey: "userPhone") as? String)!
+        }
+        
+        
+        self.userName.text = firstName + " "  + lastName
+        self.userPhoneNumber.text = phoneNumber
     }
 }
