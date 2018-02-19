@@ -46,7 +46,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var line1Label: UILabel!
     @IBOutlet var line2Label: UILabel!
     @IBOutlet var line3Label: UILabel!
-    @IBOutlet var mapDisplay: MKMapView!
+    @IBOutlet var mapView: MKMapView!
     @IBOutlet var requestLabel: UILabel!
     @IBOutlet var phoneNumField: UITextField!
     @IBOutlet var requestBtn: UIButton!
@@ -190,7 +190,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //print("update map start")
         let defaults = UserDefaults.standard
         if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
-            self.mapDisplay.showsUserLocation=false
+            self.mapView.showsUserLocation=false
             let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
             getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
                 let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
@@ -221,23 +221,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     func updateMap2(phone_number: String, latitude: Double, longitude: Double, locUpdate:String){
         //print("LAT=",latitude," LONG=", longitude, " @", locUpdate)
         let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-        var region = mapDisplay.region
+        var region = mapView.region
         if (phone_number != lastPhone){
             region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
             lastPhone = phone_number
         } else {
-            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
+            region = MKCoordinateRegionMake(myLocation, mapView.region.span)
         }
-        let allAnnotations = mapDisplay.annotations
-        self.mapDisplay.removeAnnotations(allAnnotations)
+        let allAnnotations = mapView.annotations
+        self.mapView.removeAnnotations(allAnnotations)
         
         let annotation = MKPointAnnotation()
         annotation.coordinate = myLocation
         annotation.title = phone_number
-        mapDisplay.addAnnotation(annotation)
+        mapView.addAnnotation(annotation)
         
-        mapDisplay.setRegion(region, animated:false)
-        mapDisplay.centerCoordinate = myLocation
+        mapView.setRegion(region, animated:false)
+        mapView.centerCoordinate = myLocation
         //mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)
         
         self.line1Label.text = String(format: "Tracking user %@ Lat=%.2f Long=%.2f",phone_number, latitude, longitude)
