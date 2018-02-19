@@ -132,13 +132,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //Populates global arrays
         //****************
         TrkRequestMainViewController().getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
-            if success {
-                print(pending[0].getReq_from_user_phone())
-                print(pending[0].getReq_to_user_phone())
-                print(pending[0].getReq_status())
-                
-                
-            }
+//            if success {
+//                print(pending[0].getReq_from_user_phone())
+//                print(pending[0].getReq_to_user_phone())
+//                print(pending[0].getReq_status())
+//                
+//                
+//            }
         }
     }
     
@@ -194,14 +194,74 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @objc func updateMap(){
         // If currently tracking a user, show their location, otherwise show user's current location on map.
         //print("update map start")
-        let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
+        //let defaults = UserDefaults.standard
+        //if (defaults.object(forKey: "currentTrackedUser") != nil) && ((defaults.object(forKey: "currentTrackedUser") as? String)! != ""){
+        if (tracking.count > 0){
             self.mapDisplay.showsUserLocation=false
-            let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
-            getLocationFromPhone(phone_number: currentTrackedUser){(lat, long, lastUpdate) in
-                let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
-                self.updateMap2(phone_number: currentTrackedUser, latitude: lat, longitude: long, locUpdate: myLocUpdate)
+            //let allAnnotations = mapDisplay.annotations
+            //self.mapDisplay.removeAnnotations(allAnnotations)
+            //let currentTrackedUser = (defaults.object(forKey: "currentTrackedUser") as? String)!
+            for req in tracking{
+                //print("Updating:"+req.getReq_from_user_phone())
+                getLocationFromPhone(phone_number: req.getReq_from_user_phone()){(lat, long, lastUpdate) in
+                    let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
+                    self.updateMap2(phone_number: req.getReq_from_user_phone(), latitude: lat, longitude: long, locUpdate: myLocUpdate)
+                }
             }
+            // remove any unreferenced annotations
+            var i=0 as Int
+            while (i < mapDisplay.annotations.count){
+                let ann = mapDisplay.annotations[i]
+                var x=0 as Int
+                var deleteMe = true as Bool
+                while (x < tracking.count){
+                    if ((ann.title as! String).contains(tracking[x].getReq_from_user_phone())){
+                        deleteMe = false
+                    }
+                    x = x + 1
+                }
+                if (deleteMe){
+                    //print("Removing Title=" + (ann.title as! String))
+                    self.mapDisplay.removeAnnotation(ann)
+                }
+                i = i + 1
+            }
+            // find min/max lat/long
+            var minLong = 180.0  as Double
+            var maxLong = -180.0 as Double
+            var minLat = 90.0  as Double
+            var maxLat = -90.0 as Double
+            for ann in mapDisplay.annotations{
+                if (ann.coordinate.longitude < minLong){
+                    minLong = ann.coordinate.longitude
+                }
+                if (ann.coordinate.longitude > maxLong){
+                    maxLong = ann.coordinate.longitude
+                }
+                if (ann.coordinate.latitude < minLat){
+                    minLat = ann.coordinate.latitude
+                }
+                if (ann.coordinate.latitude > maxLat){
+                    maxLat = ann.coordinate.latitude
+                }
+            }
+            print(String(format:"MinLong=%f MaxLong=%f MinLat=%f MaxLat=%f", minLong, maxLong, minLat, maxLat))
+            // Based on min/max lat/long, zoom map
+            //TODO: This code is not working yet! Math is wrong!!
+            if (minLong != 180 || maxLong != -180 || minLat != 90 || maxLat != -90){
+                var locationSpan = MKCoordinateSpan(latitudeDelta: 0,longitudeDelta: 0)
+                locationSpan.latitudeDelta = maxLat - minLat
+                locationSpan.longitudeDelta = maxLong - minLong
+                var locationCenter = CLLocationCoordinate2D(latitude: 0,longitude: 0)
+                locationCenter.latitude = (maxLat - minLat) / 2;
+                locationCenter.longitude = (maxLong - minLong) / 2;
+                
+                var region = mapDisplay.region
+                region = MKCoordinateRegionMake(locationCenter, locationSpan)
+                mapDisplay.setRegion(region, animated:false)
+                mapDisplay.centerCoordinate = locationCenter
+            }
+            
         } else {
             // Show current user's current location
             let currLoc = manager.location
@@ -226,24 +286,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func updateMap2(phone_number: String, latitude: Double, longitude: Double, locUpdate:String){
         //print("LAT=",latitude," LONG=", longitude, " @", locUpdate)
-        let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-        var region = mapDisplay.region
-        if (phone_number != lastPhone){
-            region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
-            lastPhone = phone_number
-        } else {
-            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
-        }
-        let allAnnotations = mapDisplay.annotations
-        self.mapDisplay.removeAnnotations(allAnnotations)
+        //var allAnnotations = mapDisplay.annotations
+        //self.mapDisplay.removeAnnotations(allAnnotations)
         
-        let annotation = MKPointAnnotation()
+        let myLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+//        var region = mapDisplay.region
+//        if (phone_number != lastPhone){
+//            region = MKCoordinateRegionMake(myLocation, MKCoordinateSpanMake(0.01, 0.01))
+//            lastPhone = phone_number
+//        } else {
+//            region = MKCoordinateRegionMake(myLocation, mapDisplay.region.span)
+//        }
+        
+        var i=0 as Int
+        while (i < mapDisplay.annotations.count){
+            let ann = mapDisplay.annotations[i]
+            //print("Title=" + (ann.title as! String) + " Phone=" + phone_number)
+            if ((ann.title as! String).contains(phone_number)){
+                //print("Removing Title=" + (ann.title as! String) + " Phone=" + phone_number)
+                self.mapDisplay.removeAnnotation(ann)
+            }
+            i = i + 1
+        }
+        
+        var annotation = MKPointAnnotation()
         annotation.coordinate = myLocation
         annotation.title = phone_number
         mapDisplay.addAnnotation(annotation)
         
-        mapDisplay.setRegion(region, animated:false)
-        mapDisplay.centerCoordinate = myLocation
+        //mapDisplay.setRegion(region, animated:false)
+        //mapDisplay.centerCoordinate = myLocation
         //mapDisplay.showAnnotations(mapDisplay.annotations, animated: false)
         
         self.line1Label.text = String(format: "Tracking user %@ Lat=%.2f Long=%.2f",phone_number, latitude, longitude)
