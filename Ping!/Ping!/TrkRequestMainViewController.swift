@@ -175,13 +175,13 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
 override func viewDidLoad() {
     super.viewDidLoad()
     //pending.self = getRequestFrom(phone_number: userPhoneNumber)
-    getRequestFrom(phone_number: userPhoneNumber)
-    let when = DispatchTime.now() + 1 // change 2 to desired number of seconds
-    DispatchQueue.main.asyncAfter(deadline: when) {
-        self.table1.reloadData()
-        self.table2.reloadData()
+    getRequestFrom(phone_number: userPhoneNumber) { (success) -> Void in
+        let when = DispatchTime.now() + 1 // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.table1.reloadData()
+            self.table2.reloadData()
+        }
     }
-    
 }
 
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
