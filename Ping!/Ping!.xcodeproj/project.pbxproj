@@ -161,7 +161,6 @@
 		4B32839F1F995D0A00302E3E = {
 			isa = PBXGroup;
 			children = (
-				4B35E0892033913F0072612E /* SettingsTableController.swift */,
 				4B3283AA1F995D0A00302E3E /* Ping! */,
 				4B3283BF1F995D0A00302E3E /* Ping!Tests */,
 				4B3283CA1F995D0A00302E3E /* Ping!UITests */,
@@ -194,6 +193,7 @@
 				8A505D992022CE9C00F255C0 /* SideMenuTableController.swift */,
 				D71EE64C201E5C3700F12FFB /* EditProfileViewController.swift */,
 				4B1385752018573E009AD8A9 /* LocationSearchTable.swift */,
+				4B35E0892033913F0072612E /* SettingsTableController.swift */,
 				4BBAB1DA20155886001F7BD1 /* TrkRequestMainViewController.swift */,
 				4B7C1EE51FC37F8000DB1EFB /* ProfileController.swift */,
 				3E1E26DD203A64F30062C1F9 /* UserAnnotation.swift */,
