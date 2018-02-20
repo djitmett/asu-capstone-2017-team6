@@ -40,15 +40,12 @@ class SideMenuController: UITableViewController {
         
         let defaults = UserDefaults.standard
         var firstName = ""
-        var lastName = ""
         var phoneNumber = ""
         
         if (defaults.object(forKey: "userFirstName") != nil) {
              firstName = (defaults.object(forKey: "userFirstName") as? String)!
         }
-        if (defaults.object(forKey: "userLastName") != nil) {
-             lastName = (defaults.object(forKey: "userLastName") as? String)!
-        }
+
         if (defaults.object(forKey: "userPhone") != nil) {
             phoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
