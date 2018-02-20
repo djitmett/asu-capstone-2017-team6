@@ -22,9 +22,6 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     var request = [String] ()//For tableview
     var request2 = [String] ()//for tableview
     var userPhoneNumber = ""
-    var pending = [TrackingRequest] ()
-    var tracking = [TrackingRequest] ()
-    var allRequests = [TrackingRequest] ()
 
     //func getRequestFrom(phone_number: String) -> Array<String> {
     func getRequestFrom(phone_number: String, completion: @escaping (_ success: Bool) -> Void) {
@@ -59,9 +56,9 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                         msg = parseJSON["message"] as! String?
                         if(msg == "Operation successful!"){
                             data = parseJSON["data"] as! NSArray?
-                            self.allRequests.removeAll()
-                            self.pending.removeAll()
-                            self.tracking.removeAll()
+                            allRequests.removeAll()
+                            pending.removeAll()
+                            tracking.removeAll()
                             for request in data{
                                 let element = request as! NSArray
                                 // Define variables for tracking request
@@ -127,16 +124,16 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                 // If pending, add to pending array
                                 if (tempTR.getReq_status()=="PENDING"){
                                     self.request.append(tempTR.getReq_to_user_phone())
-                                    self.pending.append(tempTR)
+                                    pending.append(tempTR)
                                     print(request)
                                 }
                                 // If approved, add to current tracking array
                                 if (tempTR.getReq_status()=="APPROVED"){
                                     self.request2.append(tempTR.getReq_from_user_phone())
-                                    self.tracking.append(tempTR)
+                                    tracking.append(tempTR)
                                 }
                                 // Store all tracking reqeusts
-                                self.allRequests.append(tempTR)
+                                allRequests.append(tempTR)
                             }
                         } else {
                             pendRequest.append("No Requests")
