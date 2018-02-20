@@ -19,10 +19,13 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table2: UITableView!
     
-    let request = ["Brian", "Corey", "Josh", "Darya", "Nathan"]//hardcoded
-    let request2 = ["Nathan","Darya", "Josh", "Corey","Brian" ]//hardcode
+    var request = [String] ()//For tableview
+    var request2 = [String] ()//for tableview
     var userPhoneNumber = ""
-    
+    var pending = [TrackingRequest] ()
+    var tracking = [TrackingRequest] ()
+    var allRequests = [TrackingRequest] ()
+
     //func getRequestFrom(phone_number: String) -> Array<String> {
     func getRequestFrom(phone_number: String, completion: @escaping (_ success: Bool) -> Void) {
         let defaults = UserDefaults.standard
@@ -123,11 +126,14 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                 let tempTR = TrackingRequest(req_ID: myReq_ID, req_from_user_phone: myReq_from_user_phone, req_to_user_phone: myReq_to_user_phone, req_expire_datetime: myReq_expire_datetime, req_expire_location_latitude: myReq_expire_location_latitude, req_expire_location_longitude: myReq_expire_location_longitude, req_create_datetime: myReq_create_datetime, req_status: myReq_status, req_status_change_datetime: myReq_status_change_datetime)
                                 // If pending, add to pending array
                                 if (tempTR.getReq_status()=="PENDING"){
-                                    pending.append(tempTR)
+                                    self.request.append(tempTR.getReq_to_user_phone())
+                                    self.pending.append(tempTR)
+                                    print(request)
                                 }
                                 // If approved, add to current tracking array
                                 if (tempTR.getReq_status()=="APPROVED"){
-                                    tracking.append(tempTR)
+                                    self.request2.append(tempTR.getReq_from_user_phone())
+                                    self.tracking.append(tempTR)
                                 }
                                 // Store all tracking reqeusts
                                 allRequests.append(tempTR)
@@ -138,8 +144,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                         
                     }
                     
-                    print(pendRequest)
-                    print(allRequests)
+                  //  print(self.allRequests)
                 } catch {
                     print(error)
                 }
@@ -152,7 +157,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
 
     //return pendRequest
     }
-    
+
     @IBAction func clearMapBtn(_ sender: Any) {
         print("@ClearTracking")
         let defaults = UserDefaults.standard
@@ -171,38 +176,35 @@ override func viewDidLoad() {
     super.viewDidLoad()
     //pending.self = getRequestFrom(phone_number: userPhoneNumber)
     getRequestFrom(phone_number: userPhoneNumber) { (success) -> Void in
-        if success {
-            if(pending.count == 0){
-                return
-            }else{
-                //print(pending[0])
-            }
-            print(pending)
+        let when = DispatchTime.now() + 1 // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.table1.reloadData()
+            self.table2.reloadData()
         }
     }
-    
 }
+
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     if (tableView.tag == 1){
-        numberOfTracked = request.count
+        numberOfTracked = request2.count
         return numberOfTracked
     }else if(tableView.tag == 2){
-        numberOfRequested = request2.count
+        numberOfRequested = request.count
         return numberOfRequested
     }else{
     return 0
     }
 }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as UITableViewCell
         if(tableView.tag == 1){
-            cell.textLabel?.text = request[indexPath.row]
+            cell.textLabel?.text = self.request2[indexPath.row]
+            
         }else if(tableView.tag == 2){
-            cell.textLabel?.text = request2[indexPath.row]
+            cell.textLabel?.text = self.request[indexPath.row]
         }
         return (cell)
     }
-    
 override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
