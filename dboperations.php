@@ -243,7 +243,33 @@ class dboperations
 	    $stmt->close();
     }
 
-    //Function to update an existing user
+   
+    //Function to update a user's device ID
+    public function updateUserDevice($user_device_id, $user_phone)
+    {
+		if ($this->checkUserExistsByPhone($user_phone))
+		{
+			$stmt = $this->conn->prepare("UPDATE users set user_device_id=? WHERE user_phone=?");
+			$stmt->bind_param("ss", $user_device_id, $user_phone);
+			if ($stmt->execute()) 
+			{
+                return USER_UPDATED;
+            } 
+			else
+			{
+                return USER_NOT_UPDATED;
+            }
+		}
+		else 
+		{
+           return USER_DOESNT_EXIST;
+        }
+		
+		echo $stmt->error;
+	    $stmt->close();
+    }
+
+     //Function to update an existing user
     public function updateUserData($user_fb_id, $user_device_id, $user_type, $user_first_name, $user_last_name, $user_phone, $user_email, $user_password, $user_avatar, $user_join_datetime)
     {
 		if ($this->checkUserExistsByPhone($user_phone))

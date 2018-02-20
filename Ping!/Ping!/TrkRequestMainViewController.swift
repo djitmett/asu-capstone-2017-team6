@@ -8,11 +8,16 @@
 
 import UIKit
 
+//Global arrays for tracking
+var pending = [TrackingRequest] ()
+var tracking = [TrackingRequest] ()
+var allRequests = [TrackingRequest] ()
+
+
 class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table2: UITableView!
-    
     
     var request = [String] ()//For tableview
     var request2 = [String] ()//for tableview
@@ -21,15 +26,14 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     var tracking = [TrackingRequest] ()
     var allRequests = [TrackingRequest] ()
 
-
     //func getRequestFrom(phone_number: String) -> Array<String> {
-    func getRequestFrom(phone_number: String) {
+    func getRequestFrom(phone_number: String, completion: @escaping (_ success: Bool) -> Void) {
         let defaults = UserDefaults.standard
         if(defaults.object(forKey: "userPhone") != nil){
             userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
-        let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestsbyfrom.php?"
-        let postParameters = "from_user_phone=" + (userPhoneNumber)
+        let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestsbyto.php?"
+        let postParameters = "to_user_phone=" + (userPhoneNumber)
         var pendRequest = [String] ()// array to fill with pending request
         var request = URLRequest(url: URL(string: requestURL+postParameters)!)
         request.httpMethod = "POST"
@@ -55,7 +59,9 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                         msg = parseJSON["message"] as! String?
                         if(msg == "Operation successful!"){
                             data = parseJSON["data"] as! NSArray?
-                            self.allRequests.removeAll()
+                            allRequests.removeAll()
+                            pending.removeAll()
+                            tracking.removeAll()
                             for request in data{
                                 let element = request as! NSArray
                                 // Define variables for tracking request
@@ -130,21 +136,25 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                     self.tracking.append(tempTR)
                                 }
                                 // Store all tracking reqeusts
-                                self.allRequests.append(tempTR)
+                                allRequests.append(tempTR)
                             }
                         } else {
                             pendRequest.append("No Requests")
                         }
+                        
                     }
                     
                   //  print(self.allRequests)
                 } catch {
                     print(error)
                 }
+                
             }
+            completion(true)
         }
     })
     task.resume()
+
     //return pendRequest
     }
 
@@ -172,8 +182,6 @@ override func viewDidLoad() {
         self.table2.reloadData()
     }
     
-    
-    // Do any additional setup after loading the view.
 }
 
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
