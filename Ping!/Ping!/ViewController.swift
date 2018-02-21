@@ -247,6 +247,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     if ((ann.title as! String).contains(tracking[x].getReq_from_user_phone())){
                         deleteMe = false
                     }
+                    //convert expiration coords into double
+                    let expire_lat = Double(tracking[x].getReq_expire_location_latitude())
+                    let expire_long = Double(tracking[x].getReq_expire_location_longitude())
+                    //If the current location of the annotation is equal to the end destination
+                    if (ann.coordinate.longitude == expire_long  && ann.coordinate.latitude == expire_lat) {
+                        deleteMe = true
+                        print("reached expired location")
+                        let id = tracking[x].getReq_ID()
+                        //Update DB to set status of that request as "EXPIRED" and remove it from the array
+                        TrkRequestMainViewController().expireRequest(request_id: id)
+                        tracking.remove(at: x)
+                    }
                     x = x + 1
                 }
                 if (deleteMe){
