@@ -185,7 +185,7 @@ class dboperations
 
 	public function getRequestsByFrom($from_user_phone)
 	{
-		$stmt = $this->conn->prepare("SELECT requests.*, users.user_first_name, users.user_last_name FROM requests INNER JOIN users WHERE req_from_user_phone =? AND users.user_phone = req_from_user_phone ORDER BY requests.req_create_datetime");
+		$stmt = $this->conn->prepare("SELECT requests.*, users.user_first_name, users.user_last_name FROM requests INNER JOIN users WHERE req_from_user_phone =? AND users.user_phone = req_to_user_phone ORDER BY requests.req_create_datetime");
 		$stmt->bind_param("i", $from_user_phone);
 		
 		if ($stmt->execute()) 
@@ -206,7 +206,7 @@ class dboperations
 
 	public function getRequestsByTo($to_user_phone)
 	{
-		$stmt = $this->conn->prepare("SELECT requests.*, users.user_first_name, users.user_last_name FROM requests INNER JOIN users WHERE req_to_user_phone =? AND users.user_phone = req_to_user_phone ORDER BY requests.req_create_datetime");
+		$stmt = $this->conn->prepare("SELECT requests.*, users.user_first_name, users.user_last_name FROM requests INNER JOIN users WHERE req_to_user_phone =? AND users.user_phone = req_from_user_phone ORDER BY requests.req_create_datetime");
 		$stmt->bind_param("i", $to_user_phone);
 		
 		if ($stmt->execute()) 
