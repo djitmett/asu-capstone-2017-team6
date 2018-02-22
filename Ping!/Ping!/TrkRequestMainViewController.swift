@@ -129,8 +129,8 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                     if(expire != "indefinite" && tempTR.getReq_status() != "EXPIRED") {
                                         let expireDate = expire.toDate(dateFormat: "yyyy-MM-dd HH:mm:ss zz")
                                         if (expireDate < currentDate) {
-                                            //print("expired")
-                                            //print(currentDate)
+                                            print("expired")
+                                            print(currentDate)
                                             let id = tempTR.getReq_ID()
                                             self.expireRequest(request_id: id)
                                         }
