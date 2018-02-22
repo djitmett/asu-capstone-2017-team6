@@ -72,6 +72,8 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                     var myReq_create_datetime : String
                                     var myReq_status : String
                                     var myReq_status_change_datetime : String
+                                    var myReq_from_user_fname : String
+                                    var myReq_from_user_lname : String
                                     
                                     // Error check each field in array before conversion
                                     if let tempVar = element[0] as? Int {
@@ -119,9 +121,19 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                     } else {
                                         myReq_status_change_datetime = ""
                                     }
+                                    if let tempVar = element[9] as? String {
+                                        myReq_from_user_fname = (element[9] as? String)!
+                                    } else {
+                                        myReq_from_user_fname = ""
+                                    }
+                                    if let tempVar = element[10] as? String {
+                                        myReq_from_user_lname = (element[10] as? String)!
+                                    } else {
+                                        myReq_from_user_lname = ""
+                                    }
                                     
                                     // Create Tracking Request object
-                                    let tempTR = TrackingRequest(req_ID: myReq_ID, req_from_user_phone: myReq_from_user_phone, req_to_user_phone: myReq_to_user_phone, req_expire_datetime: myReq_expire_datetime, req_expire_location_latitude: myReq_expire_location_latitude, req_expire_location_longitude: myReq_expire_location_longitude, req_create_datetime: myReq_create_datetime, req_status: myReq_status, req_status_change_datetime: myReq_status_change_datetime)
+                                    let tempTR = TrackingRequest(req_ID: myReq_ID, req_from_user_phone: myReq_from_user_phone, req_to_user_phone: myReq_to_user_phone, req_expire_datetime: myReq_expire_datetime, req_expire_location_latitude: myReq_expire_location_latitude, req_expire_location_longitude: myReq_expire_location_longitude, req_create_datetime: myReq_create_datetime, req_status: myReq_status, req_status_change_datetime: myReq_status_change_datetime, req_from_user_fname: myReq_from_user_fname, req_from_user_lname: myReq_from_user_lname)
                                     
                                     //Convert expiration date string to date
                                     let expire = tempTR.getReq_expire_datetime()
@@ -141,13 +153,15 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
  
                                     // If pending, add to pending array
                                     if (tempTR.getReq_status()=="PENDING"){
-                                        self.request.append(tempTR.getReq_to_user_phone())
+                                        let name = tempTR.getReq_from_user_fname() + " " + tempTR.getReq_from_user_lname()
+                                        self.request.append(name)
                                         pending.append(tempTR)
                                         print(request)
                                     }
                                     // If approved, add to current tracking array
                                     if (tempTR.getReq_status()=="APPROVED"){
-                                        self.request2.append(tempTR.getReq_from_user_phone())
+                                        let name = tempTR.getReq_from_user_fname() + " " + tempTR.getReq_from_user_lname()
+                                        self.request2.append(name)
                                         tracking.append(tempTR)
                                     }
                                     // Store all tracking reqeusts
@@ -285,8 +299,10 @@ class TrackingRequest {
     var req_create_datetime: String
     var req_status: String
     var req_status_change_datetime: String
+    var req_from_user_fname : String
+    var req_from_user_lname : String
     
-    init (req_ID: Int, req_from_user_phone: String, req_to_user_phone: String, req_expire_datetime: String, req_expire_location_latitude: String, req_expire_location_longitude: String, req_create_datetime: String, req_status: String, req_status_change_datetime: String) {
+    init (req_ID: Int, req_from_user_phone: String, req_to_user_phone: String, req_expire_datetime: String, req_expire_location_latitude: String, req_expire_location_longitude: String, req_create_datetime: String, req_status: String, req_status_change_datetime: String, req_from_user_fname: String, req_from_user_lname: String) {
         self.req_ID = req_ID
         self.req_from_user_phone = req_from_user_phone
         self.req_to_user_phone = req_to_user_phone
@@ -296,6 +312,8 @@ class TrackingRequest {
         self.req_create_datetime = req_create_datetime
         self.req_status = req_status
         self.req_status_change_datetime = req_status_change_datetime
+        self.req_from_user_fname = req_from_user_fname
+        self.req_from_user_lname = req_from_user_lname
     }
     
     // Getters
@@ -325,6 +343,12 @@ class TrackingRequest {
     }
     public func getReq_status_change_datetime() -> String{
         return self.req_status_change_datetime
+    }
+    public func getReq_from_user_fname() -> String{
+        return self.req_from_user_fname
+    }
+    public func getReq_from_user_lname() -> String{
+        return self.req_from_user_lname
     }
     
 }
