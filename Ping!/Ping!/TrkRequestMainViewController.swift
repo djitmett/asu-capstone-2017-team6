@@ -11,6 +11,7 @@ import UIKit
 //Global arrays for tracking
 var pending = [TrackingRequest] ()
 var tracking = [TrackingRequest] ()
+var tracked = [TrackingRequest] ()
 var allRequests = [TrackingRequest] ()
 
 
@@ -18,9 +19,11 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table2: UITableView!
+    @IBOutlet weak var table3: UITableView!
     
     var request = [String] ()//For tableview
     var request2 = [String] ()//for tableview
+    var request3 = [String] ()//for tableview
     var userPhoneNumber = ""
     
     
@@ -60,6 +63,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                 allRequests.removeAll()
                                 pending.removeAll()
                                 tracking.removeAll()
+                                tracked.removeAll()
                                 for request in data{
                                     let element = request as! NSArray
                                     // Define variables for tracking request
@@ -150,6 +154,11 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                         self.request2.append(tempTR.getReq_from_user_phone())
                                         tracking.append(tempTR)
                                     }
+                                    
+                                    if (tempTR.getReq_status()=="APPROVED") {
+                                        self.request3.append(tempTR.getReq_to_user_phone())
+                                        tracked.append(tempTR)
+                                    }
                                     // Store all tracking reqeusts
                                     allRequests.append(tempTR)
                                 }
@@ -222,6 +231,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     let cellIdentifier : String = "cell"
     var numberOfTracked : Int = 0
     var numberOfRequested : Int = 0
+    var numberOfTracking : Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -231,6 +241,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             DispatchQueue.main.asyncAfter(deadline: when) {
                 self.table1.reloadData()
                 self.table2.reloadData()
+                self.table3.reloadData()
             }
         }
     }
@@ -242,6 +253,9 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         }else if(tableView.tag == 2){
             numberOfRequested = request.count
             return numberOfRequested
+        }else if(tableView.tag == 3){
+            numberOfTracking = request3.count
+            return numberOfTracking
         }else{
             return 0
         }
@@ -253,7 +267,11 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             
         }else if(tableView.tag == 2){
             cell.textLabel?.text = self.request[indexPath.row]
+            
+        }else if(tableView.tag == 3) {
+            cell.textLabel?.text = self.request3[indexPath.row]
         }
+        
         return (cell)
     }
     override func didReceiveMemoryWarning() {
