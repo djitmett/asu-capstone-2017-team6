@@ -364,10 +364,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         
         
-        var annotation = MKPointAnnotation()
-        annotation.coordinate = myLocation
-        annotation.title = phone_number
-        mapView.addAnnotation(annotation)
+//        var annotation = MKPointAnnotation()
+//        annotation.coordinate = myLocation
+//        annotation.title = phone_number
+//        mapView.addAnnotation(annotation)
         
         
         //mapDisplay.setRegion(region, animated:false)
