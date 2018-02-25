@@ -19,6 +19,17 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table2: UITableView!
     
+    @IBAction func removeTrack(_ sender: UIButton) {
+        //add code to remove a tracked individual
+    }
+    @IBAction func trackedName(_ sender: Any) {
+    }
+    @IBAction func acceptReq(_ sender: UIButton) {
+        //code to accept a request
+    }
+    @IBAction func reqName(_ sender: Any) {
+    }
+    
     var request = [String] ()//For tableview
     var request2 = [String] ()//For tableview
     var userPhoneNumber = ""//to get user phone
@@ -234,8 +245,9 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                 self.table2.reloadData()
             }
         }
+
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (tableView.tag == 1){
             numberOfTracked = request2.count
