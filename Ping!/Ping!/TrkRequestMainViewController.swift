@@ -63,7 +63,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                 allRequests.removeAll()
                                 pending.removeAll()
                                 tracking.removeAll()
-                                tracked.removeAll()
+                                //tracked.removeAll()
                                 for request in data{
                                     let element = request as! NSArray
                                     // Define variables for tracking request
@@ -167,10 +167,163 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                         let name = tempTR.getReq_from_user_fname() + " " + tempTR.getReq_from_user_lname()
                                         self.request2.append(name)
                                         tracking.append(tempTR)
+                                        //self.request3.append(tempTR.getReq_to_user_phone())
+                                        //tracked.append(tempTR)
+                                    }
+                                    // Store all tracking reqeusts
+                                    allRequests.append(tempTR)
+                                }
+                            } else {
+                                pendRequest.append("No Requests")
+                            }
+                            
+                        }
+                        
+                        //  print(self.allRequests)
+                    } catch {
+                        print(error)
+                    }
+                    
+                }
+                completion(true)
+            }
+        })
+        task.resume()
+        
+        //return pendRequest
+    }
+    
+    //func getRequestBy(phone_number: String) -> Array<String> {
+    func getRequestBy(phone_number: String, completion: @escaping (_ success: Bool) -> Void) {
+        let defaults = UserDefaults.standard
+        if(defaults.object(forKey: "userPhone") != nil){
+            userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
+        }
+        let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestsbyfrom.php?"
+        let postParameters = "to_user_phone=" + (userPhoneNumber)
+        var pendRequest = [String] ()// array to fill with pending request
+        var request = URLRequest(url: URL(string: requestURL+postParameters)!)
+        request.httpMethod = "POST"
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        let urlSession = URLSession.shared
+        let task = urlSession.dataTask(with: request, completionHandler:{
+            (data, response, error) -> Void in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print (error)
+                    return
+                }
+                if let data = data {
+                    do {
+                        //converting resonse to NSDictionary
+                        let myJSON =  try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSDictionary
+                        //parsing the json
+                        if let parseJSON = myJSON {
+                            //creating a string
+                            var msg : String!
+                            var data : NSArray!
+                            //getting the json response
+                            msg = parseJSON["message"] as! String?
+                            if(msg == "Operation successful!"){
+                                data = parseJSON["data"] as! NSArray?
+                                allRequests.removeAll()
+                                tracked.removeAll()
+                                for request in data{
+                                    let element = request as! NSArray
+                                    // Define variables for tracking request
+                                    var myReq_ID : Int
+                                    var myReq_from_user_phone : String
+                                    var myReq_to_user_phone : String
+                                    var myReq_expire_datetime : String
+                                    var myReq_expire_location_latitude : String
+                                    var myReq_expire_location_longitude : String
+                                    var myReq_create_datetime : String
+                                    var myReq_status : String
+                                    var myReq_status_change_datetime : String
+                                    var myReq_from_user_fname : String
+                                    var myReq_from_user_lname : String
+                                    
+                                    // Error check each field in array before conversion
+                                    if let tempVar = element[0] as? Int {
+                                        myReq_ID = (element[0] as? Int)!
+                                    } else {
+                                        myReq_ID = -999
+                                    }
+                                    if let tempVar = element[1] as? String {
+                                        myReq_from_user_phone = (element[1] as? String)!
+                                    } else {
+                                        myReq_from_user_phone = ""
+                                    }
+                                    if let tempVar = element[2] as? String {
+                                        myReq_to_user_phone = (element[2] as? String)!
+                                    } else {
+                                        myReq_to_user_phone = ""
+                                    }
+                                    if let tempVar = element[3] as? String {
+                                        myReq_expire_datetime = (element[3] as? String)!
+                                    } else {
+                                        myReq_expire_datetime = ""
+                                    }
+                                    if let tempVar = element[4] as? String {
+                                        myReq_expire_location_latitude = (element[4] as? String)!
+                                    } else {
+                                        myReq_expire_location_latitude = ""
+                                    }
+                                    if let tempVar = element[5] as? String {
+                                        myReq_expire_location_longitude = (element[5] as? String)!
+                                    } else {
+                                        myReq_expire_location_longitude = ""
+                                    }
+                                    if let tempVar = element[6] as? String {
+                                        myReq_create_datetime = (element[6] as? String)!
+                                    } else {
+                                        myReq_create_datetime = ""
+                                    }
+                                    if let tempVar = element[7] as? String {
+                                        myReq_status = (element[7] as? String)!
+                                    } else {
+                                        myReq_status = ""
+                                    }
+                                    if let tempVar = element[8] as? String {
+                                        myReq_status_change_datetime = (element[8] as? String)!
+                                    } else {
+                                        myReq_status_change_datetime = ""
+                                    }
+                                    if let tempVar = element[9] as? String {
+                                        myReq_from_user_fname = (element[9] as? String)!
+                                    } else {
+                                        myReq_from_user_fname = ""
+                                    }
+                                    if let tempVar = element[10] as? String {
+                                        myReq_from_user_lname = (element[10] as? String)!
+                                    } else {
+                                        myReq_from_user_lname = ""
                                     }
                                     
-                                    if (tempTR.getReq_status()=="APPROVED") {
-                                        self.request3.append(tempTR.getReq_to_user_phone())
+                                    // Create Tracking Request object
+                                    let tempTR = TrackingRequest(req_ID: myReq_ID, req_from_user_phone: myReq_from_user_phone, req_to_user_phone: myReq_to_user_phone, req_expire_datetime: myReq_expire_datetime, req_expire_location_latitude: myReq_expire_location_latitude, req_expire_location_longitude: myReq_expire_location_longitude, req_create_datetime: myReq_create_datetime, req_status: myReq_status, req_status_change_datetime: myReq_status_change_datetime, req_from_user_fname: myReq_from_user_fname, req_from_user_lname: myReq_from_user_lname)
+                                    
+                                    //Convert expiration date string to date
+                                    let expire = tempTR.getReq_expire_datetime()
+                                    let currentDate = Date()
+                                    if(expire != "indefinite" && tempTR.getReq_status() != "EXPIRED") {
+                                        let expireDate = expire.toDate(dateFormat: "yyyy-MM-dd HH:mm:ss zz")
+                                        if (expireDate < currentDate) {
+                                            print("expired")
+                                            print(currentDate)
+                                            let id = tempTR.getReq_ID()
+                                            self.expireRequest(request_id: id)
+                                        }
+                                        else {
+                                            //print("not expired")
+                                        }
+                                    }
+                                    
+                                    // If approved, add to current tracked array
+                                    if (tempTR.getReq_status()=="APPROVED"){
+                                        let name =
+                                            tempTR.getReq_from_user_fname() + " " + tempTR.getReq_from_user_lname()
+                                        self.request3.append(name)
                                         tracked.append(tempTR)
                                     }
                                     // Store all tracking reqeusts
@@ -255,6 +408,12 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             DispatchQueue.main.asyncAfter(deadline: when) {
                 self.table1.reloadData()
                 self.table2.reloadData()
+                //self.table3.reloadData()
+            }
+        }
+        getRequestBy(phone_number: userPhoneNumber) { (success) -> Void in
+            let when = DispatchTime.now() + 1 // change 2 to desired number of seconds
+            DispatchQueue.main.asyncAfter(deadline: when) {
                 self.table3.reloadData()
             }
         }
