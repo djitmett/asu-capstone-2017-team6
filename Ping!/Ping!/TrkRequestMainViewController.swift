@@ -20,8 +20,9 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     @IBOutlet weak var table2: UITableView!
     
     var request = [String] ()//For tableview
-    var request2 = [String] ()//for tableview
-    var userPhoneNumber = ""
+    var request2 = [String] ()//For tableview
+    var userPhoneNumber = ""//to get user phone
+    var myIndex = 0
     
     
     //func getRequestFrom(phone_number: String) -> Array<String> {
@@ -254,7 +255,15 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         }else if(tableView.tag == 2){
             cell.textLabel?.text = self.request[indexPath.row]
         }
-        return (cell)
+        return cell
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        myIndex = indexPath.row
+        if(tableView.tag == 1){
+                    performSegue(withIdentifier: "segue1", sender: self)
+        }else if(tableView.tag == 2){
+                    performSegue(withIdentifier: "segue2", sender: self)
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
