@@ -89,11 +89,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
                         //                                print ("Could not get userID for phone_number=", phone_number)
                         //                            }
                         //                        }
+                        var user_phone_number = ""
+                        if (defaults.object(forKey: "userPhone") != nil){
+                            user_phone_number = (defaults.object(forKey: "userPhone") as? String)!
+                        }
+                        self.updateRequestNoID(req_status: "APPROVED", req_from_user_phone: phone_number, req_to_user_phone: user_phone_number)
                     }
                     //if reject-button is pressed
                     if actionID == "reject-button" {
                         print("reject-id pressed!!!!")
+                        var user_phone_number = ""
+                        let defaults = UserDefaults.standard
+                        if (defaults.object(forKey: "userPhone") != nil){
+                            user_phone_number = (defaults.object(forKey: "userPhone") as? String)!
+                        }
+                        self.updateRequestNoID(req_status: "REJECTED", req_from_user_phone: phone_number, req_to_user_phone: user_phone_number)
                     }
+                    
                 }
                 
             }
@@ -271,6 +283,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver {
                 }
             }
         })
+        task.resume()
+    }
+    
+    //Expire the request in the DB
+    func updateRequestNoID(req_status: String, req_from_user_phone: String, req_to_user_phone: String) {
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updaterequestNoID.php?"
+        let requestURL = NSURL(string: URL_SIGNUP)
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        request.httpMethod = "POST"
+        
+        var postParameters = "req_status=\(req_status)"
+        postParameters += "&req_from_user_phone=\(req_from_user_phone)"
+        postParameters += "&req_to_user_phone=\(req_to_user_phone)"
+        
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            
+            do {
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                if let parseJSON = myJSON {
+                    var msg : String!
+                    msg = parseJSON["message"] as! String?
+                    print("MESSAGE=" + msg)
+                }
+            } catch {
+                print(error)
+            }
+        }
         task.resume()
     }
     
