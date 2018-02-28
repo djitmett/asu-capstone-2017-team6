@@ -28,6 +28,5 @@ class User {
         self.avatar = avatar
         self.latitude = latitude
         self.longitude = longitude
-        
     }
 }
