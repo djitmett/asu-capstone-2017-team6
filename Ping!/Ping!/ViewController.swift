@@ -388,7 +388,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
         loadData(phone_number: phone_number)
         if avatarImage != nil{
-            let user = UserAnnotation(name:phone_number, lat: latitude, long:longitude, avatarImage: avatarImage)
+            let user = UserAnnotation(phone:phone_number, lat: latitude, long:longitude, avatarImage: avatarImage)
             mapView.addAnnotation(user)
         }
         //Remove spinner view after labels have been updated

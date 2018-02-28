@@ -10,12 +10,12 @@ import MapKit
 
 class UserAnnotation: NSObject, MKAnnotation {
     var identifier = "user"
-    //tile is the user's name, can be changed later
+    //tile is the user's phone number
     var title: String?
     var coordinate: CLLocationCoordinate2D
     var image: UIImage
-    init (name:String, lat: CLLocationDegrees, long:CLLocationDegrees, avatarImage: UIImage){
-        self.title = name
+    init (phone:String, lat: CLLocationDegrees, long:CLLocationDegrees, avatarImage: UIImage){
+        self.title = phone
         self.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
         self.image = avatarImage
     }
@@ -27,10 +27,10 @@ class UserAnnotationList: NSObject {
     }
     
     init(object: User) {
-        self.userLocals += [UserAnnotation(name: object.firstName, lat: object.latitude, long: object.longitude, avatarImage: object.avatar!)]
+        self.userLocals += [UserAnnotation(phone: object.phoneNumber, lat: object.latitude, long: object.longitude, avatarImage: object.avatar!)]
     }
     func addToList(object: User){
-        self.userLocals += [UserAnnotation(name: object.firstName, lat: object.latitude, long: object.longitude, avatarImage: object.avatar!)]
+        self.userLocals += [UserAnnotation(phone: object.phoneNumber, lat: object.latitude, long: object.longitude, avatarImage: object.avatar!)]
     }
     func getUserLocals() -> [UserAnnotation]{
         return self.userLocals
