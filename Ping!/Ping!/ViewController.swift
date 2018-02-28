@@ -66,6 +66,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var avatarImage: UIImage!
     
     let manager = CLLocationManager()
+    let trackingRequestDataManager = TrackingRequstDataManager()
     
     // let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     
@@ -220,6 +221,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     @objc func updateMap(){
+        
+        trackingRequestDataManager.loadTrackingRequestData(phone_number: "1212") { (success) -> Void in
+            print("TrackingRequstDataManager.update Complete!")
+        }
+        
         // If currently tracking a user, show their location, otherwise show user's current location on map.
         //print("update map start")
         
