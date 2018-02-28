@@ -386,10 +386,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         //remove +0.002 from final code. offest in place for testing self messages. Leave in place for testing callouts later
         //        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
-        let user = UserAnnotation(name:phone_number, lat: latitude, long:longitude)
         loadData(phone_number: phone_number)
-        mapView.addAnnotation(user)
-        
+        if avatarImage != nil{
+            let user = UserAnnotation(phone:phone_number, lat: latitude, long:longitude, avatarImage: avatarImage)
+            mapView.addAnnotation(user)
+        }
         //Remove spinner view after labels have been updated
         //UIViewController.removeSpinner(spinner: sv)
     }
