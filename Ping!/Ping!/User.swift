@@ -16,14 +16,18 @@ class User {
     var phoneNumber : String
     var password: String
     var avatar : UIImage?
+    var latitude : Double
+    var longitude : Double
     
-    init?(firstName:String, lastName:String, phoneNumber:String, password:String, avatar:UIImage?){
+    init?(firstName:String, lastName:String, phoneNumber:String, password:String, avatar:UIImage?, latitude: Double, longitude: Double){
         
         self.firstName = firstName
         self.lastName = lastName
         self.phoneNumber = phoneNumber
         self.password = password
         self.avatar = avatar
+        self.latitude = latitude
+        self.longitude = longitude
         
     }
 }
