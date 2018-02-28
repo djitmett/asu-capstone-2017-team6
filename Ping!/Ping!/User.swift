@@ -14,16 +14,14 @@ class User {
     var firstName : String
     var lastName : String
     var phoneNumber : String
-    var email : String
     var password: String
     var avatar : UIImage?
     
-    init?(firstName:String, lastName:String, phoneNumber:String, email:String, password:String, avatar:UIImage?){
+    init?(firstName:String, lastName:String, phoneNumber:String, password:String, avatar:UIImage?){
         
         self.firstName = firstName
         self.lastName = lastName
         self.phoneNumber = phoneNumber
-        self.email = email
         self.password = password
         self.avatar = avatar
         
