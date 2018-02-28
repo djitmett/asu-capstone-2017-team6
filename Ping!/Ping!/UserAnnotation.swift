@@ -30,7 +30,13 @@ class UserAnnotationList: NSObject {
         self.userLocals += [UserAnnotation(phone: object.phoneNumber, lat: object.latitude, long: object.longitude, avatarImage: object.avatar!)]
     }
     func addToList(object: User){
-        self.userLocals += [UserAnnotation(phone: object.phoneNumber, lat: object.latitude, long: object.longitude, avatarImage: object.avatar!)]
+        if !self.userLocals.contains(where: { $0.title == object.phoneNumber}){
+                self.userLocals += [UserAnnotation(phone: object.phoneNumber, lat: object.latitude, long: object.longitude, avatarImage: object.avatar!)]
+            print("Annotation added")
+        } else {
+            print("Annotation not added")
+            printList()
+        }
     }
     func getUserLocals() -> [UserAnnotation]{
         return self.userLocals
