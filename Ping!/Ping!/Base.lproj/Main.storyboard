@@ -1069,6 +1069,10 @@
                                                         </tableViewCellContentView>
                                                     </tableViewCell>
                                                 </prototypes>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="dVJ-Ji-TF8" id="0vq-fZ-qsL"/>
+                                                    <outlet property="delegate" destination="dVJ-Ji-TF8" id="hh9-Ud-R9O"/>
+                                                </connections>
                                             </tableView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FWx-UD-565">
                                                 <rect key="frame" x="37" y="375" width="309" height="264"/>
@@ -1077,15 +1081,20 @@
                                                     <constraint firstAttribute="height" constant="264" id="2Ek-aL-Cln"/>
                                                 </constraints>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="fKE-IL-fGf">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="yoz-mN-kk3">
                                                         <rect key="frame" x="0.0" y="28" width="309" height="44"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fKE-IL-fGf" id="o5d-ui-81t">
+                                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yoz-mN-kk3" id="OS4-Jx-5OL">
                                                             <rect key="frame" x="0.0" y="0.0" width="309" height="43.666666666666664"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </tableViewCellContentView>
                                                     </tableViewCell>
                                                 </prototypes>
+                                                <sections/>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="dVJ-Ji-TF8" id="RHb-4E-VYl"/>
+                                                    <outlet property="delegate" destination="dVJ-Ji-TF8" id="QcJ-u3-pAf"/>
+                                                </connections>
                                             </tableView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uUK-i2-dqg">
                                                 <rect key="frame" x="30" y="726" width="316" height="259"/>
@@ -1103,6 +1112,10 @@
                                                         </tableViewCellContentView>
                                                     </tableViewCell>
                                                 </prototypes>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="dVJ-Ji-TF8" id="mgz-dk-8Ug"/>
+                                                    <outlet property="delegate" destination="dVJ-Ji-TF8" id="xQg-QU-BzZ"/>
+                                                </connections>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending Request" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w0l-7o-Ejh">
                                                 <rect key="frame" x="114.66666666666669" y="684" width="130" height="21"/>
