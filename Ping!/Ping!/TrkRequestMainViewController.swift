@@ -16,8 +16,10 @@ var allRequests = [TrackingRequest] ()
 
 class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
+
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table2: UITableView!
+    @IBOutlet weak var table3: UITableView!
     
     var request = [String] ()//For tableview
     var request2 = [String] ()//for tableview
