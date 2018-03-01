@@ -199,7 +199,7 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         }
         
         // Set photoImageView to display the selected image.
-        AvatarImageView.image = resizeImage(image: selectedImage, targetSize: CGSize.init(width:150,height:150))
+        AvatarImageView.image = resizeImage(image: selectedImage, targetSize: CGSize.init(width:124,height:124))
         // Dismiss the picker.
         self.dismiss(animated: true, completion: nil)
     }
@@ -256,6 +256,8 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         
         loadData(phone_number:phoneNumber)
         
+        self.AvatarImageView.layer.cornerRadius = self.AvatarImageView.frame.size.width / 2;
+        self.AvatarImageView.clipsToBounds = true;
         
         // Do any additional setup after loading the view.
     }

@@ -12,6 +12,7 @@ class ProfileController: UIViewController {
     
     @IBOutlet weak var userPhoneNumber: UILabel!
     @IBOutlet weak var userName: UILabel!
+    @IBOutlet weak var AvatarImageView: UIImageView!
     
     let defaults = UserDefaults.standard
     
@@ -131,7 +132,9 @@ class ProfileController: UIViewController {
             phoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
         
-       
+        loadData(phone_number:phoneNumber)
+        self.AvatarImageView.layer.cornerRadius = self.AvatarImageView.frame.size.width / 2;
+        self.AvatarImageView.clipsToBounds = true
         self.userName.text = firstName + " "  + lastName
         self.userPhoneNumber.text = phoneNumber
     }
@@ -159,4 +162,49 @@ class ProfileController: UIViewController {
         self.userName.text = firstName + " "  + lastName
         self.userPhoneNumber.text = phoneNumber
     }
+    
+
+    func loadData(phone_number:String) {
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/getuserdata.php?"
+        let requestURL = NSURL(string: URL_SIGNUP)
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        request.httpMethod = "POST"
+        let postParameters = "user_phone="+phone_number;
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            do {
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                if let parseJSON = myJSON {
+
+                    var msg : String!
+                    var myData : NSArray!
+                    msg = parseJSON["message"] as! String?
+                    if(msg == "Operation successfully!"){
+                        myData = parseJSON["data"] as! NSArray?
+                        let encodedAvatar = myData[7] as? String
+                        if (encodedAvatar != nil) {
+                            if (encodedAvatar! != "testimage.jpg") {
+                                let dataDecoded : Data = Data(base64Encoded: encodedAvatar!, options: .ignoreUnknownCharacters)!
+                                let decodedImage = UIImage(data: dataDecoded)!
+                                DispatchQueue.main.async {
+                                    self.AvatarImageView.image = decodedImage
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch {
+                print(error)
+            }
+            
+        }
+        task.resume()
+    }
 }
+
+    
