@@ -247,6 +247,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     if ((ann.title as! String).contains(tracking[x].getReq_from_user_phone())){
                         deleteMe = false
                     }
+                    //convert expiration coords into double
+                    let expire_lat = Double(tracking[x].getReq_expire_location_latitude())
+                    let expire_long = Double(tracking[x].getReq_expire_location_longitude())
+                    //If the current location of the annotation is equal to the end destination
+                    if (ann.coordinate.longitude == expire_long  && ann.coordinate.latitude == expire_lat) {
+                        deleteMe = true
+                        print("reached expired location")
+                        let id = tracking[x].getReq_ID()
+                        //Update DB to set status of that request as "EXPIRED" and remove it from the array
+                        TrkRequestMainViewController().expireRequest(request_id: id)
+                        tracking.remove(at: x)
+                    }
                     x = x + 1
                 }
                 if (deleteMe){
@@ -352,10 +364,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         
         
-        var annotation = MKPointAnnotation()
-        annotation.coordinate = myLocation
-        annotation.title = phone_number
-        mapView.addAnnotation(annotation)
+//        var annotation = MKPointAnnotation()
+//        annotation.coordinate = myLocation
+//        annotation.title = phone_number
+//        mapView.addAnnotation(annotation)
         
         
         //mapDisplay.setRegion(region, animated:false)
@@ -374,10 +386,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         //remove +0.002 from final code. offest in place for testing self messages. Leave in place for testing callouts later
         //        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
-        let user = UserAnnotation(name:phone_number, lat: latitude, long:longitude)
         loadData(phone_number: phone_number)
-        mapView.addAnnotation(user)
-        
+        if avatarImage != nil{
+            let user = UserAnnotation(phone:phone_number, lat: latitude, long:longitude, avatarImage: avatarImage)
+            mapView.addAnnotation(user)
+        }
         //Remove spinner view after labels have been updated
         //UIViewController.removeSpinner(spinner: sv)
     }
