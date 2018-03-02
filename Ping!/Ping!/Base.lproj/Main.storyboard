@@ -1028,11 +1028,11 @@
             <objects>
                 <viewController id="dVJ-Ji-TF8" customClass="TrkRequestMainViewController" customModule="Ping_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GGT-WR-Vkh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="arJ-6A-MwF">
-                                <rect key="frame" x="16" y="70" width="343" height="211"/>
+                                <rect key="frame" x="16" y="50" width="343" height="211"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="211" id="rA5-KM-jXK"/>
@@ -1044,6 +1044,16 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yaa-t9-ewk" id="JaP-KY-29f">
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dg6-QQ-ww5">
+                                                    <rect key="frame" x="266" y="6" width="62" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Remove"/>
+                                                    <connections>
+                                                        <action selector="RemoveTrk:" destination="dVJ-Ji-TF8" eventType="touchUpInside" id="N53-Yp-v9f"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
@@ -1054,7 +1064,7 @@
                                 </connections>
                             </tableView>
                             <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Pge-Rn-1fH">
-                                <rect key="frame" x="16" y="356" width="343" height="186"/>
+                                <rect key="frame" x="16" y="336" width="343" height="142"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="Ewo-4f-yxS">
@@ -1063,6 +1073,16 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ewo-4f-yxS" id="0u6-fV-XZJ">
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xbn-NE-8cO">
+                                                    <rect key="frame" x="262" y="6" width="66" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Accept"/>
+                                                    <connections>
+                                                        <action selector="AcceptTrk:" destination="dVJ-Ji-TF8" eventType="touchUpInside" id="vwp-Ck-Oma"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
@@ -1073,7 +1093,7 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending request" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kiH-Dc-KIe">
-                                <rect key="frame" x="125.5" y="289" width="125" height="52"/>
+                                <rect key="frame" x="125.5" y="269" width="125" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="fjo-bM-g9B"/>
                                 </constraints>
@@ -1082,7 +1102,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tracked People" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ttq-E6-Jcs">
-                                <rect key="frame" x="128.5" y="31" width="118" height="31"/>
+                                <rect key="frame" x="128.5" y="11" width="118" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="NjT-S5-xIo"/>
                                 </constraints>
@@ -1091,7 +1111,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kBR-as-itQ">
-                                <rect key="frame" x="118.5" y="550" width="138" height="30"/>
+                                <rect key="frame" x="118.5" y="486" width="138" height="30"/>
                                 <state key="normal" title="Clear Map Requests"/>
                                 <connections>
                                     <action selector="clearMapBtn:" destination="dVJ-Ji-TF8" eventType="touchUpInside" id="rCG-30-thf"/>
@@ -1134,7 +1154,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FDZ-u8-o2C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="561" y="2437"/>
+            <point key="canvasLocation" x="560.79999999999995" y="2436.4317841079464"/>
         </scene>
         <!--Profile Controller-->
         <scene sceneID="BIA-zF-XVP">
@@ -1777,7 +1797,7 @@
         <image name="ping-logo" width="375" height="322"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="f2N-5Z-izR"/>
+        <segue reference="QKg-yY-htS"/>
         <segue reference="Ean-9I-2bF"/>
     </inferredMetricsTieBreakers>
 </document>
