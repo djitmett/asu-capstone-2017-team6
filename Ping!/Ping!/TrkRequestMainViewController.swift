@@ -19,6 +19,12 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table2: UITableView!
     
+    @IBAction func RemoveTrk(_ sender: UIButton) {
+        print("I am going to delete this record")
+    }
+    @IBAction func ApproveReq(_ sender: UIButton) {
+        print("I am adding a track")
+    }
     var request = [String] ()//For tableview
     var request2 = [String] ()//for tableview
     var userPhoneNumber = ""
