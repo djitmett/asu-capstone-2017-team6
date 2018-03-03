@@ -20,8 +20,14 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
 
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table2: UITableView!
+    @IBAction func AcceptTrk(_ sender: UIButton) {
+    }
+    @IBAction func DenyTrk(_ sender: UIButton) {
+    }
     @IBOutlet weak var table3: UITableView!
     
+    @IBAction func RemoveTrk(_ sender: UIButton) {
+    }
     var request = [String] ()//For tableview
     var request2 = [String] ()//for tableview
     var request3 = [String] ()//For tableview
