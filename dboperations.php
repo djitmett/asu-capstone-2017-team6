@@ -185,7 +185,7 @@ class dboperations
 
 	public function getRequestsByFrom($from_user_phone)
 	{
-		$stmt = $this->conn->prepare("SELECT * FROM requests WHERE req_from_user_phone = ? ORDER BY req_create_datetime");
+		$stmt = $this->conn->prepare("SELECT requests.*, users.user_first_name, users.user_last_name FROM requests INNER JOIN users WHERE req_from_user_phone =? AND users.user_phone = req_to_user_phone ORDER BY requests.req_create_datetime");
 		$stmt->bind_param("i", $from_user_phone);
 		
 		if ($stmt->execute()) 
@@ -206,7 +206,7 @@ class dboperations
 
 	public function getRequestsByTo($to_user_phone)
 	{
-		$stmt = $this->conn->prepare("SELECT * FROM requests WHERE req_to_user_phone = ? ORDER BY req_create_datetime");
+		$stmt = $this->conn->prepare("SELECT requests.*, users.user_first_name, users.user_last_name FROM requests INNER JOIN users WHERE req_to_user_phone =? AND users.user_phone = req_from_user_phone ORDER BY requests.req_create_datetime");
 		$stmt->bind_param("i", $to_user_phone);
 		
 		if ($stmt->execute()) 
@@ -293,5 +293,44 @@ class dboperations
 		echo $stmt->error;
 	    $stmt->close();
     }
+
+    	//Function to update request status
+    public function updateRequestNoID($req_status, $req_status_change_datetime, $req_from_user_phone, $req_to_user_phone)
+    {
+    	$old_status="PENDING";
+		$stmt = $this->conn->prepare("UPDATE requests SET req_status=?, req_status_change_datetime=? where req_from_user_phone=? and req_to_user_phone=? and req_status=?");
+		$stmt->bind_param("sssss", $req_status, $req_status_change_datetime, $req_from_user_phone, $req_to_user_phone, $old_status);
+		if ($stmt->execute()) 
+		{
+            return RID_UPDATED;
+        } 
+		else
+		{
+            return ERROR;
+        }
+		echo $stmt->error;
+	    $stmt->close();
+    }
+
+    public function getRequestDataByTo($to_user_phone)
+	{
+		$stmt = $this->conn->prepare("SELECT DISTINCT requests.*, users.user_first_name, users.user_last_name, locations.location_latitude, locations.location_longitude, locations.location_datetime, locations.location_user_id FROM locations INNER JOIN users ON users.user_id=locations.location_user_id INNER JOIN requests ON requests.req_from_user_phone=users.user_phone WHERE requests.req_to_user_phone=?  AND requests.req_status IN ('PENDING', 'APPROVED') AND locations.location_id IN (SELECT max(locations.location_id) FROM locations GROUP BY locations.location_user_id) ORDER BY locations.location_user_id DESC");
+		$stmt->bind_param("i", $to_user_phone);
+		
+		if ($stmt->execute()) 
+		{
+		    $result = $stmt->get_result();
+			$requests = $result->fetch_all(MYSQLI_NUM);
+        }
+		else
+		{
+            return NO_RESULTS;
+        }
+
+		return $requests;
+		
+		echo $stmt->error;
+		$stmt->close();
+	}
 }
 ?>
