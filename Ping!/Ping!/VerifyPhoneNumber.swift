@@ -15,19 +15,20 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
     @IBAction func phone_verify(_ sender: Any) {
         
         if(phone_number.text != "") {
+            
+            
             let defaults = UserDefaults.standard
-            defaults.set(phone_number.text, forKey: "userPhone")
+            defaults.set(phone_number.text, forKey: "userPhoneVerify")
             defaults.synchronize()
-        
+            
             start_verification(phone_number: phone_number.text!)
             
             /**
-            let storyBoard : UIStoryboard = UIStoryboard(name: "PhoneVerification", bundle:nil)
-            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "VerifySMS") as UIViewController
-            self.present(nextViewController, animated:true, completion:nil)
+             let storyBoard : UIStoryboard = UIStoryboard(name: "PhoneVerification", bundle:nil)
+             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "VerifySMS") as UIViewController
+             self.present(nextViewController, animated:true, completion:nil)
              **/
             
-            self.performSegue(withIdentifier: "phone_verification_next", sender: self)
         }
         else {
             let alert = UIAlertController(title: "Error", message: "Please fill in a valid phone number", preferredStyle: UIAlertControllerStyle.alert)
@@ -36,13 +37,13 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
         }
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         phone_number.delegate = self
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -74,7 +75,6 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
         postParameters += "&country_code=1"
         postParameters += "&phone_number=" + phone_number
         postParameters += "&locale=en"
-
         
         //adding the parameters to request body
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
@@ -108,13 +108,25 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
                     print(msg)
                     print(success)
                     
-                    //If phonenumber exists in DB
+                    //If phone number is valid & text send successfully
                     if(success == true){
-                       print("worked")
+                         DispatchQueue.main.async(execute: {
+                        self.performSegue(withIdentifier: "phone_verification_next", sender: self)
+                            })
                     }
-                    //Phonenumber does not exist in DB
-                    if(success == false){
-                      print("didn't work")
+                    if(success == false && msg=="Phone number is invalid"){
+                         DispatchQueue.main.async(execute: {
+                        let alert = UIAlertController(title: "Error", message: "This is an invalid phone number.", preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                            })
+                        }
+                    else {
+                        DispatchQueue.main.async(execute: {
+                            let alert = UIAlertController(title: "Error", message: "There was an error. Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                        })
                     }
                 }
             } catch {
