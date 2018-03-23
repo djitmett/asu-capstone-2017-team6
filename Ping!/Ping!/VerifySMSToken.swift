@@ -15,7 +15,9 @@ class VerifySMSToken: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        sms_code.delegate = self
+        self.hideKeyboard()
+
     }
     
     @IBOutlet weak var verify_sms_next: UIButton!

@@ -41,6 +41,7 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         phone_number.delegate = self
+        self.hideKeyboard()
         // Do any additional setup after loading the view.
     }
     
