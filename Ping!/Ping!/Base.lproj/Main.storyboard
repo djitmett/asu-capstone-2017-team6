@@ -663,9 +663,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QE8-1A-QSG">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QE8-1A-QSG">
                                 <rect key="frame" x="124" y="321" width="189" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Test Verify"/>
                                 <connections>
                                     <segue destination="cLN-QR-9hY" kind="show" id="vmN-2m-ZTL"/>
@@ -673,6 +672,11 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="QE8-1A-QSG" firstAttribute="centerY" secondItem="n3H-pF-IeA" secondAttribute="centerY" id="7Mm-f3-GLA"/>
+                            <constraint firstItem="glJ-Ch-Fxa" firstAttribute="trailing" secondItem="QE8-1A-QSG" secondAttribute="trailing" constant="101" id="bfr-iK-6c8"/>
+                            <constraint firstItem="QE8-1A-QSG" firstAttribute="leading" secondItem="glJ-Ch-Fxa" secondAttribute="leading" constant="124" id="mdH-0f-SEc"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="glJ-Ch-Fxa"/>
                     </view>
                 </viewController>
