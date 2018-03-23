@@ -118,30 +118,30 @@
             <objects>
                 <viewController id="FK0-ne-th7" customClass="TrkRequestViewController" customModule="Ping_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8c0-wF-fsu">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone number" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="5N3-xG-3BA">
-                                <rect key="frame" x="48" y="101" width="320" height="30"/>
+                                <rect key="frame" x="48" y="81" width="320" height="30"/>
                                 <color key="backgroundColor" red="0.52552121880000002" green="0.80350726839999997" blue="0.50968682769999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send a request for someone to track you." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cN8-zn-4zY">
-                                <rect key="frame" x="47" y="60" width="320" height="21"/>
+                                <rect key="frame" x="47" y="40" width="320" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter an end destination (optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KT8-uJ-Fe7">
-                                <rect key="frame" x="47" y="148" width="320" height="21"/>
+                                <rect key="frame" x="47" y="128" width="320" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter an address" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="djg-dg-0JU">
-                                <rect key="frame" x="47" y="184" width="320" height="30"/>
+                                <rect key="frame" x="47" y="164" width="320" height="30"/>
                                 <color key="backgroundColor" red="0.52552121880000002" green="0.80350726839999997" blue="0.50968682769999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -151,25 +151,25 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a tracking duration " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ef-n9-dGL">
-                                <rect key="frame" x="47" y="422" width="320" height="21"/>
+                                <rect key="frame" x="47" y="358" width="320" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zfp-hE-zsz">
-                                <rect key="frame" x="317" y="451" width="51" height="31"/>
+                                <rect key="frame" x="317" y="387" width="51" height="31"/>
                                 <connections>
                                     <action selector="trackingDurationSwitchAction:" destination="FK0-ne-th7" eventType="valueChanged" id="9aA-qk-oCN"/>
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timed tracking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHz-7G-Yet">
-                                <rect key="frame" x="47" y="492" width="274" height="21"/>
+                                <rect key="frame" x="47" y="428" width="274" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <datePicker contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" minuteInterval="2" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKl-KM-CSZ">
-                                <rect key="frame" x="47" y="521" width="320" height="45"/>
+                                <rect key="frame" x="47" y="457" width="320" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="kCF-PE-3l3"/>
                                 </constraints>
@@ -178,16 +178,16 @@
                                 </date>
                             </datePicker>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Indefinite tracking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enm-sY-upo">
-                                <rect key="frame" x="48" y="456" width="240" height="21"/>
+                                <rect key="frame" x="48" y="392" width="240" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EOT-bl-25M">
-                                <rect key="frame" x="47" y="222" width="320" height="192"/>
+                                <rect key="frame" x="47" y="202" width="320" height="148"/>
                             </mapView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vKm-hS-Nq4" customClass="RoundButton" customModule="Ping_" customModuleProvider="target">
-                                <rect key="frame" x="120" y="585" width="176" height="51"/>
+                                <rect key="frame" x="120" y="521" width="176" height="51"/>
                                 <color key="backgroundColor" red="0.52552121880000002" green="0.80350726839999997" blue="0.50968682769999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="51" id="ECE-ar-f5p"/>
@@ -352,6 +352,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sGP-Zm-9pO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-900" y="2328"/>
+        </scene>
+        <!--PhoneVerification-->
+        <scene sceneID="FLO-di-XAk">
+            <objects>
+                <viewControllerPlaceholder storyboardName="PhoneVerification" id="cLN-QR-9hY" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rqb-wR-TkM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-686" y="2810"/>
         </scene>
         <!--Settings-->
         <scene sceneID="BOa-Tu-qC3">
@@ -650,17 +658,27 @@
         <!--Rate-->
         <scene sceneID="Mhi-ub-8ua">
             <objects>
-                <viewController title="Rate" id="Bxq-8l-udL" sceneMemberID="viewController">
+                <viewController title="Rate" id="Bxq-8l-udL" customClass="RateController" customModule="Ping_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="n3H-pF-IeA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QE8-1A-QSG">
+                                <rect key="frame" x="124" y="321" width="189" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Test Verify"/>
+                                <connections>
+                                    <segue destination="cLN-QR-9hY" kind="show" id="vmN-2m-ZTL"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="glJ-Ch-Fxa"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cWZ-fz-0e8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-199" y="2397"/>
+            <point key="canvasLocation" x="-200.00000000000003" y="2396.739130434783"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="D8c-b8-BCC">
@@ -1978,7 +1996,6 @@
         <image name="ping-logo" width="375" height="322"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="QKg-yY-htS"/>
         <segue reference="vPz-J9-GJS"/>
         <segue reference="MHa-1R-bkh"/>
         <segue reference="ziK-sP-sww"/>
