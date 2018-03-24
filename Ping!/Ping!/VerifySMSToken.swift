@@ -26,7 +26,7 @@ class VerifySMSToken: UIViewController, UITextFieldDelegate {
         
         if (sms_code.text != "" ) {
             let defaults = UserDefaults.standard
-            if (defaults.object(forKey: "userPhone") != nil) {
+            if (defaults.object(forKey: "userPhoneVerify") != nil) {
                 let phone_number = (defaults.object(forKey: "userPhoneVerify") as? String)!
                 let phone_number_trim = phone_number.trimmingCharacters(in: .whitespaces)
                 start_verification(phone_number: phone_number_trim, sms_code: sms_code.text!)
