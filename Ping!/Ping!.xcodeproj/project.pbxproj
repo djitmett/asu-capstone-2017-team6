@@ -13,6 +13,10 @@
 		411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411933001FBFE8D600EBF885 /* TrkRequestViewController.swift */; };
 		4B1385762018573E009AD8A9 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1385752018573E009AD8A9 /* LocationSearchTable.swift */; };
 		4B13FA4E1FBE4F6700282BAA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B13FA4D1FBE4F6700282BAA /* User.swift */; };
+		4B1F3FC92065717500E32181 /* PhoneVerification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B1F3FC82065717500E32181 /* PhoneVerification.storyboard */; };
+		4B1F3FCF2065753B00E32181 /* VerifyPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1F3FCE2065753B00E32181 /* VerifyPhoneNumber.swift */; };
+		4B1F3FD12065755100E32181 /* VerifySMSToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1F3FD02065755100E32181 /* VerifySMSToken.swift */; };
+		4B1F3FD3206583EC00E32181 /* RateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1F3FD2206583EC00E32181 /* RateController.swift */; };
 		4B26D0772027C884002BC21C /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26D0762027C884002BC21C /* RoundButton.swift */; };
 		4B26D079202E7E06002BC21C /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26D078202E7E06002BC21C /* SideMenuController.swift */; };
 		4B3283AC1F995D0A00302E3E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3283AB1F995D0A00302E3E /* AppDelegate.swift */; };
@@ -85,6 +89,10 @@
 		428A905D1767A819F40DB5F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		4B1385752018573E009AD8A9 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		4B13FA4D1FBE4F6700282BAA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		4B1F3FC82065717500E32181 /* PhoneVerification.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PhoneVerification.storyboard; sourceTree = "<group>"; };
+		4B1F3FCE2065753B00E32181 /* VerifyPhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPhoneNumber.swift; sourceTree = "<group>"; };
+		4B1F3FD02065755100E32181 /* VerifySMSToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifySMSToken.swift; sourceTree = "<group>"; };
+		4B1F3FD2206583EC00E32181 /* RateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateController.swift; sourceTree = "<group>"; };
 		4B26D0762027C884002BC21C /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		4B26D078202E7E06002BC21C /* SideMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		4B3283A81F995D0A00302E3E /* Ping!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ping!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,6 +199,10 @@
 				4B3283AB1F995D0A00302E3E /* AppDelegate.swift */,
 				4B3283AD1F995D0A00302E3E /* ViewController.swift */,
 				4B3283AF1F995D0A00302E3E /* Main.storyboard */,
+				4B1F3FD2206583EC00E32181 /* RateController.swift */,
+				4B1F3FC82065717500E32181 /* PhoneVerification.storyboard */,
+				4B1F3FD02065755100E32181 /* VerifySMSToken.swift */,
+				4B1F3FCE2065753B00E32181 /* VerifyPhoneNumber.swift */,
 				4B26D078202E7E06002BC21C /* SideMenuController.swift */,
 				8A505D992022CE9C00F255C0 /* SideMenuTableController.swift */,
 				D71EE64C201E5C3700F12FFB /* EditProfileViewController.swift */,
@@ -424,6 +436,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B1F3FC92065717500E32181 /* PhoneVerification.storyboard in Resources */,
 				8A505D982022CACA00F255C0 /* LaunchScreen.storyboard in Resources */,
 				4B3283B31F995D0A00302E3E /* Assets.xcassets in Resources */,
 				4B3283B11F995D0A00302E3E /* Main.storyboard in Resources */,
@@ -647,6 +660,7 @@
 				4B35E08A203391400072612E /* SettingsTableController.swift in Sources */,
 				4B7C1EE61FC37F8000DB1EFB /* ProfileController.swift in Sources */,
 				8A505D9A2022CE9C00F255C0 /* SideMenuTableController.swift in Sources */,
+				4B1F3FD12065755100E32181 /* VerifySMSToken.swift in Sources */,
 				4B26D079202E7E06002BC21C /* SideMenuController.swift in Sources */,
 				411933011FBFE8D600EBF885 /* TrkRequestViewController.swift in Sources */,
 				4B7C1EE41FC37EA500DB1EFB /* LoginController.swift in Sources */,
@@ -658,6 +672,8 @@
 				4B3283AC1F995D0A00302E3E /* AppDelegate.swift in Sources */,
 				4BBAB1DB20155886001F7BD1 /* TrkRequestMainViewController.swift in Sources */,
 				D71EE64D201E5C3700F12FFB /* EditProfileViewController.swift in Sources */,
+				4B1F3FD3206583EC00E32181 /* RateController.swift in Sources */,
+				4B1F3FCF2065753B00E32181 /* VerifyPhoneNumber.swift in Sources */,
 				3EC24CE82044F34200D2AA03 /* RequestData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0MJ-Xt-yMR">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Phone Verification-->
+        <scene sceneID="NZZ-Uy-1Nj">
+            <objects>
+                <viewController id="D5f-dQ-dsc" customClass="VerifyPhoneNumber" customModule="Ping_" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8n3-Ep-i46">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your phone number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="R5z-gI-PsE">
+                                <rect key="frame" x="124" y="187" width="210" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" textContentType="tel"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2O-L0-auq">
+                                <rect key="frame" x="81" y="288" width="253" height="30"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="NEXT">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="phone_verify:" destination="D5f-dQ-dsc" eventType="touchUpInside" id="1NU-Lz-NW1"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dont worry, we won't share your information" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jxd-gN-ELK">
+                                <rect key="frame" x="81" y="259" width="253" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Bsd-i3-Jeb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJw-tA-C8r">
+                                <rect key="frame" x="74" y="187" width="42" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="GJD-cT-9nW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify your number with our SMS verification process" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MUp-b3-ZBj">
+                                <rect key="frame" x="12" y="148" width="390" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="4Q6-BP-d7D"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="R5z-gI-PsE" firstAttribute="top" secondItem="SJw-tA-C8r" secondAttribute="top" id="0jr-p4-FWr"/>
+                            <constraint firstItem="MUp-b3-ZBj" firstAttribute="top" secondItem="XM1-cc-GHa" secondAttribute="top" constant="84" id="6Sr-Ri-rKd"/>
+                            <constraint firstItem="R5z-gI-PsE" firstAttribute="trailing" secondItem="Jxd-gN-ELK" secondAttribute="trailing" id="Kqg-5G-L53"/>
+                            <constraint firstItem="MUp-b3-ZBj" firstAttribute="centerX" secondItem="Jxd-gN-ELK" secondAttribute="centerX" id="OCU-X0-HnM"/>
+                            <constraint firstItem="R5z-gI-PsE" firstAttribute="leading" secondItem="SJw-tA-C8r" secondAttribute="trailing" constant="8" symbolic="YES" id="PBB-zu-1Pd"/>
+                            <constraint firstItem="T2O-L0-auq" firstAttribute="top" secondItem="Jxd-gN-ELK" secondAttribute="bottom" constant="8" symbolic="YES" id="Pap-Mb-d32"/>
+                            <constraint firstItem="MUp-b3-ZBj" firstAttribute="centerX" secondItem="8n3-Ep-i46" secondAttribute="centerX" id="Qbq-vO-SNv"/>
+                            <constraint firstItem="R5z-gI-PsE" firstAttribute="top" secondItem="MUp-b3-ZBj" secondAttribute="bottom" constant="18" id="R8s-Z4-GXx"/>
+                            <constraint firstItem="Jxd-gN-ELK" firstAttribute="trailing" secondItem="T2O-L0-auq" secondAttribute="trailing" id="Uhs-SP-lnD"/>
+                            <constraint firstItem="R5z-gI-PsE" firstAttribute="bottom" secondItem="SJw-tA-C8r" secondAttribute="bottom" id="VDg-KC-Rlo"/>
+                            <constraint firstItem="Jxd-gN-ELK" firstAttribute="top" secondItem="R5z-gI-PsE" secondAttribute="bottom" constant="42" id="XHz-rM-7E1"/>
+                            <constraint firstItem="Jxd-gN-ELK" firstAttribute="leading" secondItem="T2O-L0-auq" secondAttribute="leading" id="dR1-Bg-BYr"/>
+                            <constraint firstItem="SJw-tA-C8r" firstAttribute="leading" secondItem="XM1-cc-GHa" secondAttribute="leading" constant="74" id="hxD-Dp-1cr"/>
+                            <constraint firstItem="Jxd-gN-ELK" firstAttribute="leading" secondItem="XM1-cc-GHa" secondAttribute="leading" constant="81" id="l3c-Nh-hRg"/>
+                            <constraint firstItem="MUp-b3-ZBj" firstAttribute="leading" secondItem="XM1-cc-GHa" secondAttribute="leading" constant="12" id="lRX-W4-Lle"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="XM1-cc-GHa"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Phone Verification" id="waQ-Bi-Tpp"/>
+                    <connections>
+                        <outlet property="phone_number" destination="R5z-gI-PsE" id="wdZ-o2-CNh"/>
+                        <segue destination="7cV-EP-MT1" kind="showDetail" identifier="phone_verification_next" id="dh1-Wr-pDc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fxH-w9-Dcf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="379.71014492753625" y="143.47826086956522"/>
+        </scene>
+        <!--Phone Verification-->
+        <scene sceneID="vW7-au-jwQ">
+            <objects>
+                <viewController storyboardIdentifier="VerifySMS" id="3cg-6a-RQP" customClass="VerifySMSToken" customModule="Ping_" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="278-on-AgQ" customClass="PhoneVerificationVerify" customModule="Ping_" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter the verification code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I0A-u6-qtd">
+                                <rect key="frame" x="81" y="187" width="253" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Q94-Po-38n"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" textContentType="tel"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CI9-ng-twr">
+                                <rect key="frame" x="81" y="288.33333333333331" width="253" height="29.666666666666686"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="NEXT">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="verify_sms_next:" destination="3cg-6a-RQP" eventType="touchUpInside" id="2Vm-Hh-EvK"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We texted you a code. Enter it here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0V-eg-nO8">
+                                <rect key="frame" x="12" y="148" width="390" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="2r8-7P-rYZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HzY-Py-aB6">
+                                <rect key="frame" x="81" y="250.00000000000003" width="89" height="30.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Re-text code"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBy-Sh-4cG">
+                                <rect key="frame" x="251" y="250.00000000000003" width="83" height="30.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Call for code"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bmC-OA-k6b">
+                                <rect key="frame" x="195" y="255.00000000000003" width="24" height="21.333333333333343"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="T1V-jf-b5B"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="wBy-Sh-4cG" firstAttribute="leading" secondItem="bmC-OA-k6b" secondAttribute="trailing" constant="32" id="09E-5f-pAZ"/>
+                            <constraint firstItem="bmC-OA-k6b" firstAttribute="leading" secondItem="HzY-Py-aB6" secondAttribute="trailing" constant="25" id="3KA-5R-ywL"/>
+                            <constraint firstItem="HzY-Py-aB6" firstAttribute="firstBaseline" secondItem="wBy-Sh-4cG" secondAttribute="baseline" id="4Zy-Gp-8XD"/>
+                            <constraint firstItem="CI9-ng-twr" firstAttribute="trailing" secondItem="wBy-Sh-4cG" secondAttribute="trailing" id="4h2-PQ-SpY"/>
+                            <constraint firstItem="I0A-u6-qtd" firstAttribute="trailing" secondItem="wBy-Sh-4cG" secondAttribute="trailing" id="54J-YK-Og5"/>
+                            <constraint firstItem="I0A-u6-qtd" firstAttribute="top" secondItem="l0V-eg-nO8" secondAttribute="bottom" constant="18" id="Cqc-2i-qbd"/>
+                            <constraint firstItem="HzY-Py-aB6" firstAttribute="baseline" secondItem="bmC-OA-k6b" secondAttribute="firstBaseline" id="EA0-4z-etz"/>
+                            <constraint firstItem="l0V-eg-nO8" firstAttribute="leading" secondItem="Zhv-m5-pdO" secondAttribute="leading" constant="12" id="GOz-iL-WOo"/>
+                            <constraint firstItem="HzY-Py-aB6" firstAttribute="baseline" secondItem="wBy-Sh-4cG" secondAttribute="firstBaseline" id="LEy-yz-lff"/>
+                            <constraint firstItem="HzY-Py-aB6" firstAttribute="top" secondItem="I0A-u6-qtd" secondAttribute="bottom" constant="33" id="NfQ-WS-Miu"/>
+                            <constraint firstItem="CI9-ng-twr" firstAttribute="top" secondItem="bmC-OA-k6b" secondAttribute="bottom" constant="12" id="OE2-se-hGV"/>
+                            <constraint firstItem="l0V-eg-nO8" firstAttribute="top" secondItem="Zhv-m5-pdO" secondAttribute="top" constant="84" id="PMp-L2-mUK"/>
+                            <constraint firstItem="Zhv-m5-pdO" firstAttribute="bottom" secondItem="CI9-ng-twr" secondAttribute="bottom" constant="418" id="QXf-xc-NBO"/>
+                            <constraint firstItem="HzY-Py-aB6" firstAttribute="top" secondItem="wBy-Sh-4cG" secondAttribute="top" id="T5c-B9-WiQ"/>
+                            <constraint firstItem="I0A-u6-qtd" firstAttribute="leading" secondItem="Zhv-m5-pdO" secondAttribute="leading" constant="81" id="cHz-P0-8Co"/>
+                            <constraint firstItem="CI9-ng-twr" firstAttribute="top" secondItem="HzY-Py-aB6" secondAttribute="bottom" constant="8" symbolic="YES" id="dIs-ip-lER"/>
+                            <constraint firstItem="l0V-eg-nO8" firstAttribute="centerX" secondItem="278-on-AgQ" secondAttribute="centerX" id="dVy-lE-WFi"/>
+                            <constraint firstItem="HzY-Py-aB6" firstAttribute="baseline" secondItem="wBy-Sh-4cG" secondAttribute="baseline" id="djT-en-cKi"/>
+                            <constraint firstItem="HzY-Py-aB6" firstAttribute="centerY" secondItem="bmC-OA-k6b" secondAttribute="centerY" id="eTJ-pM-Hb5"/>
+                            <constraint firstItem="I0A-u6-qtd" firstAttribute="leading" secondItem="HzY-Py-aB6" secondAttribute="leading" id="mM9-wn-rPg"/>
+                            <constraint firstItem="bmC-OA-k6b" firstAttribute="centerX" secondItem="CI9-ng-twr" secondAttribute="centerX" id="nQ1-Mu-uoL"/>
+                            <constraint firstItem="HzY-Py-aB6" firstAttribute="leading" secondItem="CI9-ng-twr" secondAttribute="leading" id="nRF-BO-Rdf"/>
+                            <constraint firstItem="l0V-eg-nO8" firstAttribute="centerX" secondItem="I0A-u6-qtd" secondAttribute="centerX" id="pK7-yI-nAk"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Zhv-m5-pdO"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Phone Verification" id="42c-0Z-WwT">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="Hmr-42-rRm">
+                            <connections>
+                                <segue destination="0MJ-Xt-yMR" kind="showDetail" id="Ipm-G2-7Tr"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="sms_code" destination="I0A-u6-qtd" id="kjG-oB-oeV"/>
+                        <outlet property="verify_sms_next" destination="CI9-ng-twr" id="Cdy-hl-dwy"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yTC-ci-aVC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1711.5942028985507" y="143.47826086956522"/>
+        </scene>
+        <!--PhoneVerificationNavController-->
+        <scene sceneID="If5-gA-h5A">
+            <objects>
+                <navigationController title="PhoneVerificationNavController" automaticallyAdjustsScrollViewInsets="NO" id="0MJ-Xt-yMR" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ozE-en-myX">
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="D5f-dQ-dsc" kind="relationship" relationship="rootViewController" id="fyb-tY-EsW"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3sL-KA-xLQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="380" y="-695"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="DDM-KQ-Gb5">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Xiw-7y-88R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7cV-EP-MT1" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iZb-AK-m8j">
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="3cg-6a-RQP" kind="relationship" relationship="rootViewController" id="0Ft-vA-mTG"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="1712" y="-620"/>
+        </scene>
+    </scenes>
+</document>
