@@ -10,12 +10,17 @@ target 'OneSignalNotificationServiceExtension' do
 
 end
 
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
 target 'Ping!' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
   pod ‘OneSignal’, ‘>= 2.5.2’, ‘<3.0’
   pod ‘SideMenu’
   pod 'Font-Awesome-Swift', '~> 1.7.2'
+  pod 'Kingfisher', '~> 4.0'
 
   # Pods for Ping!
 
