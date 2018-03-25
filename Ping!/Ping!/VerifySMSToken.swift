@@ -20,6 +20,30 @@ class VerifySMSToken: UIViewController, UITextFieldDelegate {
 
     }
     
+    
+    @IBAction func resend_verify(_ sender: Any) {
+        let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "userPhoneVerify") != nil) {
+            let phone_number = (defaults.object(forKey: "userPhoneVerify") as? String)!
+            let phone_number_trim = phone_number.trimmingCharacters(in: .whitespaces)
+            let verify_type = "sms"
+            TwilioAPI().start_verification(phone_number:phone_number_trim, verify_type:verify_type, segue:"none")
+        }
+        
+    }
+    
+    
+    @IBOutlet weak var call_verify: UIButton!
+    @IBAction func call_verify(_ sender: Any) {
+        let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "userPhoneVerify") != nil) {
+            let phone_number = (defaults.object(forKey: "userPhoneVerify") as? String)!
+            let phone_number_trim = phone_number.trimmingCharacters(in: .whitespaces)
+            let verify_type = "call"
+            TwilioAPI().start_verification(phone_number:phone_number_trim, verify_type:verify_type, segue:"none")
+        }
+    }
+    
     @IBOutlet weak var verify_sms_next: UIButton!
     
     @IBAction func verify_sms_next(_ sender: Any) {
@@ -29,7 +53,7 @@ class VerifySMSToken: UIViewController, UITextFieldDelegate {
             if (defaults.object(forKey: "userPhoneVerify") != nil) {
                 let phone_number = (defaults.object(forKey: "userPhoneVerify") as? String)!
                 let phone_number_trim = phone_number.trimmingCharacters(in: .whitespaces)
-                start_verification(phone_number: phone_number_trim, sms_code: sms_code.text!)
+                check_verification(phone_number: phone_number_trim, sms_code: sms_code.text!)
             }
             
         }
@@ -41,7 +65,7 @@ class VerifySMSToken: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func start_verification(phone_number:String, sms_code:String) {
+    func check_verification(phone_number:String, sms_code:String) {
         let headers = [
             "x-authy-api-key": "hdWHzYFILyJRhk4PAA5X6mRanNzm7x5d",
             "cache-control": "no-cache",

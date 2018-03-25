@@ -102,7 +102,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter the verification code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I0A-u6-qtd">
-                                <rect key="frame" x="81" y="187" width="253" height="30"/>
+                                <rect key="frame" x="81" y="187" width="252" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Q94-Po-38n"/>
                                 </constraints>
@@ -111,7 +111,7 @@
                                 <textInputTraits key="textInputTraits" textContentType="tel"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CI9-ng-twr">
-                                <rect key="frame" x="81" y="288.33333333333331" width="253" height="29.666666666666686"/>
+                                <rect key="frame" x="81" y="288.33333333333331" width="252" height="29.666666666666686"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="NEXT">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -120,29 +120,35 @@
                                     <action selector="verify_sms_next:" destination="3cg-6a-RQP" eventType="touchUpInside" id="2Vm-Hh-EvK"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We texted you a code. Enter it here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0V-eg-nO8">
-                                <rect key="frame" x="12" y="148" width="390" height="21"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HzY-Py-aB6">
+                                <rect key="frame" x="81" y="250.00000000000003" width="88.666666666666686" height="30.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Re-text code"/>
+                                <connections>
+                                    <action selector="resend_verify:" destination="3cg-6a-RQP" eventType="touchUpInside" id="2Fk-bX-pnU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBy-Sh-4cG">
+                                <rect key="frame" x="250.66666666666666" y="250.00000000000003" width="82.333333333333343" height="30.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Call for code"/>
+                                <connections>
+                                    <action selector="call_verify:" destination="3cg-6a-RQP" eventType="touchUpInside" id="RbM-Cb-LXh"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bmC-OA-k6b">
+                                <rect key="frame" x="194.66666666666666" y="255.00000000000003" width="24" height="21.333333333333343"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="2r8-7P-rYZ"/>
+                                    <constraint firstAttribute="width" constant="24" id="T1V-jf-b5B"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HzY-Py-aB6">
-                                <rect key="frame" x="81" y="250.00000000000003" width="89" height="30.333333333333343"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <state key="normal" title="Re-text code"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBy-Sh-4cG">
-                                <rect key="frame" x="251" y="250.00000000000003" width="83" height="30.333333333333343"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <state key="normal" title="Call for code"/>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bmC-OA-k6b">
-                                <rect key="frame" x="195" y="255.00000000000003" width="24" height="21.333333333333343"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We texted you a code. Enter it here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0V-eg-nO8">
+                                <rect key="frame" x="80" y="146" width="252" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="T1V-jf-b5B"/>
+                                    <constraint firstAttribute="height" constant="21" id="2r8-7P-rYZ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
@@ -156,24 +162,24 @@
                             <constraint firstItem="HzY-Py-aB6" firstAttribute="firstBaseline" secondItem="wBy-Sh-4cG" secondAttribute="baseline" id="4Zy-Gp-8XD"/>
                             <constraint firstItem="CI9-ng-twr" firstAttribute="trailing" secondItem="wBy-Sh-4cG" secondAttribute="trailing" id="4h2-PQ-SpY"/>
                             <constraint firstItem="I0A-u6-qtd" firstAttribute="trailing" secondItem="wBy-Sh-4cG" secondAttribute="trailing" id="54J-YK-Og5"/>
-                            <constraint firstItem="I0A-u6-qtd" firstAttribute="top" secondItem="l0V-eg-nO8" secondAttribute="bottom" constant="18" id="Cqc-2i-qbd"/>
+                            <constraint firstItem="I0A-u6-qtd" firstAttribute="top" secondItem="l0V-eg-nO8" secondAttribute="bottom" constant="20" id="Cqc-2i-qbd"/>
                             <constraint firstItem="HzY-Py-aB6" firstAttribute="baseline" secondItem="bmC-OA-k6b" secondAttribute="firstBaseline" id="EA0-4z-etz"/>
-                            <constraint firstItem="l0V-eg-nO8" firstAttribute="leading" secondItem="Zhv-m5-pdO" secondAttribute="leading" constant="12" id="GOz-iL-WOo"/>
+                            <constraint firstItem="l0V-eg-nO8" firstAttribute="leading" secondItem="Zhv-m5-pdO" secondAttribute="leading" constant="80" id="GOz-iL-WOo"/>
                             <constraint firstItem="HzY-Py-aB6" firstAttribute="baseline" secondItem="wBy-Sh-4cG" secondAttribute="firstBaseline" id="LEy-yz-lff"/>
                             <constraint firstItem="HzY-Py-aB6" firstAttribute="top" secondItem="I0A-u6-qtd" secondAttribute="bottom" constant="33" id="NfQ-WS-Miu"/>
                             <constraint firstItem="CI9-ng-twr" firstAttribute="top" secondItem="bmC-OA-k6b" secondAttribute="bottom" constant="12" id="OE2-se-hGV"/>
-                            <constraint firstItem="l0V-eg-nO8" firstAttribute="top" secondItem="Zhv-m5-pdO" secondAttribute="top" constant="84" id="PMp-L2-mUK"/>
+                            <constraint firstItem="l0V-eg-nO8" firstAttribute="top" secondItem="Zhv-m5-pdO" secondAttribute="top" constant="82" id="PMp-L2-mUK"/>
                             <constraint firstItem="Zhv-m5-pdO" firstAttribute="bottom" secondItem="CI9-ng-twr" secondAttribute="bottom" constant="418" id="QXf-xc-NBO"/>
                             <constraint firstItem="HzY-Py-aB6" firstAttribute="top" secondItem="wBy-Sh-4cG" secondAttribute="top" id="T5c-B9-WiQ"/>
                             <constraint firstItem="I0A-u6-qtd" firstAttribute="leading" secondItem="Zhv-m5-pdO" secondAttribute="leading" constant="81" id="cHz-P0-8Co"/>
                             <constraint firstItem="CI9-ng-twr" firstAttribute="top" secondItem="HzY-Py-aB6" secondAttribute="bottom" constant="8" symbolic="YES" id="dIs-ip-lER"/>
-                            <constraint firstItem="l0V-eg-nO8" firstAttribute="centerX" secondItem="278-on-AgQ" secondAttribute="centerX" id="dVy-lE-WFi"/>
+                            <constraint firstItem="l0V-eg-nO8" firstAttribute="centerX" secondItem="278-on-AgQ" secondAttribute="centerX" constant="-1" id="dVy-lE-WFi"/>
                             <constraint firstItem="HzY-Py-aB6" firstAttribute="baseline" secondItem="wBy-Sh-4cG" secondAttribute="baseline" id="djT-en-cKi"/>
                             <constraint firstItem="HzY-Py-aB6" firstAttribute="centerY" secondItem="bmC-OA-k6b" secondAttribute="centerY" id="eTJ-pM-Hb5"/>
                             <constraint firstItem="I0A-u6-qtd" firstAttribute="leading" secondItem="HzY-Py-aB6" secondAttribute="leading" id="mM9-wn-rPg"/>
                             <constraint firstItem="bmC-OA-k6b" firstAttribute="centerX" secondItem="CI9-ng-twr" secondAttribute="centerX" id="nQ1-Mu-uoL"/>
                             <constraint firstItem="HzY-Py-aB6" firstAttribute="leading" secondItem="CI9-ng-twr" secondAttribute="leading" id="nRF-BO-Rdf"/>
-                            <constraint firstItem="l0V-eg-nO8" firstAttribute="centerX" secondItem="I0A-u6-qtd" secondAttribute="centerX" id="pK7-yI-nAk"/>
+                            <constraint firstItem="l0V-eg-nO8" firstAttribute="centerX" secondItem="I0A-u6-qtd" secondAttribute="centerX" constant="-1" id="pK7-yI-nAk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Zhv-m5-pdO"/>
                     </view>
@@ -185,6 +191,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="call_verify" destination="wBy-Sh-4cG" id="LQ3-l6-oib"/>
                         <outlet property="sms_code" destination="I0A-u6-qtd" id="kjG-oB-oeV"/>
                         <outlet property="verify_sms_next" destination="CI9-ng-twr" id="Cdy-hl-dwy"/>
                     </connections>
@@ -214,7 +221,6 @@
         <!--Navigation Controller-->
         <scene sceneID="DDM-KQ-Gb5">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Xiw-7y-88R" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7cV-EP-MT1" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iZb-AK-m8j">
@@ -226,6 +232,7 @@
                         <segue destination="3cg-6a-RQP" kind="relationship" relationship="rootViewController" id="0Ft-vA-mTG"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Xiw-7y-88R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1712" y="-620"/>
         </scene>
