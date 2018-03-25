@@ -245,9 +245,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 // For same user, load history data
                 getHistoryByPhone(phone_number: req.getReq_from_user_phone()){(history) in
                     // TODO: Show breadcrumbs on map. For now, just printing history data
+                    var i = 0 as Int
+                    var points = [CLLocationCoordinate2D]()
                     for h in history{
-                        print(h.history_Location_datetime)
+                        let myLoc = CLLocationCoordinate2D(latitude:Double(h.history_Location_latitude)!, longitude:Double(h.history_Location_longitude)!)
+                        points.append(myLoc)
+                        i = i + 1
                     }
+                    let myPolyline = MKPolyline(coordinates: points, count: i)
+                    self.mapView.add(myPolyline)
                 }
             }
             // remove any unreferenced annotations
@@ -562,6 +568,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         if (!animated){
             autoRepositionMap = false
         }
+    }
+    
+    func mapView(_ mapView: MKMapView!, rendererFor overlay: MKOverlay!) -> MKOverlayRenderer! {
+        if overlay is MKPolyline {
+            var polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            polylineRenderer.strokeColor = UIColor.blue
+            polylineRenderer.lineWidth = 5
+            return polylineRenderer
+        }
+        return nil
     }
     
     override func viewDidAppear(_ animated: Bool){
