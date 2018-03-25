@@ -9,6 +9,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import OneSignal
+import Kingfisher
 
 //Loading extension for map loading spinner
 /*
@@ -63,7 +64,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var lastPhone: String! = ""
     let defualtAvatar = UIImage(named: "default_avatar")
-    var avatarImage: UIImage!
     
     let manager = CLLocationManager()
     let trackingRequestDataManager = TrackingRequstDataManager()
@@ -242,6 +242,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     let myLocUpdate = self.convertGmtToLocal(date:lastUpdate)
                     self.updateMap2(phone_number: req.getReq_from_user_phone(), latitude: lat, longitude: long, locUpdate: myLocUpdate)
                 }
+                // For same user, load history data
+                getHistoryByPhone(phone_number: req.getReq_from_user_phone()){(history) in
+                    // TODO: Show breadcrumbs on map. For now, just printing history data
+                    for h in history{
+                        print(h.history_Location_datetime)
+                    }
+                }
             }
             // remove any unreferenced annotations
             var i=0 as Int
@@ -393,8 +400,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //remove +0.002 from final code. offest in place for testing self messages. Leave in place for testing callouts later
         //        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
         loadData(phone_number: phone_number)
-        if avatarImage != nil{
-            let user = UserAnnotation(phone:phone_number, lat: latitude, long:longitude, avatarImage: avatarImage)
+        if ImageCache.default.retrieveImageInDiskCache(forKey: phone_number) != nil{
+            let user = UserAnnotation(phone:phone_number, lat: latitude, long:longitude, avatarImage: ImageCache.default.retrieveImageInDiskCache(forKey: phone_number)!)
             mapView.addAnnotation(user)
         }
         //Remove spinner view after labels have been updated
@@ -502,8 +509,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                                 let dataDecoded : Data = Data(base64Encoded: encodedAvatar!, options: .ignoreUnknownCharacters)!
                                 let decodedImage = UIImage(data: dataDecoded)!
                                 DispatchQueue.main.async {
-                                    self.avatarImage = decodedImage
-                                    //                                    self.AvatarImageView.image = decodedImage
+                                    ImageCache.default.store(decodedImage, forKey: phone_number)
                                 }
                             }
                         }
@@ -536,19 +542,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? UserAnnotation{
             let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-            if avatarImage != nil {
-                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-                imageView.image = avatarImage
-                imageView.layer.cornerRadius = imageView.layer.frame.size.width / 2
-                imageView.layer.masksToBounds = true
-                imageView.layer.borderWidth = 5
-                imageView.layer.borderColor = UIColor.white.cgColor
-                //                imageView.isUserInteractionEnabled = false
-                view.addSubview(imageView)
-                view.isUserInteractionEnabled = true
-                view.isEnabled = true
-                view.canShowCallout = true
-            }
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+            imageView.image = ImageCache.default.retrieveImageInDiskCache(forKey: annotation.title!)
+            imageView.layer.cornerRadius = imageView.layer.frame.size.width / 2
+            imageView.layer.masksToBounds = true
+            imageView.layer.borderWidth = 5
+            imageView.layer.borderColor = UIColor.white.cgColor
+            //                imageView.isUserInteractionEnabled = false
+            view.addSubview(imageView)
+            view.isUserInteractionEnabled = true
+            view.isEnabled = true
+            view.canShowCallout = true
             return view
         }
         return nil
@@ -565,5 +569,92 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         autoRepositionMap = true
     }
     
+    public func getHistoryByPhone(phone_number: String, completion: @escaping (_ history: [HistoryData]) -> ()) {
+        let requestURL = "http://52.42.38.63/ioswebservice/api/gethistorybyphone.php?"
+        let postParameters = "user_phone=" + (phone_number)
+        var request = URLRequest(url: URL(string: requestURL+postParameters)!)
+        var myHistory = [HistoryData] ()
+        request.httpMethod = "POST"
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        let urlSession = URLSession.shared
+        let task = urlSession.dataTask(with: request, completionHandler:{
+            (data, response, error) -> Void in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print (error)
+                    return
+                }
+                if let data = data {
+                    do {
+                        //converting resonse to NSDictionary
+                        let myJSON =  try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSDictionary
+                        //parsing the json
+                        if let parseJSON = myJSON {
+                            //creating a string
+                            var msg : String!
+                            var data : NSArray!
+                            //getting the json response
+                            msg = parseJSON["message"] as! String?
+                            if(msg == "Operation successful!"){
+                                data = parseJSON["data"] as! NSArray?
+                                for history in data{
+                                    let element = history as! NSArray
+                                    // Define variables for tracking request
+                                    var myLocation_ID : Int
+                                    var myLocation_user_id : Int
+                                    var myLocation_latitude : String
+                                    var myLocation_longitude : String
+                                    var myLocation_datetime : String
+                                    var myLocation_user_phone : String
+                                    
+                                    myLocation_ID = (element[0] as? Int)!
+                                    myLocation_user_id = (element[1] as? Int)!
+                                    myLocation_latitude = (element[2] as? String)!
+                                    myLocation_longitude = (element[3] as? String)!
+                                    myLocation_datetime = (element[4] as? String)!
+                                    myLocation_user_phone = (element[5] as? String)!
+                                    
+                                    let hd = HistoryData(history_Location_ID: myLocation_ID, history_Location_user_id: myLocation_user_id, history_Location_latitude: myLocation_latitude, history_Location_longitude: myLocation_longitude, history_Location_datetime: myLocation_datetime, history_Location_user_phone: myLocation_user_phone)
+                                    
+                                    myHistory.append(hd)
+                                }
+                            } else {
+                                //pendRequest.append("No Requests")
+                            }
+                            
+                        }
+                        
+                        //  print(self.allRequests)
+                    } catch {
+                        print(error)
+                    }
+                    
+                }
+                completion(myHistory)
+            }
+        })
+        task.resume()
+        
+        //return pendRequest
+    }
+    
+}
+
+class HistoryData{
+    var history_Location_ID : Int
+    var history_Location_user_id : Int
+    var history_Location_latitude : String
+    var history_Location_longitude : String
+    var history_Location_datetime : String
+    var history_Location_user_phone : String
+    
+    init (history_Location_ID: Int, history_Location_user_id: Int, history_Location_latitude: String, history_Location_longitude: String, history_Location_datetime: String, history_Location_user_phone: String) {
+        self.history_Location_ID = history_Location_ID
+        self.history_Location_user_id = history_Location_user_id
+        self.history_Location_latitude = history_Location_latitude
+        self.history_Location_longitude = history_Location_longitude
+        self.history_Location_datetime = history_Location_datetime
+        self.history_Location_user_phone = history_Location_user_phone
+    }
 }
 

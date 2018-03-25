@@ -1,18 +1,21 @@
 PODS:
   - Font-Awesome-Swift (1.7.2)
+  - Kingfisher (4.6.1)
   - OneSignal (2.5.6)
   - SideMenu (3.1.5)
 
 DEPENDENCIES:
   - Font-Awesome-Swift (~> 1.7.2)
+  - Kingfisher (~> 4.0)
   - OneSignal (< 3.0, >= 2.5.2)
   - SideMenu
 
 SPEC CHECKSUMS:
   Font-Awesome-Swift: 83ab9db365379ee6025167cec67bdc5d3226a811
+  Kingfisher: 1f9157d9c02b380cbd0b7cc890161195164eb634
   OneSignal: 9ec286d9156b86b3975f45d928e70f46c74ef4b7
   SideMenu: 47dbf9e4d878062d8994aed43f6e4bf6c1fea30b
 
-PODFILE CHECKSUM: 469330eef4b4f9513c4a008870c3b9946197f674
+PODFILE CHECKSUM: 80d2df3b17cc9d9440e4684649ef1371aea6f023
 
 COCOAPODS: 1.4.0
