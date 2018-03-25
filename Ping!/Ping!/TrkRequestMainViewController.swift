@@ -407,6 +407,11 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        table1.layer.borderWidth = 2.0;
+        table2.layer.borderWidth = 2.0;
+        table3.layer.borderWidth = 2.0;
+        
+        
         //pending.self = getRequestFrom(phone_number: userPhoneNumber)
         getRequestFrom(phone_number: userPhoneNumber) { (success) -> Void in
             let when = DispatchTime.now() + 1 // change 2 to desired number of seconds
@@ -421,6 +426,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                 self.table3.reloadData()
             }
         }
+        
         
     }
     
