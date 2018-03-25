@@ -332,5 +332,26 @@ class dboperations
 		echo $stmt->error;
 		$stmt->close();
 	}
+
+	public function getHistoryByPhone($user_phone)
+	{
+		$stmt = $this->conn->prepare("SELECT locations.*, users.user_phone FROM locations INNER JOIN users ON users.user_id=locations.location_user_id WHERE users.user_phone=? ORDER BY locations.location_id DESC LIMIT 100");
+		$stmt->bind_param("i", $user_phone);
+		
+		if ($stmt->execute()) 
+		{
+		    $result = $stmt->get_result();
+			$requests = $result->fetch_all(MYSQLI_NUM);
+        }
+		else
+		{
+            return NO_RESULTS;
+        }
+
+		return $requests;
+		
+		echo $stmt->error;
+		$stmt->close();
+	}
 }
 ?>
