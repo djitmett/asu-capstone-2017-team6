@@ -388,6 +388,16 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             }
             task.resume()
         }
+
+    
+    let cellIdentifier : String = "cell"
+    var numberOfTracked : Int = 0
+    var numberOfRequested : Int = 0
+    var numberOfTracking : Int = 0
+    
+    @IBAction func DenyBtn(_ sender: Any) {
+        
+    }
     
     
     @IBAction func clearMapBtn(_ sender: Any) {
@@ -396,14 +406,30 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         if (defaults.object(forKey: "currentTrackedUser") != nil){
             defaults.removeObject(forKey: "currentTrackedUser")
             print("Cleared tracked user")
+            
+        request.removeAll()
+        pending.removeAll()
+        self.table3.reloadData()
         }
         
     }
     
-    let cellIdentifier : String = "cell"
-    var numberOfTracked : Int = 0
-    var numberOfRequested : Int = 0
-    var numberOfTracking : Int = 0
+    
+    @IBAction func clearTrkBtn(_ sender: Any) {
+        request2.removeAll()
+        tracking.removeAll()
+        self.table1.reloadData()
+    }
+    
+    
+    @IBAction func clearUserBtn(_ sender: Any) {
+        request3.removeAll()
+        tracked.removeAll()
+        self.table3.reloadData()
+    }
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
