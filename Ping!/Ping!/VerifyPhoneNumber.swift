@@ -20,8 +20,8 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
             let defaults = UserDefaults.standard
             defaults.set(phone_number.text, forKey: "userPhoneVerify")
             defaults.synchronize()
-            
-            start_verification(phone_number: phone_number.text!)
+            let verify_type = "sms"
+           start_verification(phone_number: phone_number.text!, verify_type: verify_type)
             
             /**
              let storyBoard : UIStoryboard = UIStoryboard(name: "PhoneVerification", bundle:nil)
@@ -37,26 +37,23 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func goToNextView() {
+        performSegue(withIdentifier: "phone_verification_next", sender: self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         phone_number.delegate = self
         self.hideKeyboard()
-        // Do any additional setup after loading the view.
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func start_verification(phone_number:String) {
+    func start_verification(phone_number:String, verify_type:String) {
         
         //Twillio Verify API
-        let URL_SIGNUP = "https://api.authy.com/protected/json/phones/verification/start?"
+        let twillioAPI = "https://api.authy.com/protected/json/phones/verification/start?"
         
         //URL is defined above
-        let requestURL = NSURL(string: URL_SIGNUP)
+        let requestURL = NSURL(string: twillioAPI)
         
         let headers = [
             "x-authy-api-key": "hdWHzYFILyJRhk4PAA5X6mRanNzm7x5d",
@@ -72,7 +69,7 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
         request.httpMethod = "POST"
         
         //Creating post paramter
-        var postParameters = "via=sms"
+        var postParameters = "via=" + verify_type
         postParameters += "&country_code=1"
         postParameters += "&phone_number=" + phone_number
         postParameters += "&locale=en"
