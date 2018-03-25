@@ -9,6 +9,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import OneSignal
+import Kingfisher
 
 //Loading extension for map loading spinner
 /*
@@ -63,7 +64,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var lastPhone: String! = ""
     let defualtAvatar = UIImage(named: "default_avatar")
-    var avatarImage: UIImage!
     
     let manager = CLLocationManager()
     let trackingRequestDataManager = TrackingRequstDataManager()
@@ -393,8 +393,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //remove +0.002 from final code. offest in place for testing self messages. Leave in place for testing callouts later
         //        let user = UserAnnotation(name:phone_number, lat: latitude, long:(longitude + 0.002))
         loadData(phone_number: phone_number)
-        if avatarImage != nil{
-            let user = UserAnnotation(phone:phone_number, lat: latitude, long:longitude, avatarImage: avatarImage)
+        if ImageCache.default.retrieveImageInDiskCache(forKey: phone_number) != nil{
+            let user = UserAnnotation(phone:phone_number, lat: latitude, long:longitude, avatarImage: ImageCache.default.retrieveImageInDiskCache(forKey: phone_number)!)
             mapView.addAnnotation(user)
         }
         //Remove spinner view after labels have been updated
@@ -502,8 +502,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                                 let dataDecoded : Data = Data(base64Encoded: encodedAvatar!, options: .ignoreUnknownCharacters)!
                                 let decodedImage = UIImage(data: dataDecoded)!
                                 DispatchQueue.main.async {
-                                    self.avatarImage = decodedImage
-                                    //                                    self.AvatarImageView.image = decodedImage
+                                    ImageCache.default.store(decodedImage, forKey: phone_number)
                                 }
                             }
                         }
@@ -536,19 +535,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? UserAnnotation{
             let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-            if avatarImage != nil {
-                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-                imageView.image = avatarImage
-                imageView.layer.cornerRadius = imageView.layer.frame.size.width / 2
-                imageView.layer.masksToBounds = true
-                imageView.layer.borderWidth = 5
-                imageView.layer.borderColor = UIColor.white.cgColor
-                //                imageView.isUserInteractionEnabled = false
-                view.addSubview(imageView)
-                view.isUserInteractionEnabled = true
-                view.isEnabled = true
-                view.canShowCallout = true
-            }
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+            imageView.image = ImageCache.default.retrieveImageInDiskCache(forKey: annotation.title!)
+            imageView.layer.cornerRadius = imageView.layer.frame.size.width / 2
+            imageView.layer.masksToBounds = true
+            imageView.layer.borderWidth = 5
+            imageView.layer.borderColor = UIColor.white.cgColor
+            //                imageView.isUserInteractionEnabled = false
+            view.addSubview(imageView)
+            view.isUserInteractionEnabled = true
+            view.isEnabled = true
+            view.canShowCallout = true
             return view
         }
         return nil
