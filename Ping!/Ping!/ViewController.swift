@@ -250,12 +250,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                    
                     let current_date = Date()
                     //Declare number of days to go back
-                    let history_days = -5
+                    //Will be replaced by a user defaults selection made in settings
+                    let history_days = -7
                     //Determine starting point of history
-                    let history_limit = (Calendar.current.date(byAdding: .day, value: history_days, to: Date()))
+                    let history_limit = (Calendar.current.date(byAdding: .day, value: history_days, to: current_date))
                     //Debug
-                    print("Today's date is ", current_date)
-                    print("Breadcrumbs will only go as far as: ", history_limit!)
+                    //print("History: Today's date is ", current_date)
+                    //print("History: Breadcrumbs will only go as far as: ", history_limit!)
                     
                     for h in history{
                         //Converting string to date object
@@ -267,8 +268,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         i = i + 1
                         }
                     }
+                    //TODO: Check if user has enabled breadcrumbs
+                    if(points.count > 0) {
                     let myPolyline = MKPolyline(coordinates: points, count: i)
                     self.mapView.add(myPolyline)
+                    }
                 }
             }
             // remove any unreferenced annotations
