@@ -13,26 +13,104 @@ var pending = [TrackingRequest] ()
 var tracking = [TrackingRequest] ()
 var tracked = [TrackingRequest] ()
 var allRequests = [TrackingRequest] ()
-
+var approved = "APPROVED"
+var deleteTrk = "UNAPPROVED"
 
 class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
 
     @IBOutlet weak var table1: UITableView!
-    @IBOutlet weak var table2: UITableView!
-    @IBAction func AcceptTrk(_ sender: UIButton) {
-    }
-    @IBAction func DenyTrk(_ sender: UIButton) {
-    }
     @IBOutlet weak var table3: UITableView!
-    
+    @IBOutlet weak var table2: UITableView!
+
     @IBAction func RemoveTrk(_ sender: UIButton) {
+        var superview = sender.superview
+        while let view = superview, !(view is UITableViewCell) {
+            superview = view.superview
+        }
+        guard let cell = superview as? UITableViewCell else {
+            print("button is not contained in a table view cell")
+            return
+        }
+        guard let indexPath = table1.indexPath(for: cell) else {
+            print("failed to get index path for cell containing button")
+            return
+        }
+        // We've got the index path for the cell that contains the button, now do something with it.
+        print("button is in row \(indexPath.row)")
+    }
+    // Added all required function to retrieve which cell button is selected
+    @IBAction func DenyTrk(_ sender: UIButton) {
+        var superview = sender.superview
+        while let view = superview, !(view is UITableViewCell) {
+            superview = view.superview
+        }
+        guard let cell = superview as? UITableViewCell else {
+            print("button is not contained in a table view cell")
+            return
+        }
+        guard let indexPath = table3.indexPath(for: cell) else {
+            print("failed to get index path for cell containing button")
+            return
+        }
+        // We've got the index path for the cell that contains the button, now do something with it.
+        print("button is in row \(indexPath.row)")// remove this line and add functions to update status then reload table
+    }
+    @IBAction func AcceptTrk(_ sender: UIButton) {
+        var superview = sender.superview
+        while let view = superview, !(view is UITableViewCell) {
+            superview = view.superview
+        }
+        guard let cell = superview as? UITableViewCell else {
+            print("button is not contained in a table view cell")
+            return
+        }
+        guard let indexPath = table2.indexPath(for: cell) else {
+            print("failed to get index path for cell containing button")
+            return
+        }
+        var reqId = pending[indexPath.row].getReq_ID()
+        updateRequestByID(req: reqId)
+        
+        // We've got the index path for the cell that contains the button, now do something with it.
+        print("button is in row \(indexPath.row)")
+    }
+    func updateRequestByID(req: Int)->Void{
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updateRequestByID.php?"
+        let requestURL = NSURL(string: URL_SIGNUP)
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        request.httpMethod = "POST"
+        
+        var postParameters = "req_ID=" + String(req)
+        postParameters += "&req_status=\(approved)"
+        postParameters += "&req_status_change_datetime=\(NSDate())"
+        print(postParameters)
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+        
+        }
+        task.resume()
+        //
+
+            //
+    }
+    func timeStamp()->String{
+        let now = Date()
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let dateString = formatter.string(from: now)
+        return dateString
     }
     var request = [String] ()//For tableview
     var request2 = [String] ()//for tableview
     var request3 = [String] ()//For tableview
     var userPhoneNumber = ""
-    
     
     //func getRequestFrom(phone_number: String) -> Array<String> {
     func getRequestFrom(phone_number: String, completion: @escaping (_ success: Bool) -> Void) {
@@ -451,6 +529,8 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         }
         return (cell)
     }
+
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
