@@ -487,7 +487,26 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt
+        indexPath: IndexPath) {
+     
+        if editingStyle == .delete {
+            request.remove(at: indexPath.row)
+            pending.remove(at: indexPath.row)
+            request2.remove(at: indexPath.row)
+            tracking.remove(at: indexPath.row)
+            request3.remove(at: indexPath.row)
+            tracked.remove(at: indexPath.row)
+            
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
+        }
+    }
     
     /*
      // MARK: - Navigation
