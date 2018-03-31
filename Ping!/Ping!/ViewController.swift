@@ -110,9 +110,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
     }
     
+    
+    @IBAction func refreshMap(_ sender: Any) {
+        updateMap()
+    }
+    
+    
+    func loadSettings() {
+        let defaults = UserDefaults.standard
+        
+        //Map Display Type Settings
+        if (defaults.object(forKey: "mapType") != nil) {
+            let mapType = (defaults.object(forKey: "mapType") as? String)!
+            if(mapType == "hybrid"){
+               mapView.mapType = .hybrid
+            }
+            if(mapType == "satellite"){
+                mapView.mapType = .satellite
+            }
+            if(mapType == "standard"){
+                mapView.mapType = .standard
+            }
+        }
+        else {
+            defaults.set("standard", forKey: "mapType")
+            defaults.synchronize()
+            mapView.mapType = .standard
+        }
+        
+        //Map Interval Settings
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadSettings()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadSettings()
+        
+         let defaults = UserDefaults.standard
         
         //Create spinner view
         // sv = UIViewController.displaySpinner(onView: self.view)
@@ -127,7 +167,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         autoRepositionMap = true
         
         //USER DEFAULTS FOR ONESIGNAL ID
-        let defaults = UserDefaults.standard
         if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil) {
             player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
         }
