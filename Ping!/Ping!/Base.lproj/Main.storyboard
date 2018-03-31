@@ -97,6 +97,9 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Refresh" id="7L9-AO-6Xh">
                             <color key="tintColor" red="0.52552121880000002" green="0.80350726839999997" blue="0.50968682769999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="refreshMap:" destination="BYZ-38-t0r" id="Z0D-dI-yw4"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -532,6 +535,9 @@
                                                         <constraint firstAttribute="width" constant="46" id="hw5-oz-aAd"/>
                                                     </constraints>
                                                     <state key="normal" title="30s"/>
+                                                    <connections>
+                                                        <action selector="interval30s:" destination="wu4-8N-QGb" eventType="touchUpInside" id="B5n-Tu-gzB"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y95-9I-ZPh">
                                                     <rect key="frame" x="95" y="7" width="46" height="30"/>
@@ -539,6 +545,9 @@
                                                         <constraint firstAttribute="width" constant="46" id="T8G-jD-aZc"/>
                                                     </constraints>
                                                     <state key="normal" title="1min"/>
+                                                    <connections>
+                                                        <action selector="interval1m:" destination="wu4-8N-QGb" eventType="touchUpInside" id="f37-8f-4n8"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lLs-9c-Cit">
                                                     <rect key="frame" x="175" y="7" width="46" height="30"/>
@@ -546,10 +555,16 @@
                                                         <constraint firstAttribute="width" constant="46" id="vL4-dX-xGX"/>
                                                     </constraints>
                                                     <state key="normal" title="5mins"/>
+                                                    <connections>
+                                                        <action selector="interval5m:" destination="wu4-8N-QGb" eventType="touchUpInside" id="Wqe-PS-Hlp"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbK-GE-PgZ">
                                                     <rect key="frame" x="258" y="7" width="55" height="30"/>
                                                     <state key="normal" title="10mins"/>
+                                                    <connections>
+                                                        <action selector="interval10m:" destination="wu4-8N-QGb" eventType="touchUpInside" id="8hO-AY-rYP"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -577,11 +592,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k92-zm-a0T">
-                                                    <rect key="frame" x="20" y="7" width="46" height="30"/>
+                                                    <rect key="frame" x="20" y="7" width="68" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="46" id="ioc-xL-Ydx"/>
+                                                        <constraint firstAttribute="width" constant="68" id="ioc-xL-Ydx"/>
                                                     </constraints>
-                                                    <state key="normal" title="Map"/>
+                                                    <state key="normal" title="Standard"/>
+                                                    <connections>
+                                                        <action selector="typeStandard:" destination="wu4-8N-QGb" eventType="touchUpInside" id="bLW-s2-vrt"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ba-vL-um4">
                                                     <rect key="frame" x="114" y="7" width="62" height="30"/>
@@ -589,20 +607,26 @@
                                                         <constraint firstAttribute="width" constant="62" id="t4H-E6-BHZ"/>
                                                     </constraints>
                                                     <state key="normal" title="Satellite"/>
+                                                    <connections>
+                                                        <action selector="typeSatellite:" destination="wu4-8N-QGb" eventType="touchUpInside" id="alA-B9-SZH"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OmJ-S0-6zV">
-                                                    <rect key="frame" x="225" y="7" width="56" height="30"/>
+                                                    <rect key="frame" x="213" y="7" width="56" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="56" id="mif-cA-Beb"/>
                                                     </constraints>
                                                     <state key="normal" title="Hybrid"/>
+                                                    <connections>
+                                                        <action selector="typeHybrid:" destination="wu4-8N-QGb" eventType="touchUpInside" id="WFf-pM-daV"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="9ba-vL-um4" firstAttribute="baseline" secondItem="OmJ-S0-6zV" secondAttribute="baseline" id="Epk-IL-Jre"/>
                                                 <constraint firstItem="k92-zm-a0T" firstAttribute="baseline" secondItem="9ba-vL-um4" secondAttribute="baseline" id="TuX-dX-bKQ"/>
-                                                <constraint firstItem="OmJ-S0-6zV" firstAttribute="leading" secondItem="9ba-vL-um4" secondAttribute="trailing" constant="49" id="iIP-Ix-0CZ"/>
-                                                <constraint firstItem="9ba-vL-um4" firstAttribute="leading" secondItem="k92-zm-a0T" secondAttribute="trailing" constant="48" id="j3g-F5-nyI"/>
+                                                <constraint firstItem="OmJ-S0-6zV" firstAttribute="leading" secondItem="9ba-vL-um4" secondAttribute="trailing" constant="37" id="iIP-Ix-0CZ"/>
+                                                <constraint firstItem="9ba-vL-um4" firstAttribute="leading" secondItem="k92-zm-a0T" secondAttribute="trailing" constant="26" id="j3g-F5-nyI"/>
                                                 <constraint firstItem="k92-zm-a0T" firstAttribute="centerY" secondItem="U44-iG-Vlq" secondAttribute="centerY" id="r5Y-ey-b2C"/>
                                                 <constraint firstItem="k92-zm-a0T" firstAttribute="leading" secondItem="U44-iG-Vlq" secondAttribute="leadingMargin" id="yy6-Fz-hrM"/>
                                             </constraints>
@@ -649,6 +673,16 @@
                     <connections>
                         <outlet property="editBtn1" destination="OfH-qy-DO8" id="uTz-wi-Idu"/>
                         <outlet property="editBtn2" destination="5ON-CO-2Pf" id="CRu-HT-v5I"/>
+                        <outlet property="email" destination="pRu-qE-ETC" id="cWX-R8-8sk"/>
+                        <outlet property="interval10m" destination="kbK-GE-PgZ" id="nfP-9A-Kyb"/>
+                        <outlet property="interval1m" destination="y95-9I-ZPh" id="ZvQ-rE-9YY"/>
+                        <outlet property="interval30s" destination="8RH-jl-6WU" id="o9x-Zc-B5C"/>
+                        <outlet property="interval5m" destination="lLs-9c-Cit" id="nba-qy-uUl"/>
+                        <outlet property="notifications" destination="3jI-Ig-ahH" id="muQ-Ws-26e"/>
+                        <outlet property="push" destination="xza-pi-QkM" id="gkK-ih-T1Y"/>
+                        <outlet property="typeHybrid" destination="OmJ-S0-6zV" id="FLI-d8-hqB"/>
+                        <outlet property="typeSatelite" destination="9ba-vL-um4" id="feJ-gr-GDH"/>
+                        <outlet property="typeStandard" destination="k92-zm-a0T" id="tZS-7q-HgA"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hDV-G4-6xx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2001,7 +2035,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="vPz-J9-GJS"/>
-        <segue reference="MHa-1R-bkh"/>
+        <segue reference="99U-Us-WGV"/>
         <segue reference="ziK-sP-sww"/>
     </inferredMetricsTieBreakers>
 </document>

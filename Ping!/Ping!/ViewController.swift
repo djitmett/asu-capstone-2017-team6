@@ -110,9 +110,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
     }
     
+    
+    @IBAction func refreshMap(_ sender: Any) {
+        updateMap()
+    }
+    
+    
+    func loadSettings() {
+        let defaults = UserDefaults.standard
+        
+        //Map Display Type Settings
+        if (defaults.object(forKey: "mapType") != nil) {
+            let mapType = (defaults.object(forKey: "mapType") as? String)!
+            if(mapType == "hybrid"){
+               mapView.mapType = .hybrid
+            }
+            if(mapType == "satellite"){
+                mapView.mapType = .satellite
+            }
+            if(mapType == "standard"){
+                mapView.mapType = .standard
+            }
+        }
+        else {
+            defaults.set("standard", forKey: "mapType")
+            defaults.synchronize()
+            mapView.mapType = .standard
+        }
+        
+        //Map Interval Settings
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadSettings()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadSettings()
+        
+         let defaults = UserDefaults.standard
         
         //Create spinner view
         // sv = UIViewController.displaySpinner(onView: self.view)
@@ -127,7 +167,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         autoRepositionMap = true
         
         //USER DEFAULTS FOR ONESIGNAL ID
-        let defaults = UserDefaults.standard
         if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil) {
             player_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!
         }
@@ -247,13 +286,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     // TODO: Show breadcrumbs on map. For now, just printing history data
                     var i = 0 as Int
                     var points = [CLLocationCoordinate2D]()
+                   
+                    let current_date = Date()
+                    //Declare number of days to go back
+                    //Will be replaced by a user defaults selection made in settings
+                    let history_days = -7
+                    //Determine starting point of history
+                    let history_limit = (Calendar.current.date(byAdding: .day, value: history_days, to: current_date))
+                    //Debug
+                    //print("History: Today's date is ", current_date)
+                    //print("History: Breadcrumbs will only go as far as: ", history_limit!)
+                    
                     for h in history{
+                        //Converting string to date object
+                        let history_data = h.history_Location_datetime.toDate(dateFormat:"yyyy-MM-dd HH:mm:ss zz")
+                        //Add to array if within limit
+                        if (history_data > history_limit!) {
                         let myLoc = CLLocationCoordinate2D(latitude:Double(h.history_Location_latitude)!, longitude:Double(h.history_Location_longitude)!)
                         points.append(myLoc)
                         i = i + 1
+                        }
                     }
+                    //TODO: Check if user has enabled breadcrumbs
+                    if(points.count > 0) {
                     let myPolyline = MKPolyline(coordinates: points, count: i)
                     self.mapView.add(myPolyline)
+                    }
                 }
             }
             // remove any unreferenced annotations
