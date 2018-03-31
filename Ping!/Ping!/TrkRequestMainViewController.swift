@@ -95,9 +95,6 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         
         }
         task.resume()
-        //
-
-            //
     }
     func timeStamp()->String{
         let now = Date()
