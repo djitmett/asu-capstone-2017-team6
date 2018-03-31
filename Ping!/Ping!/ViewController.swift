@@ -286,13 +286,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     // TODO: Show breadcrumbs on map. For now, just printing history data
                     var i = 0 as Int
                     var points = [CLLocationCoordinate2D]()
+                   
+                    let current_date = Date()
+                    //Declare number of days to go back
+                    //Will be replaced by a user defaults selection made in settings
+                    let history_days = -7
+                    //Determine starting point of history
+                    let history_limit = (Calendar.current.date(byAdding: .day, value: history_days, to: current_date))
+                    //Debug
+                    //print("History: Today's date is ", current_date)
+                    //print("History: Breadcrumbs will only go as far as: ", history_limit!)
+                    
                     for h in history{
+                        //Converting string to date object
+                        let history_data = h.history_Location_datetime.toDate(dateFormat:"yyyy-MM-dd HH:mm:ss zz")
+                        //Add to array if within limit
+                        if (history_data > history_limit!) {
                         let myLoc = CLLocationCoordinate2D(latitude:Double(h.history_Location_latitude)!, longitude:Double(h.history_Location_longitude)!)
                         points.append(myLoc)
                         i = i + 1
+                        }
                     }
+                    //TODO: Check if user has enabled breadcrumbs
+                    if(points.count > 0) {
                     let myPolyline = MKPolyline(coordinates: points, count: i)
                     self.mapView.add(myPolyline)
+                    }
                 }
             }
             // remove any unreferenced annotations
