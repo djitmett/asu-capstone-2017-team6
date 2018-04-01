@@ -395,27 +395,35 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     var numberOfRequested : Int = 0
     var numberOfTracking : Int = 0
     
-    @IBAction func DenyBtn(_ sender: Any) {
-        
-    }
-    
     
     @IBAction func clearMapBtn(_ sender: Any) {
         print("@ClearTracking")
-        let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "currentTrackedUser") != nil){
-            defaults.removeObject(forKey: "currentTrackedUser")
-            print("Cleared tracked user")
-            
+        //let defaults = UserDefaults.standard
+        //if (defaults.object(forKey: "currentTrackedUser") != nil){
+        //    defaults.removeObject(forKey: "currentTrackedUser")
+        //    print("Cleared tracked user")
+        
+            for i in 0 ..< pending.count {
+                let deleteAllTR = pending[i];
+                let deleteAllID = deleteAllTR.getReq_ID()
+                self.expireRequest(request_id: deleteAllID)
+            }
         request.removeAll()
         pending.removeAll()
-        self.table3.reloadData()
-        }
+        self.table2.reloadData()
+            
+        //}
         
     }
     
     
     @IBAction func clearTrkBtn(_ sender: Any) {
+        for i in 0 ..< tracking.count {
+            let deleteAllTR = tracking[i];
+            let deleteAllID = deleteAllTR.getReq_ID()
+            self.expireRequest(request_id: deleteAllID)
+        }
+        
         request2.removeAll()
         tracking.removeAll()
         self.table1.reloadData()
@@ -423,6 +431,12 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
     
     @IBAction func clearUserBtn(_ sender: Any) {
+        for i in 0 ..< tracked.count {
+            let deleteAllTR = tracked[i];
+            let deleteAllID = deleteAllTR.getReq_ID()
+            self.expireRequest(request_id: deleteAllID)
+        }
+        
         request3.removeAll()
         tracked.removeAll()
         self.table3.reloadData()
