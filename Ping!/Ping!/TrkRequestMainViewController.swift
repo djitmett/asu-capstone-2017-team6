@@ -84,7 +84,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         if table == 1 {
             statusMsg = "EXPIRED"
         }else if table == 2{
-            statusMsg = "ACCEPTED"
+            statusMsg = "APPROVED"
         }else if table == 3{
             statusMsg = "REJECTED"
         }
