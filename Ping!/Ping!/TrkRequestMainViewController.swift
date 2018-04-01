@@ -495,18 +495,50 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         indexPath: IndexPath) {
      
         if editingStyle == .delete {
-            request.remove(at: indexPath.row)
-            pending.remove(at: indexPath.row)
-            request2.remove(at: indexPath.row)
-            tracking.remove(at: indexPath.row)
-            request3.remove(at: indexPath.row)
-            tracked.remove(at: indexPath.row)
             
-            tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.endUpdates()
+            if(tableView.tag == 1) {
+                let deleteTR = tracking[indexPath.row]
+                let deleteID = deleteTR.getReq_ID()
+                request2.remove(at: indexPath.row)
+                tracking.remove(at: indexPath.row)
+                
+                self.expireRequest(request_id: deleteID)
+                
+                tableView.beginUpdates()
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.endUpdates()
+            }
+            
+            if(tableView.tag == 2) {
+                let deleteTR = pending[indexPath.row]
+                let deleteID = deleteTR.getReq_ID()
+                request.remove(at: indexPath.row)
+                pending.remove(at: indexPath.row)
+                
+                self.expireRequest(request_id: deleteID)
+                
+                tableView.beginUpdates()
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.endUpdates()
+                
+            }
+            
+            if(tableView.tag == 3) {
+                let deleteTR = tracked[indexPath.row]
+                let deleteID = deleteTR.getReq_ID()
+                request3.remove(at: indexPath.row)
+                tracked.remove(at: indexPath.row)
+                
+                self.expireRequest(request_id: deleteID)
+                
+                tableView.beginUpdates()
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.endUpdates()
+            }
         }
     }
+
+    
     
     /*
      // MARK: - Navigation
