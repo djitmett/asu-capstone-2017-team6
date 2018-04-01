@@ -13,8 +13,7 @@ var pending = [TrackingRequest] ()
 var tracking = [TrackingRequest] ()
 var tracked = [TrackingRequest] ()
 var allRequests = [TrackingRequest] ()
-var approved = "APPROVED"
-var deleteTrk = "UNAPPROVED"
+
 
 class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
@@ -36,8 +35,10 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             print("failed to get index path for cell containing button")
             return
         }
-        // We've got the index path for the cell that contains the button, now do something with it.
-        print("button is in row \(indexPath.row)")
+        updateRequestByID(req: tracking[indexPath.row].getReq_ID(),table: 1)
+        table1.reloadData()
+        table2.reloadData()
+        table3.reloadData()
     }
     // Added all required function to retrieve which cell button is selected
     @IBAction func DenyTrk(_ sender: UIButton) {
@@ -53,8 +54,10 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             print("failed to get index path for cell containing button")
             return
         }
-        // We've got the index path for the cell that contains the button, now do something with it.
-        print("button is in row \(indexPath.row)")// remove this line and add functions to update status then reload table
+        updateRequestByID(req: tracked[indexPath.row].getReq_ID(),table: 3)
+        table1.reloadData()
+        table2.reloadData()
+        table3.reloadData()
     }
     @IBAction func AcceptTrk(_ sender: UIButton) {
         var superview = sender.superview
@@ -69,21 +72,31 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             print("failed to get index path for cell containing button")
             return
         }
-        var reqId = pending[indexPath.row].getReq_ID()
-        updateRequestByID(req: reqId)
-        
+        updateRequestByID(req: pending[indexPath.row].getReq_ID(),table: 2)
+        table1.reloadData()
+        table2.reloadData()
+        table3.reloadData()
         // We've got the index path for the cell that contains the button, now do something with it.
         print("button is in row \(indexPath.row)")
     }
-    func updateRequestByID(req: Int)->Void{
-        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updateRequestByID.php?"
+    func updateRequestByID(req: Int,table: Int)->Void{
+        var statusMsg = "PENDING"
+        if table == 1 {
+            statusMsg = "EXPIRED"
+        }else if table == 2{
+            statusMsg = "ACCEPTED"
+        }else if table == 3{
+            statusMsg = "REJECTED"
+        }
+        
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updaterequestbyID.php?"
         let requestURL = NSURL(string: URL_SIGNUP)
         let request = NSMutableURLRequest(url: requestURL! as URL)
         request.httpMethod = "POST"
         
-        var postParameters = "req_ID=" + String(req)
-        postParameters += "&req_status=\(approved)"
-        postParameters += "&req_status_change_datetime=\(NSDate())"
+        var postParameters = "req_ID=\(req)"
+        postParameters += "&req_status=\(statusMsg)"
+
         print(postParameters)
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
         let task = URLSession.shared.dataTask(with: request as URLRequest){
@@ -229,7 +242,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                             print("expired")
                                             print(currentDate)
                                             let id = tempTR.getReq_ID()
-                                            self.expireRequest(request_id: id)
+                                            self.updateRequestByID(req: id, table: 2)
                                         }
                                         else {
                                             //print("not expired")
@@ -391,7 +404,8 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                             print("expired")
                                             print(currentDate)
                                             let id = tempTR.getReq_ID()
-                                            self.expireRequest(request_id: id)
+                                            self.updateRequestByID(req: id, table:2)
+                                      
                                         }
                                         else {
                                             //print("not expired")
@@ -430,40 +444,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
     
     //Expire the request in the DB
-    func expireRequest(request_id: Int) {
-            let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updaterequestbyID.php?"
-            let requestURL = NSURL(string: URL_SIGNUP)
-            let request = NSMutableURLRequest(url: requestURL! as URL)
-            request.httpMethod = "POST"
-            
-            var postParameters = "req_ID=\(request_id)"
-            postParameters += "&req_status=EXPIRED"
 
-            request.httpBody = postParameters.data(using: String.Encoding.utf8)
-            
-
-            let task = URLSession.shared.dataTask(with: request as URLRequest){
-                data, response, error in
-                
-                if error != nil{
-                    print("error is \(String(describing: error))")
-                    return;
-                }
-                
-                do {
-                    let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
-                    if let parseJSON = myJSON {
-                        var msg : String!
-                        msg = parseJSON["message"] as! String?
-                        print("MESSAGE=" + msg)
-                    }
-                } catch {
-                    print(error)
-                }
-            }
-            task.resume()
-        }
-    
     
     @IBAction func clearMapBtn(_ sender: Any) {
         print("@ClearTracking")

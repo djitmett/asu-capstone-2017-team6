@@ -333,7 +333,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         print("reached expired location")
                         let id = tracking[x].getReq_ID()
                         //Update DB to set status of that request as "EXPIRED" and remove it from the array
-                        TrkRequestMainViewController().expireRequest(request_id: id)
+                        TrkRequestMainViewController().updateRequestByID(req: id, table:2)
                         tracking.remove(at: x)
                     }
                     x = x + 1
