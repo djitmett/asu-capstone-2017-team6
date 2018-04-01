@@ -292,7 +292,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
         let requestURL = "http://52.42.38.63/ioswebservice/api/getrequestsbyfrom.php?"
-        let postParameters = "to_user_phone=" + (userPhoneNumber)
+        let postParameters = "from_user_phone=" + (userPhoneNumber)
         var pendRequest = [String] ()// array to fill with pending request
         var request = URLRequest(url: URL(string: requestURL+postParameters)!)
         request.httpMethod = "POST"
@@ -444,25 +444,103 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
     
     //Expire the request in the DB
-
-    
-    @IBAction func clearMapBtn(_ sender: Any) {
-        print("@ClearTracking")
-        let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "currentTrackedUser") != nil){
-            defaults.removeObject(forKey: "currentTrackedUser")
-            print("Cleared tracked user")
-        }
+    func expireRequest(request_id: Int) {
+        let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updaterequestbyID.php?"
+        let requestURL = NSURL(string: URL_SIGNUP)
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        request.httpMethod = "POST"
         
+        var postParameters = "req_ID=\(request_id)"
+        postParameters += "&req_status=EXPIRED"
+        
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest){
+            data, response, error in
+            
+            if error != nil{
+                print("error is \(String(describing: error))")
+                return;
+            }
+            
+            do {
+                let myJSON =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                if let parseJSON = myJSON {
+                    var msg : String!
+                    msg = parseJSON["message"] as! String?
+                    print("MESSAGE=" + msg)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        task.resume()
     }
+
     
     let cellIdentifier : String = "cell"
     var numberOfTracked : Int = 0
     var numberOfRequested : Int = 0
     var numberOfTracking : Int = 0
     
+    
+    @IBAction func clearMapBtn(_ sender: Any) {
+        print("@ClearTracking")
+        //let defaults = UserDefaults.standard
+        //if (defaults.object(forKey: "currentTrackedUser") != nil){
+        //    defaults.removeObject(forKey: "currentTrackedUser")
+        //    print("Cleared tracked user")
+        
+            for i in 0 ..< pending.count {
+                let deleteAllTR = pending[i];
+                let deleteAllID = deleteAllTR.getReq_ID()
+                self.expireRequest(request_id: deleteAllID)
+            }
+        request.removeAll()
+        pending.removeAll()
+        self.table2.reloadData()
+            
+        //}
+        
+    }
+    
+    
+    @IBAction func clearTrkBtn(_ sender: Any) {
+        for i in 0 ..< tracking.count {
+            let deleteAllTR = tracking[i];
+            let deleteAllID = deleteAllTR.getReq_ID()
+            self.expireRequest(request_id: deleteAllID)
+        }
+        
+        request2.removeAll()
+        tracking.removeAll()
+        self.table1.reloadData()
+    }
+    
+    
+    @IBAction func clearUserBtn(_ sender: Any) {
+        for i in 0 ..< tracked.count {
+            let deleteAllTR = tracked[i];
+            let deleteAllID = deleteAllTR.getReq_ID()
+            self.expireRequest(request_id: deleteAllID)
+        }
+        
+        request3.removeAll()
+        tracked.removeAll()
+        self.table3.reloadData()
+    }
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        table1.layer.borderWidth = 2.0;
+        table2.layer.borderWidth = 2.0;
+        table3.layer.borderWidth = 2.0;
+        
+        
         //pending.self = getRequestFrom(phone_number: userPhoneNumber)
         getRequestFrom(phone_number: userPhoneNumber) { (success) -> Void in
             let when = DispatchTime.now() + 1 // change 2 to desired number of seconds
@@ -477,6 +555,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                 self.table3.reloadData()
             }
         }
+        
         
     }
     
@@ -513,6 +592,57 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt
+        indexPath: IndexPath) {
+     
+        if editingStyle == .delete {
+            
+            if(tableView.tag == 1) {
+                let deleteTR = tracking[indexPath.row]
+                let deleteID = deleteTR.getReq_ID()
+                request2.remove(at: indexPath.row)
+                tracking.remove(at: indexPath.row)
+                
+                self.expireRequest(request_id: deleteID)
+                
+                tableView.beginUpdates()
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.endUpdates()
+            }
+            
+            if(tableView.tag == 2) {
+                let deleteTR = pending[indexPath.row]
+                let deleteID = deleteTR.getReq_ID()
+                request.remove(at: indexPath.row)
+                pending.remove(at: indexPath.row)
+                
+                self.expireRequest(request_id: deleteID)
+                
+                tableView.beginUpdates()
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.endUpdates()
+                
+            }
+            
+            if(tableView.tag == 3) {
+                let deleteTR = tracked[indexPath.row]
+                let deleteID = deleteTR.getReq_ID()
+                request3.remove(at: indexPath.row)
+                tracked.remove(at: indexPath.row)
+                
+                self.expireRequest(request_id: deleteID)
+                
+                tableView.beginUpdates()
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.endUpdates()
+            }
+        }
+    }
+
     
     
     /*
