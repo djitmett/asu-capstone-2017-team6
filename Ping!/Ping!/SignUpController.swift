@@ -11,6 +11,8 @@ import UIKit
 
 class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    let defaults = UserDefaults.standard
+    
     //MARK: Properties
     @IBOutlet weak var firstNameField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
@@ -92,14 +94,19 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     //Sign up button
     @IBAction func signupBtn(_ sender: Any) {
         //OneSignal player_id as user_device_id for now
-        let defaults = UserDefaults.standard
+
+        
         if (defaults.object(forKey: "GT_PLAYER_ID_LAST") != nil){
             user_device_id = (defaults.object(forKey: "GT_PLAYER_ID_LAST") as? String)!}
         
         //DB Variables
         user_first_name = firstNameField.text!
         user_last_name = lastNameField.text!
-        phone = phonenumberField.text!
+        
+        if (defaults.object(forKey: "userPhone") != nil) {
+            phone = (defaults.object(forKey: "userPhone") as? String)!
+        }
+        
         email = emailField.text!
         password = passwordField.text!
         
@@ -112,7 +119,6 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
             //Store values in UserDefaults
             defaults.set(user_first_name, forKey: "userFirstName")
             defaults.set(user_last_name, forKey: "userLastName")
-            defaults.set(phone, forKey: "userPhone")
             defaults.set(email, forKey: "userEmail")
             defaults.set(password, forKey: "userPassword")
             defaults.synchronize()
@@ -151,6 +157,11 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         var encodedAvatar = imageData?.base64EncodedString(options: .lineLength64Characters)
         let customAllowedSet = NSCharacterSet(charactersIn:"+").inverted
         encodedAvatar = encodedAvatar?.addingPercentEncoding(withAllowedCharacters:customAllowedSet as CharacterSet)!
+        
+        
+        if (defaults.object(forKey: "userPhone") != nil) {
+            phone = (defaults.object(forKey: "userPhone") as? String)!
+        }
         
         //Creating post paramter
         var postParameters = "user_fb_id= " + userfbid
@@ -212,7 +223,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         //executing the task
         task.resume()
         //Prints HTTP POST data in console
-        //print(postParameters)
+        print(postParameters)
     }
     
 
@@ -224,8 +235,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
             phone = (defaults.object(forKey: "userPhone") as? String)!
             phonenumberField.text = phone
         }
-        
-        
+    
         firstNameField.delegate = self
         lastNameField.delegate = self
         phonenumberField.delegate = self
