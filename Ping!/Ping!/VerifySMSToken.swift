@@ -23,8 +23,8 @@ class VerifySMSToken: UIViewController, UITextFieldDelegate {
     
     @IBAction func resend_verify(_ sender: Any) {
         let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "userPhoneVerify") != nil) {
-            let phone_number = (defaults.object(forKey: "userPhoneVerify") as? String)!
+        if (defaults.object(forKey: "userPhone") != nil) {
+            let phone_number = (defaults.object(forKey: "userPhone") as? String)!
             let phone_number_trim = phone_number.trimmingCharacters(in: .whitespaces)
             let verify_type = "sms"
             TwilioAPI().start_verification(phone_number:phone_number_trim, verify_type:verify_type, segue:"none")
@@ -36,8 +36,8 @@ class VerifySMSToken: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var call_verify: UIButton!
     @IBAction func call_verify(_ sender: Any) {
         let defaults = UserDefaults.standard
-        if (defaults.object(forKey: "userPhoneVerify") != nil) {
-            let phone_number = (defaults.object(forKey: "userPhoneVerify") as? String)!
+        if (defaults.object(forKey: "userPhone") != nil) {
+            let phone_number = (defaults.object(forKey: "userPhone") as? String)!
             let phone_number_trim = phone_number.trimmingCharacters(in: .whitespaces)
             let verify_type = "call"
             TwilioAPI().start_verification(phone_number:phone_number_trim, verify_type:verify_type, segue:"none")
@@ -50,8 +50,8 @@ class VerifySMSToken: UIViewController, UITextFieldDelegate {
         
         if (sms_code.text != "" ) {
             let defaults = UserDefaults.standard
-            if (defaults.object(forKey: "userPhoneVerify") != nil) {
-                let phone_number = (defaults.object(forKey: "userPhoneVerify") as? String)!
+            if (defaults.object(forKey: "userPhone") != nil) {
+                let phone_number = (defaults.object(forKey: "userPhone") as? String)!
                 let phone_number_trim = phone_number.trimmingCharacters(in: .whitespaces)
                 check_verification(phone_number: phone_number_trim, sms_code: sms_code.text!)
             }

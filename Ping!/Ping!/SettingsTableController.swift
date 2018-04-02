@@ -29,6 +29,61 @@ class SettingsTableController: UITableViewController {
     @IBOutlet weak var interval5m: UIButton!
     @IBOutlet weak var interval10m: UIButton!
     
+    //Tracking Switch
+    @IBOutlet weak var tracking: UISwitch!
+    
+    
+    //Breadcrumb Buttons
+    @IBOutlet weak var breadcrumbs: UISwitch!
+    @IBOutlet weak var days1: UIButton!
+    @IBOutlet weak var days3: UIButton!
+    @IBOutlet weak var days7: UIButton!
+    
+    
+    @IBAction func days1(_ sender: Any) {
+        defaults.set(1, forKey: "breadHistory")
+        defaults.synchronize()
+        DispatchQueue.main.async(execute: {
+            self.setBreadcrumbs(days: 1)
+        })
+    }
+
+    @IBAction func days3(_ sender: Any) {
+        defaults.set(3, forKey: "breadHistory")
+        defaults.synchronize()
+        DispatchQueue.main.async(execute: {
+            self.setBreadcrumbs(days: 3)
+        })
+    }
+    
+    @IBAction func days7(_ sender: Any) {
+        defaults.set(7, forKey: "breadHistory")
+        defaults.synchronize()
+        DispatchQueue.main.async(execute: {
+            self.setBreadcrumbs(days: 7)
+        })
+    }
+    
+    func setBreadcrumbs(days: Int) {
+        if(days == 1){
+            days1.isHighlighted = true
+            days3.isHighlighted = false
+            days7.isHighlighted = false
+        }
+        if(days == 3){
+            days1.isHighlighted = false
+            days3.isHighlighted = true
+            days7.isHighlighted = false
+            
+        }
+        if(days == 7){
+            days1.isHighlighted = false
+            days3.isHighlighted = false
+            days7.isHighlighted = true
+            
+        }
+        
+    }
     
     @IBAction func interval30s(_ sender: Any) {
         defaults.set(30, forKey: "gpsUpdate")
@@ -59,6 +114,8 @@ class SettingsTableController: UITableViewController {
             self.setGPS(interval: 600)
         })
     }
+    
+    
     
     func setGPS(interval: Int){
         if(interval == 30) {

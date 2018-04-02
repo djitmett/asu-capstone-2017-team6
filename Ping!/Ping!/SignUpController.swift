@@ -219,6 +219,12 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
     
     override func viewDidLoad() {
         super.viewDidLoad()
+         let defaults = UserDefaults.standard
+        if (defaults.object(forKey: "userPhone") != nil) {
+            phone = (defaults.object(forKey: "userPhone") as? String)!
+            phonenumberField.text = phone
+        }
+        
         
         firstNameField.delegate = self
         lastNameField.delegate = self
