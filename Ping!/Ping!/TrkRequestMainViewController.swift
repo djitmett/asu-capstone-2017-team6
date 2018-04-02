@@ -18,6 +18,7 @@ var allRequests = [TrackingRequest] ()
 class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
 
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table3: UITableView!
     @IBOutlet weak var table2: UITableView!
@@ -556,7 +557,22 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             }
         }
         
+        if #available(iOS 10.0, *) {
+            let refreshControl = UIRefreshControl()
+            let title = NSLocalizedString("Reloading Data", comment: "Pull to refresh")
+            refreshControl.attributedTitle = NSAttributedString(string: title)
+            refreshControl.addTarget(self,
+                                     action: #selector(refreshOptions(sender:)),
+                                     for: .valueChanged)
+            scrollView.refreshControl = refreshControl
+        }
+    }
+    
+    @objc private func refreshOptions(sender: UIRefreshControl) {
+        // Place refresh code between here
         
+        // and here
+        sender.endRefreshing()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
