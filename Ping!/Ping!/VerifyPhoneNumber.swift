@@ -15,13 +15,17 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
     @IBAction func phone_verify(_ sender: Any) {
         
         if(phone_number.text != "") {
-            
+            var phonenumber_trimmed = phone_number.text?.trimmingCharacters(in: .whitespaces)
+            phonenumber_trimmed = phonenumber_trimmed?.replacingOccurrences(of: "-", with: "")
+            phonenumber_trimmed = phonenumber_trimmed?.replacingOccurrences(of: "(", with: "")
+            phonenumber_trimmed = phonenumber_trimmed?.replacingOccurrences(of: ")", with: "")
             
             let defaults = UserDefaults.standard
-            defaults.set(phone_number.text, forKey: "userPhone")
+            defaults.set(phonenumber_trimmed, forKey: "userPhone")
             defaults.synchronize()
             let verify_type = "sms"
-           start_verification(phone_number: phone_number.text!, verify_type: verify_type)
+            print(phonenumber_trimmed)
+            start_verification(phone_number: phonenumber_trimmed!, verify_type: verify_type)
             
             /**
              let storyBoard : UIStoryboard = UIStoryboard(name: "PhoneVerification", bundle:nil)
