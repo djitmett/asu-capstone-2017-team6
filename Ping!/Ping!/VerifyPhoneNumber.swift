@@ -18,7 +18,7 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
             
             
             let defaults = UserDefaults.standard
-            defaults.set(phone_number.text, forKey: "userPhoneVerify")
+            defaults.set(phone_number.text, forKey: "userPhone")
             defaults.synchronize()
             let verify_type = "sms"
            start_verification(phone_number: phone_number.text!, verify_type: verify_type)
