@@ -81,10 +81,12 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     }
     func updateRequestByID(req: Int,table: Int)->Void{
         var statusMsg = "PENDING"
-        if table == 1 || table == 3{
+        if table == 1 {
             statusMsg = "EXPIRED"
         }else if table == 2{
             statusMsg = "APPROVED"
+        }else if table == 3{
+            statusMsg = "REJECTED"
         }
         
         let URL_SIGNUP = "http://52.42.38.63/ioswebservice/api/updaterequestbyID.php?"
