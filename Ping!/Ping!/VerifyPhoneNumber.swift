@@ -19,6 +19,7 @@ class VerifyPhoneNumber: UIViewController, UITextFieldDelegate {
             phonenumber_trimmed = phonenumber_trimmed?.replacingOccurrences(of: "-", with: "")
             phonenumber_trimmed = phonenumber_trimmed?.replacingOccurrences(of: "(", with: "")
             phonenumber_trimmed = phonenumber_trimmed?.replacingOccurrences(of: ")", with: "")
+            phonenumber_trimmed = phonenumber_trimmed?.replacingOccurrences(of: " ", with: "")
             
             let defaults = UserDefaults.standard
             defaults.set(phonenumber_trimmed, forKey: "userPhone")
