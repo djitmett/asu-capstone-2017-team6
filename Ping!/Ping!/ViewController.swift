@@ -42,6 +42,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var userPhoneNumber = ""
     
+    let defaults = UserDefaults.standard
     
     //Spinner view variable
     var sv : UIView!
@@ -294,16 +295,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     // TODO: Show breadcrumbs on map. For now, just printing history data
                     var i = 0 as Int
                     var points = [CLLocationCoordinate2D]()
-                    
+                    var history_days = -7
                     let current_date = Date()
                     //Declare number of days to go back
                     //Will be replaced by a user defaults selection made in settings
-                    let history_days = -7
+                    if (self.defaults.object(forKey: "breadHistory") != nil) {
+                        history_days = (self.defaults.object(forKey: "breadHistory") as? Int)!
+                    }
+                    else {
+                        self.defaults.set(-7, forKey: "breadHistory")
+                        self.defaults.synchronize()
+                        history_days = -7
+                    }
+                    
                     //Determine starting point of history
                     let history_limit = (Calendar.current.date(byAdding: .day, value: history_days, to: current_date))
                     //Debug
-                    //print("History: Today's date is ", current_date)
-                    //print("History: Breadcrumbs will only go as far as: ", history_limit!)
+                    print("History: Today's date is ", current_date)
+                    print("History: Breadcrumbs will only go as far as: ", history_limit!)
                     
                     for h in history{
                         //Converting string to date object
@@ -316,9 +325,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         }
                     }
                     //TODO: Check if user has enabled breadcrumbs
-                    if(points.count > 0) {
-                        let myPolyline = MKPolyline(coordinates: points, count: i)
-                        self.mapView.add(myPolyline)
+                    if (self.defaults.object(forKey: "breadcrumbs") != nil) {
+                        let state = (self.defaults.object(forKey: "breadcrumbs") as? String)!
+                        print("Breadcrumb state ", state)
+                        if(state == "on"){
+                            if(points.count > 0) {
+                                let myPolyline = MKPolyline(coordinates: points, count: i)
+                                self.mapView.add(myPolyline)
+                            }
+                        }
+                        else{
+                            let myPolyline = MKPolyline(coordinates: points, count: i)
+                            let overlays = self.mapView.overlays
+                            self.mapView.removeOverlays(overlays)
+                            self.mapView.remove(myPolyline)
+                            
+                        }
+                    }
+                    else {
+                        self.defaults.set("on", forKey: "breadcrumbs")
+                        self.defaults.synchronize()
+                        if(points.count > 0) {
+                            let myPolyline = MKPolyline(coordinates: points, count: i)
+                            self.mapView.add(myPolyline)
+                        }
                     }
                 }
             }
@@ -333,13 +363,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         deleteMe = false
                     }
                     let expire =  tracking[x].getReq_expire_datetime()
-                    let expireDate = expire.toDate(dateFormat: "yyyy-MM-dd HH:mm:ss zz")
-                    if (expireDate < Date()) {
-                        deleteMe = true
-                        print("reached expired time")
-                        let id = tracking[x].getReq_ID()
-                        TrkRequestMainViewController().updateRequestByID(req: id, table:1)
-                        tracking.remove(at: x)  
+                    if(expire != "indefinite") {
+                        let expireDate = expire.toDate(dateFormat: "yyyy-MM-dd HH:mm:ss zz")
+                        if (expireDate < Date()) {
+                            deleteMe = true
+                            print("reached expired time")
+                            let id = tracking[x].getReq_ID()
+                            TrkRequestMainViewController().updateRequestByID(req: id, table:1)
+                            tracking.remove(at: x)
+                        }
                     }
                     else {
                         //convert expiration coords into double
