@@ -243,7 +243,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                             print("expired")
                                             print(currentDate)
                                             let id = tempTR.getReq_ID()
-                                            self.updateRequestByID(req: id, table: 2)
+                                            self.updateRequestByID(req: id, table: 1)
                                         }
                                         else {
                                             //print("not expired")
@@ -405,7 +405,8 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                             print("expired")
                                             print(currentDate)
                                             let id = tempTR.getReq_ID()
-                                            self.updateRequestByID(req: id, table:2)
+                                            self.updateRequestByID(req: id, table:1) //Make sure table ids are correct!
+                                            //self.expireRequest(request_id: id)
                                       
                                         }
                                         else {

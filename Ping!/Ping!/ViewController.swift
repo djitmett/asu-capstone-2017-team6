@@ -112,7 +112,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     
     @IBAction func refreshMap(_ sender: Any) {
+        TrkRequestMainViewController().getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
+            
+        }
+        
         updateMap()
+        
     }
     
     
@@ -123,7 +128,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         if (defaults.object(forKey: "mapType") != nil) {
             let mapType = (defaults.object(forKey: "mapType") as? String)!
             if(mapType == "hybrid"){
-               mapView.mapType = .hybrid
+                mapView.mapType = .hybrid
             }
             if(mapType == "satellite"){
                 mapView.mapType = .satellite
@@ -145,6 +150,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadSettings()
+        TrkRequestMainViewController().getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
+            
+        }
     }
     
     override func viewDidLoad() {
@@ -152,7 +160,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         loadSettings()
         
-         let defaults = UserDefaults.standard
+        let defaults = UserDefaults.standard
         
         //Create spinner view
         // sv = UIViewController.displaySpinner(onView: self.view)
@@ -261,9 +269,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @objc func updateMap(){
         
-//        trackingRequestDataManager.loadTrackingRequestData(phone_number: "1212") { (success) -> Void in
-//            print("TrackingRequstDataManager.update Complete!")
-//        }
+        //        trackingRequestDataManager.loadTrackingRequestData(phone_number: "1212") { (success) -> Void in
+        //            print("TrackingRequstDataManager.update Complete!")
+        //        }
         
         // If currently tracking a user, show their location, otherwise show user's current location on map.
         //print("update map start")
@@ -286,7 +294,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     // TODO: Show breadcrumbs on map. For now, just printing history data
                     var i = 0 as Int
                     var points = [CLLocationCoordinate2D]()
-                   
+                    
                     let current_date = Date()
                     //Declare number of days to go back
                     //Will be replaced by a user defaults selection made in settings
@@ -302,15 +310,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         let history_data = h.history_Location_datetime.toDate(dateFormat:"yyyy-MM-dd HH:mm:ss zz")
                         //Add to array if within limit
                         if (history_data > history_limit!) {
-                        let myLoc = CLLocationCoordinate2D(latitude:Double(h.history_Location_latitude)!, longitude:Double(h.history_Location_longitude)!)
-                        points.append(myLoc)
-                        i = i + 1
+                            let myLoc = CLLocationCoordinate2D(latitude:Double(h.history_Location_latitude)!, longitude:Double(h.history_Location_longitude)!)
+                            points.append(myLoc)
+                            i = i + 1
                         }
                     }
                     //TODO: Check if user has enabled breadcrumbs
                     if(points.count > 0) {
-                    let myPolyline = MKPolyline(coordinates: points, count: i)
-                    self.mapView.add(myPolyline)
+                        let myPolyline = MKPolyline(coordinates: points, count: i)
+                        self.mapView.add(myPolyline)
                     }
                 }
             }
@@ -324,17 +332,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     if ((ann.title as! String).contains(tracking[x].getReq_from_user_phone())){
                         deleteMe = false
                     }
-                    //convert expiration coords into double
-                    let expire_lat = Double(tracking[x].getReq_expire_location_latitude())
-                    let expire_long = Double(tracking[x].getReq_expire_location_longitude())
-                    //If the current location of the annotation is equal to the end destination
-                    if (ann.coordinate.longitude == expire_long  && ann.coordinate.latitude == expire_lat) {
+                    let expire =  tracking[x].getReq_expire_datetime()
+                    let expireDate = expire.toDate(dateFormat: "yyyy-MM-dd HH:mm:ss zz")
+                    if (expireDate < Date()) {
                         deleteMe = true
-                        print("reached expired location")
+                        print("reached expired time")
                         let id = tracking[x].getReq_ID()
-                        //Update DB to set status of that request as "EXPIRED" and remove it from the array
-                        TrkRequestMainViewController().updateRequestByID(req: id, table:2)
-                        tracking.remove(at: x)
+                        TrkRequestMainViewController().updateRequestByID(req: id, table:1)
+                        tracking.remove(at: x)  
+                    }
+                    else {
+                        //convert expiration coords into double
+                        let expire_lat = Double(tracking[x].getReq_expire_location_latitude())
+                        let expire_long = Double(tracking[x].getReq_expire_location_longitude())
+                        //If the current location of the annotation is equal to the end destination
+                        if (ann.coordinate.longitude == expire_long  && ann.coordinate.latitude == expire_lat) {
+                            deleteMe = true
+                            print("reached expired location")
+                            let id = tracking[x].getReq_ID()
+                            //Update DB to set status of that request as "EXPIRED" and remove it from the array
+                            TrkRequestMainViewController().updateRequestByID(req: id, table:1)
+                            tracking.remove(at: x)
+                        }
                     }
                     x = x + 1
                 }
@@ -441,10 +460,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         
         
-//        var annotation = MKPointAnnotation()
-//        annotation.coordinate = myLocation
-//        annotation.title = phone_number
-//        mapView.addAnnotation(annotation)
+        //        var annotation = MKPointAnnotation()
+        //        annotation.coordinate = myLocation
+        //        annotation.title = phone_number
+        //        mapView.addAnnotation(annotation)
         
         
         //mapDisplay.setRegion(region, animated:false)
