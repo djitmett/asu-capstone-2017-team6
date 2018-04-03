@@ -55,42 +55,42 @@ class SettingsTableController: UITableViewController {
     
     
     @IBAction func days1(_ sender: Any) {
-        defaults.set(1, forKey: "breadHistory")
+        defaults.set(-1, forKey: "breadHistory")
         defaults.synchronize()
         DispatchQueue.main.async(execute: {
-            self.setBreadcrumbs(days: 1)
+            self.setBreadcrumbs(days: -1)
         })
     }
     
     @IBAction func days3(_ sender: Any) {
-        defaults.set(3, forKey: "breadHistory")
+        defaults.set(-3, forKey: "breadHistory")
         defaults.synchronize()
         DispatchQueue.main.async(execute: {
-            self.setBreadcrumbs(days: 3)
+            self.setBreadcrumbs(days: -3)
         })
     }
     
     @IBAction func days7(_ sender: Any) {
-        defaults.set(7, forKey: "breadHistory")
+        defaults.set(-7, forKey: "breadHistory")
         defaults.synchronize()
         DispatchQueue.main.async(execute: {
-            self.setBreadcrumbs(days: 7)
+            self.setBreadcrumbs(days: -7)
         })
     }
     
     func setBreadcrumbs(days: Int) {
-        if(days == 1){
+        if(days == -1){
             days1.isHighlighted = true
             days3.isHighlighted = false
             days7.isHighlighted = false
         }
-        if(days == 3){
+        if(days == -3){
             days1.isHighlighted = false
             days3.isHighlighted = true
             days7.isHighlighted = false
             
         }
-        if(days == 7){
+        if(days == -7){
             days1.isHighlighted = false
             days3.isHighlighted = false
             days7.isHighlighted = true
@@ -262,8 +262,8 @@ class SettingsTableController: UITableViewController {
             setBreadcrumbs(days: selection)
         }
         else {
-            setBreadcrumbs(days: 7)
-            defaults.set(7, forKey: "breadHistory")
+            setBreadcrumbs(days: -7)
+            defaults.set(-7, forKey: "breadHistory")
             defaults.synchronize()
         }
         
