@@ -42,6 +42,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var userPhoneNumber = ""
     
+     let defaults = UserDefaults.standard
     
     //Spinner view variable
     var sv : UIView!
@@ -294,11 +295,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     // TODO: Show breadcrumbs on map. For now, just printing history data
                     var i = 0 as Int
                     var points = [CLLocationCoordinate2D]()
-                    
+                    var history_days = -7
                     let current_date = Date()
                     //Declare number of days to go back
                     //Will be replaced by a user defaults selection made in settings
-                    let history_days = -7
+                    if (self.defaults.object(forKey: "breadHistory") != nil) {
+                         history_days = (self.defaults.object(forKey: "breadHistory") as? Int)!
+                    }
+                    else {
+                        self.defaults.set(-7, forKey: "breadHistory")
+                        self.defaults.synchronize()
+                        history_days = -7
+                    }
+                    
                     //Determine starting point of history
                     let history_limit = (Calendar.current.date(byAdding: .day, value: history_days, to: current_date))
                     //Debug
@@ -316,9 +325,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         }
                     }
                     //TODO: Check if user has enabled breadcrumbs
+                    if (self.defaults.object(forKey: "breadcrumbs") != nil) {
+                        let state = (self.defaults.object(forKey: "breadcrumbs") as? String)!
+                        if(state == "on"){
                     if(points.count > 0) {
                         let myPolyline = MKPolyline(coordinates: points, count: i)
                         self.mapView.add(myPolyline)
+                    }
+                        }
+                    }
+                    else {
+                        self.defaults.set("on", forKey: "breadcrumbs")
+                        self.defaults.synchronize()
                     }
                 }
             }
@@ -333,6 +351,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         deleteMe = false
                     }
                     let expire =  tracking[x].getReq_expire_datetime()
+                    if(expire != "indefinite") {
                     let expireDate = expire.toDate(dateFormat: "yyyy-MM-dd HH:mm:ss zz")
                     if (expireDate < Date()) {
                         deleteMe = true
@@ -340,6 +359,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         let id = tracking[x].getReq_ID()
                         TrkRequestMainViewController().updateRequestByID(req: id, table:1)
                         tracking.remove(at: x)  
+                    }
                     }
                     else {
                         //convert expiration coords into double

@@ -39,6 +39,20 @@ class SettingsTableController: UITableViewController {
     @IBOutlet weak var days3: UIButton!
     @IBOutlet weak var days7: UIButton!
     
+    @IBAction func breadcrumbsSwitch(_ sender: Any) {
+        if(breadcrumbs.isOn){
+            defaults.set("on", forKey: "breadcrumbs")
+            defaults.synchronize()
+            print("turning ON breadcrumbs")
+        }
+        else {
+            defaults.set("off", forKey: "breadcrumbs")
+            defaults.synchronize()
+             print("turning off breadcrumbs")
+        }
+    }
+    
+    
     
     @IBAction func days1(_ sender: Any) {
         defaults.set(1, forKey: "breadHistory")
@@ -47,7 +61,7 @@ class SettingsTableController: UITableViewController {
             self.setBreadcrumbs(days: 1)
         })
     }
-
+    
     @IBAction func days3(_ sender: Any) {
         defaults.set(3, forKey: "breadHistory")
         defaults.synchronize()
@@ -196,7 +210,7 @@ class SettingsTableController: UITableViewController {
         }
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -223,6 +237,33 @@ class SettingsTableController: UITableViewController {
         else {
             setMapDisplay(mapButton: "standard")
             defaults.set("standard", forKey: "mapType")
+            defaults.synchronize()
+        }
+        
+        //Breadcrumb Enabled State
+        if (defaults.object(forKey: "breadcrumbs") != nil) {
+            let state = (defaults.object(forKey: "breadcrumbs") as? String)!
+            if(state == "on"){
+                breadcrumbs.setOn(true, animated: true)
+            }
+            else{
+                breadcrumbs.setOn(false, animated: true)
+            }
+        }
+        else {
+            defaults.set("on", forKey: "breadcrumbs")
+            defaults.synchronize()
+        }
+        
+        
+        //Breadcrumb Display State
+        if (defaults.object(forKey: "breadHistory") != nil) {
+            let selection = (defaults.object(forKey: "breadHistory") as? Int)!
+            setBreadcrumbs(days: selection)
+        }
+        else {
+            setBreadcrumbs(days: 7)
+            defaults.set(7, forKey: "breadHistory")
             defaults.synchronize()
         }
         
