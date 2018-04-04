@@ -572,6 +572,14 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     @objc private func refreshOptions(sender: UIRefreshControl) {
         // Place refresh code between here
         
+        getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
+            //
+        }
+        table1.reloadData()
+        table2.reloadData()
+        table3.reloadData()
+        
+        
         // and here
         sender.endRefreshing()
     }
