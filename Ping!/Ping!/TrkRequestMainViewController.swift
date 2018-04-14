@@ -321,6 +321,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                 data = parseJSON["data"] as! NSArray?
                                 allRequests.removeAll()
                                 tracked.removeAll()
+                                pending.removeAll()
                                 for request in data{
                                     let element = request as! NSArray
                                     // Define variables for tracking request
@@ -571,6 +572,18 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
     @objc private func refreshOptions(sender: UIRefreshControl) {
         // Place refresh code between here
+        
+        request.removeAll()
+        request2.removeAll()
+        
+        getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
+            self.table1.reloadData()
+            self.table2.reloadData()
+            self.table3.reloadData()
+        }
+
+
+        
         
         // and here
         sender.endRefreshing()
