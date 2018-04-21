@@ -199,7 +199,7 @@ class EditProfileViewController: UIViewController, UITextFieldDelegate, UIImageP
         }
         
         // Set photoImageView to display the selected image.
-        AvatarImageView.image = resizeImage(image: selectedImage, targetSize: CGSize.init(width:124,height:124))
+        AvatarImageView.image = resizeImage(image: selectedImage, targetSize: CGSize.init(width:119,height:119))
         // Dismiss the picker.
         self.dismiss(animated: true, completion: nil)
     }

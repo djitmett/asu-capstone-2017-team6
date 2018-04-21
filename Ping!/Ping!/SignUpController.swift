@@ -64,7 +64,7 @@ class SignUpController: UIViewController, UITextFieldDelegate, UIImagePickerCont
         }
         
         // Set photoImageView to display the selected image.
-        avatarImageView.image = resizeImage(image: selectedImage, targetSize: CGSize.init(width:200,height:200))
+        avatarImageView.image = resizeImage(image: selectedImage, targetSize: CGSize.init(width:165,height:165))
         // Dismiss the picker.
         self.dismiss(animated: true, completion: nil)
     
