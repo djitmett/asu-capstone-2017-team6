@@ -331,6 +331,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         if(state == "on"){
                             if(points.count > 0) {
                                 let myPolyline = MKPolyline(coordinates: points, count: i)
+                                myPolyline.title = req.getReq_from_user_phone()
+                                print("PolyLine Title:" +  myPolyline.title!)
                                 self.mapView.add(myPolyline)
                             }
                         }
@@ -347,6 +349,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         self.defaults.synchronize()
                         if(points.count > 0) {
                             let myPolyline = MKPolyline(coordinates: points, count: i)
+                            myPolyline.title = req.getReq_from_user_phone()
                             self.mapView.add(myPolyline)
                         }
                     }
@@ -392,6 +395,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 if (deleteMe){
                     //print("Removing Title=" + (ann.title as! String))
                     self.mapView.removeAnnotation(ann)
+                    let title = ann.title
+                    let overlays = self.mapView.overlays
+                    for overlay in overlays
+                    {
+                        if overlay.title! == title
+                        {
+                            self.mapView.remove(overlay)
+                            autoRepositionMap = true
+                        }
+                    }
+
                 }
                 i = i + 1
             }
@@ -434,6 +448,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
             
         } else {
+            var i = 0
+            while (i < mapView.annotations.count){
+                let ann = mapView.annotations[i]
+                var x=0 as Int
+                var deleteMe = true as Bool
+                while (x < tracking.count){
+                    if (!(ann.title as! String).contains(tracking[x].getReq_from_user_phone())){
+                        deleteMe = false
+                    }
+                     x = x + 1
+                }
+                if (deleteMe){
+                    //print("Removing Title=" + (ann.title as! String))
+                    self.mapView.removeAnnotation(ann)
+                    self.mapView.removeAnnotation(ann)
+                    let title = ann.title
+                    let overlays = self.mapView.overlays
+                    for overlay in overlays
+                    {
+                        if overlay.title! == title
+                        {
+                            self.mapView.remove(overlay)
+                            autoRepositionMap = true
+                        }
+                    }
+
+                }
+                i = i + 1
+            }
+                    
             // Show current user's current location
             let currLoc = manager.location
             

@@ -17,12 +17,12 @@ var allRequests = [TrackingRequest] ()
 
 class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var table1: UITableView!
     @IBOutlet weak var table3: UITableView!
     @IBOutlet weak var table2: UITableView!
-
+    
     @IBAction func RemoveTrk(_ sender: UIButton) {
         var superview = sender.superview
         while let view = superview, !(view is UITableViewCell) {
@@ -37,9 +37,27 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             return
         }
         updateRequestByID(req: tracking[indexPath.row].getReq_ID(),table: 1)
+            print("Pressing remove for index path of ",indexPath)
+        
+
+        //Function calls to remove selected cell
+        table1.beginUpdates()
+        tracking.remove(at: indexPath.row)
+        table1.deleteRows(at: [indexPath], with: .automatic)
+        table1.endUpdates()
+        print("deleting tracking cell at \([indexPath])")
         table1.reloadData()
-        table2.reloadData()
-        table3.reloadData()
+        
+        getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
+            self.table2.reloadData()
+        }
+        
+        getRequestBy(phone_number: self.userPhoneNumber) { (success) -> Void in
+            self.table3.reloadData()
+        }
+
+            
+
     }
     // Added all required function to retrieve which cell button is selected
     @IBAction func DenyTrk(_ sender: UIButton) {
@@ -56,9 +74,20 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             return
         }
         updateRequestByID(req: tracked[indexPath.row].getReq_ID(),table: 3)
-        table1.reloadData()
-        table2.reloadData()
+        
+        //Function calls to remove selected cell
+        table3.beginUpdates()
+        tracked.remove(at: indexPath.row)
+        table3.deleteRows(at: [indexPath], with: .automatic)
+        table3.endUpdates()
+        print("deleting tracked cell at \([indexPath])")
         table3.reloadData()
+        getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
+            self.table1.reloadData()
+            self.table2.reloadData()
+        }
+        
+        
     }
     @IBAction func AcceptTrk(_ sender: UIButton) {
         var superview = sender.superview
@@ -74,11 +103,20 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
             return
         }
         updateRequestByID(req: pending[indexPath.row].getReq_ID(),table: 2)
-        table1.reloadData()
+        table2.beginUpdates()
+        pending.remove(at: indexPath.row)
+        table2.deleteRows(at: [indexPath], with: .automatic)
+        table2.endUpdates()
+        print("deleting pending cell at \([indexPath])")
         table2.reloadData()
-        table3.reloadData()
-        // We've got the index path for the cell that contains the button, now do something with it.
-        print("button is in row \(indexPath.row)")
+        
+        getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
+            self.table1.reloadData()
+        }
+        
+        getRequestBy(phone_number: self.userPhoneNumber) { (success) -> Void in
+            self.table3.reloadData()
+        }
     }
     func updateRequestByID(req: Int,table: Int)->Void{
         var statusMsg = "PENDING"
@@ -97,7 +135,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         
         var postParameters = "req_ID=\(req)"
         postParameters += "&req_status=\(statusMsg)"
-
+        
         print(postParameters)
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
         let task = URLSession.shared.dataTask(with: request as URLRequest){
@@ -106,7 +144,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                 print("error is \(String(describing: error))")
                 return;
             }
-        
+            
         }
         task.resume()
     }
@@ -249,7 +287,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                             //print("not expired")
                                         }
                                     }
- 
+                                    
                                     // If pending, add to pending array
                                     if (tempTR.getReq_status()=="PENDING"){
                                         let name = tempTR.getReq_from_user_fname() + " " + tempTR.getReq_from_user_lname()
@@ -408,7 +446,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                                             let id = tempTR.getReq_ID()
                                             self.updateRequestByID(req: id, table:1) //Make sure table ids are correct!
                                             //self.expireRequest(request_id: id)
-                                      
+                                            
                                         }
                                         else {
                                             //print("not expired")
@@ -480,7 +518,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         }
         task.resume()
     }
-
+    
     
     let cellIdentifier : String = "cell"
     var numberOfTracked : Int = 0
@@ -495,15 +533,15 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
         //    defaults.removeObject(forKey: "currentTrackedUser")
         //    print("Cleared tracked user")
         
-            for i in 0 ..< pending.count {
-                let deleteAllTR = pending[i];
-                let deleteAllID = deleteAllTR.getReq_ID()
-                self.expireRequest(request_id: deleteAllID)
-            }
+        for i in 0 ..< pending.count {
+            let deleteAllTR = pending[i];
+            let deleteAllID = deleteAllTR.getReq_ID()
+            self.expireRequest(request_id: deleteAllID)
+        }
         request.removeAll()
         pending.removeAll()
         self.table2.reloadData()
-            
+        
         //}
         
     }
@@ -571,33 +609,37 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     }
     
     @objc private func refreshOptions(sender: UIRefreshControl) {
-        // Place refresh code between here
-        
-        request.removeAll()
-        request2.removeAll()
+      
+        //request.removeAll()
+        pending.removeAll()
+        //request2.removeAll()
+        tracking.removeAll()
+        tracked.removeAll()
         
         getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
             self.table1.reloadData()
             self.table2.reloadData()
+        }
+        
+        getRequestBy(phone_number: self.userPhoneNumber) { (success) -> Void in
             self.table3.reloadData()
         }
-
-
         
-        
-        // and here
         sender.endRefreshing()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (tableView.tag == 1){
-            numberOfTracked = request2.count
+            //numberOfTracked = request2.count
+            numberOfTracked = tracking.count
             return numberOfTracked
         }else if(tableView.tag == 2){
-            numberOfRequested = request.count
+            //numberOfRequested = request.count
+            numberOfRequested = pending.count
             return numberOfRequested
         }else if(tableView.tag == 3){
-            numberOfTracking = request3.count
+            //numberOfTracking = request3.count
+            numberOfTracking = tracked.count
             return numberOfTracking
         }else{
             return 0
@@ -606,17 +648,18 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as UITableViewCell
         if(tableView.tag == 1){
-            cell.textLabel?.text = self.request2[indexPath.row]
-            
+            //cell.textLabel?.text = self.request2[indexPath.row]
+            cell.textLabel?.text = "\(tracking[indexPath.row].getReq_from_user_fname()) \(tracking[indexPath.row].getReq_from_user_lname())"
         }else if(tableView.tag == 2){
-            cell.textLabel?.text = self.request[indexPath.row]
-       
+            //cell.textLabel?.text = self.request[indexPath.row]
+            cell.textLabel?.text = "\(pending[indexPath.row].getReq_from_user_fname()) \(pending[indexPath.row].getReq_from_user_lname())"
         }else if(tableView.tag == 3) {
-            cell.textLabel?.text = self.request3[indexPath.row]
+            //cell.textLabel?.text = self.request3[indexPath.row]
+            cell.textLabel?.text = "\(tracked[indexPath.row].getReq_from_user_fname()) \(tracked[indexPath.row].getReq_from_user_lname())"
         }
         return (cell)
     }
-
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -628,7 +671,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt
         indexPath: IndexPath) {
-     
+        
         if editingStyle == .delete {
             
             if(tableView.tag == 1) {
@@ -639,9 +682,13 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                 
                 self.expireRequest(request_id: deleteID)
                 
+                table1.reloadData()
                 tableView.beginUpdates()
                 tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
                 tableView.endUpdates()
+                print("deleting at \([indexPath])")
+ 
             }
             
             if(tableView.tag == 2) {
@@ -651,11 +698,12 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                 pending.remove(at: indexPath.row)
                 
                 self.expireRequest(request_id: deleteID)
-                
+                 table2.reloadData()
                 tableView.beginUpdates()
                 tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
                 tableView.endUpdates()
-                
+
             }
             
             if(tableView.tag == 3) {
@@ -665,14 +713,17 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                 tracked.remove(at: indexPath.row)
                 
                 self.expireRequest(request_id: deleteID)
-                
+                 table3.reloadData()
                 tableView.beginUpdates()
                 tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
                 tableView.endUpdates()
+                
+                
             }
         }
     }
-
+    
     
     
     /*
