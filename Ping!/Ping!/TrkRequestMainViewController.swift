@@ -358,8 +358,7 @@ class TrkRequestMainViewController: UIViewController, UITextFieldDelegate, UITab
                             if(msg == "Operation successful!"){
                                 data = parseJSON["data"] as! NSArray?
                                 allRequests.removeAll()
-                                tracked.removeAll()
-                                pending.removeAll()
+                                tracked.removeAll()                 
                                 for request in data{
                                     let element = request as! NSArray
                                     // Define variables for tracking request
