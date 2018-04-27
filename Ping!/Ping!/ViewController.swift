@@ -118,9 +118,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         
         updateMap()
-        
+        autoRepositionMap = true
     }
-    
     
     func loadSettings() {
         let defaults = UserDefaults.standard
@@ -183,11 +182,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             print("NO PLAYER ID CAPTURED")
         }
         
-        //Avatar imaged -- NEEDS TO BE FIXED ; DOES NOT WORK
-        //if let imgData = UserDefaults.standard.object(forKey: "myImageKey") as? NSData {
-        //   retrievedImg.image = UIImage(data: imgData as Data)
-        //}
-        
+
         mapUpdateTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateMap), userInfo: nil, repeats: true)
         mapUpdateTimer.fire() // We could use this to show the updated map immediately, but the loading wheel is nice. - JH
         
@@ -202,18 +197,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         if(defaults.object(forKey: "userPhone") != nil){
             userPhoneNumber = (defaults.object(forKey: "userPhone") as? String)!
         }
-        //****************
-        // Call on getRequestsFrom function in tracking view
-        //Populates global arrays
-        //****************
+
         TrkRequestMainViewController().getRequestFrom(phone_number: self.userPhoneNumber) { (success) -> Void in
-            //            if success {
-            //                print(pending[0].getReq_from_user_phone())
-            //                print(pending[0].getReq_to_user_phone())
-            //                print(pending[0].getReq_status())
-            //
-            //
-            //            }
+
         }
         
     }
@@ -405,7 +391,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                             autoRepositionMap = true
                         }
                     }
-
+                    
                 }
                 i = i + 1
             }
@@ -415,10 +401,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             var topLeftLong = 180.0  as Double
             
             //Bottom Right Coords
-            var bottomRightLong = -180.0 as Double
             var bottomRightLat = 90.0  as Double
+            var bottomRightLong = -180.0 as Double
+            
             
             for ann in mapView.annotations{
+                
+                /**
                 if (ann.coordinate.longitude < topLeftLong){
                     topLeftLong = ann.coordinate.longitude
                 }
@@ -430,22 +419,87 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 }
                 if (ann.coordinate.latitude > topLeftLat){
                     topLeftLat = ann.coordinate.latitude
-                }
+                }**/
+ 
+            topLeftLong = fmin(topLeftLong, ann.coordinate.longitude)
+            topLeftLat = fmax(topLeftLat, ann.coordinate.latitude)
+            bottomRightLong = fmax(bottomRightLong, ann.coordinate.longitude)
+            bottomRightLat = fmin(bottomRightLat,ann.coordinate.latitude)
+ 
+ 
                 
             }
             //print(String(format:"MinLong=%f MaxLong=%f MinLat=%f MaxLat=%f", topLeftLong, bottomRightLong, bottomRightLat, topLeftLat))
             // Based on min/max lat/long, zoom map
             if (autoRepositionMap){
+                
+                /**
                 if (topLeftLong != 180 || bottomRightLong != -180 || bottomRightLat != 90 || topLeftLat != -90){
                     var region: MKCoordinateRegion = MKCoordinateRegion()
-                    region.center.latitude = topLeftLat - (topLeftLat - bottomRightLat) * 0.5
-                    region.center.longitude = topLeftLong + (bottomRightLong - topLeftLong) * 0.5
-                    region.span.latitudeDelta = fabs(topLeftLat - bottomRightLat) * 1.4
-                    region.span.longitudeDelta = fabs(bottomRightLong - topLeftLong) * 1.4
-                    region = mapView.regionThatFits(region)
-                    mapView.setRegion(region, animated: true)
+                    /**
+                        region.center.latitude = topLeftLat - (topLeftLat - bottomRightLat) * 0.5
+                        region.center.longitude = topLeftLong + (bottomRightLong - topLeftLong) * 0.5
+                        region.span.latitudeDelta = fabs(topLeftLat - bottomRightLat) * 1.4
+                        region.span.longitudeDelta = fabs(bottomRightLong - topLeftLong) * 1.4
+                     **/
+                    var pass = true as Bool
+                    
+                    var centerLat = topLeftLat - (topLeftLat - bottomRightLat) * 0.5
+                    if(centerLat <= 90.0 || centerLat >= -90.00) {
+                        region.center.latitude = topLeftLat - (topLeftLat - bottomRightLat) * 0.5
+                    }
+                    else {
+                        pass = false;
+                    }
+                    
+                    var centerLong = topLeftLong + (bottomRightLong - topLeftLong) * 0.5
+                    if(centerLong <= 180.0 || centerLong >= -180.00) {
+                        region.center.longitude = topLeftLong + (bottomRightLong - topLeftLong) * 0.5
+                    }
+                    else {
+                        pass = false;
+                    }
+                    
+                    let spanLat = fabs(topLeftLat - bottomRightLat) * 4.1
+                    let spanLong = fabs(bottomRightLong - topLeftLong) * 4.1
+                    
+                    if(!spanLat.isNaN){
+                        region.span.latitudeDelta = fabs(topLeftLat - bottomRightLat) * 4.1
+                    }
+                    else {
+                        pass = false;
+                    }
+                    if(!spanLong.isNaN){
+                        region.span.latitudeDelta = fabs(topLeftLat - bottomRightLat) * 4.1
+                    }
+                    else {
+                        pass = false;
+                    }
+                    
+                    
+                    if(pass){
+                        region = mapView.regionThatFits(region)
+                        mapView.setRegion(region, animated: true)
+                        print("passes autoreposition values")
+                    }
+                    else {
+                        print("in else statement of autoreposition map")
+                        var region2: MKCoordinateRegion = MKCoordinateRegion()
+                        let span = MKCoordinateSpanMake(0.050, 0.050)
+                        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+                        region2 = MKCoordinateRegion(center:locValue, span: span)
+                        //region = mapView.regionThatFits(region)
+                        self.mapView.setRegion(region2, animated: true)
+                    }
+               
                 }
+                    **/
+                
+                // NEW WAY TO SHOW ANNOTATIONS
+                self.mapView .showAnnotations(mapView.annotations, animated: true)
+                
             }
+ 
             
         } else {
             var i = 0
@@ -457,7 +511,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     if (!(ann.title as! String).contains(tracking[x].getReq_from_user_phone())){
                         deleteMe = false
                     }
-                     x = x + 1
+                    x = x + 1
                 }
                 if (deleteMe){
                     //print("Removing Title=" + (ann.title as! String))
@@ -473,11 +527,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                             autoRepositionMap = true
                         }
                     }
-
+                    
                 }
                 i = i + 1
             }
-                    
+            
             // Show current user's current location
             let currLoc = manager.location
             
@@ -562,6 +616,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         if ImageCache.default.retrieveImageInDiskCache(forKey: phone_number) != nil{
             let user = UserAnnotation(phone:phone_number, lat: latitude, long:longitude, avatarImage: ImageCache.default.retrieveImageInDiskCache(forKey: phone_number)!)
             mapView.addAnnotation(user)
+            
         }
         //Remove spinner view after labels have been updated
         //UIViewController.removeSpinner(spinner: sv)
